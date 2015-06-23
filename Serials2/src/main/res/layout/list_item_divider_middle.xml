@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ru.home.serial.ExtendedStateRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                            android:orientation="vertical"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1"
+                                            style="@style/list_item_divider_middle">
+
+    <TextView android:id="@+id/list_item_name"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_alignParentTop="true"
+              android:gravity="right"
+              style="@style/content_divider_large_text"/>
+
+</ru.home.serial.ExtendedStateRelativeLayout>

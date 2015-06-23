@@ -1,0 +1,12 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".TechArchActivity" >
+    <item android:id="@+id/menu_phones"
+        android:title="@string/phones"
+        android:showAsAction="withText|ifRoom"
+        android:icon="@android:drawable/ic_menu_call"/>
+    <item android:id="@+id/menu_cameras"
+        android:title="@string/cameras"
+        android:showAsAction="withText|ifRoom"
+        android:icon="@android:drawable/ic_menu_camera"/>
+</menu>

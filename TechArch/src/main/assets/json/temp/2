@@ -1,0 +1,47 @@
+{
+    "phones": [
+    {
+      "name": "Alcatel One Touch 512",
+      "date": "01.06.2003",
+      "photo": "AlcatelOneTouch512.jpg"
+    },
+    {
+      "name": "Alcatel One Touch 535",
+      "date": "14.09.2003",
+      "photo": "AlcatelOneTouch535.jpg"
+    },
+    {
+      "name": "Motorola SLVR L7e",
+      "date": "14.09.2007",
+      "photo": "MotorolaSLVRL7e.jpg"
+    },
+    {
+      "name": "HTC Wildfire S A510E (HTC Marvel)",
+      "date": "06.08.2011",
+      "photo": "HTCMarvel.jpg"
+    },
+    {
+      "name": "HTC Desire X (HTC Proto)",
+      "date": "28.12.2012",
+      "photo": "HTCProto.jpg"
+    },
+    {
+      "name": "Sony Xperia Z1 Compact D5503 (Amami)",
+      "date": "08.03.2014",
+      "photo": "Amami.jpg"
+    }
+  ],
+
+    "cameras": [
+    {
+      "name": "Canon IXUS 130",
+      "date": "09.12.2010",
+      "photo": "CanonIXUS130.jpg"
+    },
+    {
+      "name": "Canon IXUS 255 HS",
+      "date": "21.06.2013",
+      "photo": "CanonIXUS255HS.jpg"
+    }
+  ]
+}

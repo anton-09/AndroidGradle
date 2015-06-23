@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	
+	<style name="MenuDialogAnimation">
+		<item name="@android:windowEnterAnimation">@anim/appear</item>
+		<item name="@android:windowExitAnimation">@anim/disappear</item>
+	</style>
+
+</resources>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="extended_stats">
+        <attr name="state_released" format="boolean" />
+        <attr name="state_downloaded" format="boolean" />
+        <attr name="state_watched" format="boolean" />
+    </declare-styleable>
+</resources>

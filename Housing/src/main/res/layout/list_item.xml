@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="horizontal"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:paddingLeft="5dp"
+              android:paddingRight="15dp"
+              android:paddingTop="10dp"
+              android:paddingBottom="10dp">
+
+    <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/textDate"
+            android:layout_weight="1"
+            android:gravity="right"
+            style="@style/list_item"/>
+    <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/textCold"
+            android:layout_weight="1"
+            android:gravity="right"
+            style="@style/list_item"/>
+    <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/textHot"
+            android:layout_weight="1"
+            android:gravity="right"
+            style="@style/list_item"/>
+    <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/textElectricity"
+            android:layout_weight="1"
+            android:gravity="right"
+            style="@style/list_item"/>
+
+</LinearLayout>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/pickerDialog"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+    <LinearLayout
+                  android:id="@+id/pickerDialogWheels"
+                  android:orientation="horizontal"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:gravity="center">
+    </LinearLayout>
+
+    <LinearLayout
+                  android:id="@+id/pickerDialogButtons1"
+                  android:orientation="horizontal"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_below="@id/pickerDialogWheels">
+
+        <Button android:id="@+id/pickerDialogTodayButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:text="@string/dialog_now"/>
+
+        <Button android:id="@+id/pickerDialogResetButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:text="@string/dialog_reset"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+                  android:id="@+id/pickerDialogButtons2"
+                  android:orientation="horizontal"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_below="@id/pickerDialogButtons1">
+
+        <Button android:id="@+id/pickerDialogOkButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:text="@string/dialog_ok"/>
+
+        <Button android:id="@+id/pickerDialogCancelButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:text="@string/dialog_cancel"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

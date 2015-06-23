@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal"
+              android:padding="3dp">
+
+    <TextView android:id="@+id/list_item_items"
+              android:layout_width="0dp"
+              android:layout_height="match_parent"
+              android:layout_weight="1"
+              android:gravity="center"
+              android:text="#"
+              android:textColor="@color/stat_header_text_color"
+              android:textSize="12sp"/>
+    <TextView android:id="@+id/list_item_runs"
+              android:layout_width="0dp"
+              android:layout_height="match_parent"
+              android:layout_weight="3"
+              android:gravity="center"
+              android:text="@string/runs"
+              android:textColor="@color/stat_header_text_color"
+              android:textSize="12sp"/>
+    <TextView android:id="@+id/list_item_wins"
+              android:layout_width="0dp"
+              android:layout_height="match_parent"
+              android:layout_weight="3"
+              android:gravity="center"
+              android:text="@string/wins"
+              android:textColor="@color/stat_header_text_color"
+              android:textSize="12sp"/>
+    <TextView android:id="@+id/list_item_percent"
+              android:layout_width="0dp"
+              android:layout_height="match_parent"
+              android:layout_weight="5"
+              android:gravity="center"
+              android:text="@string/percent"
+              android:textColor="@color/stat_header_text_color"
+              android:textSize="12sp"/>
+    <TextView android:id="@+id/list_item_chance"
+              android:layout_width="0dp"
+              android:layout_height="match_parent"
+              android:layout_weight="5"
+              android:gravity="center"
+              android:text="@string/chance"
+              android:textColor="@color/stat_header_text_color"
+              android:textSize="12sp"/>
+    <ImageView android:id="@+id/list_item_clear"
+               android:layout_width="0dp"
+               android:layout_height="match_parent"
+               android:layout_weight="2"
+               android:src="@drawable/eraser"
+               android:visibility="gone"/>
+
+</LinearLayout>

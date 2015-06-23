@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+
+	<!-- LIST BORDER COLOR -->
+	<color name="rounded_container_border">#FFB7BABB</color>
+
+	<!-- ITEM BACKGROUND COLOR - STATE - DEFAULT -->
+	<color name="base_start_color_default">#FFFFFFFF</color>
+    <color name="base_end_color_default">#FFFFFFFF</color>
+
+	<!-- ITEM BACKGROUND COLOR - STATE - PRESSED -->
+	<color name="base_start_color_pressed">#FF3590C4</color>
+    <color name="base_end_color_pressed">#FF2570BA</color>
+
+    <!-- ITEM BACKGROUND COLOR - STATE - DISABLED -->
+    <color name="base_start_color_disabled">#FFBFBFBF</color>
+    <color name="base_end_color_disabled">#FFBFBFBF</color>
+
+    <!-- ITEM BACKGROUND COLOR - STATE - RELEASED -->
+    <color name="base_start_color_released">#FFFFDFDF</color>
+    <color name="base_end_color_released">#FFFFDFDF</color>
+
+    <!-- ITEM BACKGROUND COLOR - STATE - DOWNLOADED -->
+    <color name="base_start_color_downloaded">#FFDFDFFF</color>
+    <color name="base_end_color_downloaded">#FFDFDFFF</color>
+
+    <!-- ITEM BACKGROUND COLOR - STATE - WATCHED -->
+    <color name="base_start_color_watched">#FFDFFFDF</color>
+    <color name="base_end_color_watched">#FFDFFFDF</color>
+
+    <!-- ITEM TEXT COLORS - STATES - PRESSED AND DEFAULT -->
+    <color name="text_color_default">#FF000000</color>
+    <color name="text_color_pressed">#FFFFFFFF</color>
+
+    <color name="background_tab_focused">#99367890</color>
+    <color name="background_tab_normal">#00000000</color>
+    <color name="background_tab_pressed">#FF367890</color>
+
+    <color name="action_item_text_color">#FF666666</color>
+
+    <color name="fixed_tab_item_text_color">#FFFFFFFF</color>
+
+    <color name="fixed_tab_container_background">#FF3C3C3C</color>
+    <color name="list_container_background">#FFD3D3D3</color>
+
+    <color name="trans">#FFFFFFFF</color>
+
+    <color name="wheel_val_start">#70222222</color>
+    <color name="wheel_val_center">#70222222</color>
+    <color name="wheel_val_end">#70EEEEEE</color>
+    <color name="wheel_val_stroke">#70333333</color>
+
+    <color name="wheel_bg_start">#FF333333</color>
+    <color name="wheel_bg_center">#FFDDDDDD</color>
+    <color name="wheel_bg_end">#FF333333</color>
+    <color name="wheel_bg_stroke">#FF333333</color>
+
+    <color name="wheel_bg2_start">#FFAAAAAA</color>
+    <color name="wheel_bg2_center">#FFFFFFFF</color>
+    <color name="wheel_bg2_end">#FFAAAAAA</color>
+
+    <color name="tabs_divider">#FF636363</color>
+    <color name="view_pager_tab_button_line">#FF6F8FC7</color>
+
+    <color name="loading_text_background">#FFE3E3E3</color>
+
+</resources>

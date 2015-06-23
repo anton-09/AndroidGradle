@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Fly With Me</string>
+    <string name="dru">CharOday</string>
+    <string name="tank">Твикси</string>
+    <string name="prist">Тафай</string>
+    <string name="myst">Бумага</string>
+    <string name="geo">Гео</string>
+    <string name="klanhall">Клан Холл</string>
+    <string name="tolk">Толкователь</string>
+    <string name="chrono1">Хроно 1</string>
+    <string name="chrono2">Хроно 2</string>
+    <string name="chrono3">Хроно 3</string>
+    <string name="chrono4">Хроно 4</string>
+    <string name="cunami">Цунами</string>
+    <string name="nabl">Наблюдатель</string>
+    <string name="eza">Ежа</string>
+    <string name="yashma">Яшма</string>
+    <string name="cube">Куб</string>
+    <string name="quest">Квесты</string>
+    <string name="morai">Морай</string>
+    <string name="ohotnik">Охотник</string>
+    <string name="on">Включить?</string>
+    <string name="off">Выключить?</string>
+    <string name="yes">Ага!</string>
+    <string name="no">Неа!</string>
+    <string name="menu_item_find_unfinished">Найти незавершенные</string>
+    <string name="menu_item_show_legend">Показать легенду</string>
+    <string name="levelup">ап?</string>
+    <string name="image_content_description">ListViewItem</string>
+</resources>

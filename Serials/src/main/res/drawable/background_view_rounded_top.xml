@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<inset android:insetLeft="1.0px" android:insetRight="1.0px" android:insetTop="1.0px" android:insetBottom="0.0px"
+       xmlns:android="http://schemas.android.com/apk/res/android"
+       xmlns:app="http://schemas.android.com/apk/res/ru.home.serial">
+    <selector>
+        <item android:state_enabled="false">
+            <shape>
+                <gradient android:startColor="@color/base_start_color_disabled" android:endColor="@color/base_end_color_disabled" android:angle="270.0" />
+                <corners android:radius="2.0dip" android:topLeftRadius="10.0dip" android:topRightRadius="10.0dip" android:bottomLeftRadius="0.0dip" android:bottomRightRadius="0.0dip" />
+            </shape>
+        </item>
+        <item android:state_pressed="true">
+            <shape>                
+                <gradient android:startColor="@color/base_start_color_pressed" android:endColor="@color/base_end_color_pressed" android:angle="270.0" />
+                <corners android:radius="2.0dip" android:topLeftRadius="10.0dip" android:topRightRadius="10.0dip" android:bottomLeftRadius="0.0dip" android:bottomRightRadius="0.0dip" />
+            </shape>
+        </item>
+        <item app:state_watched="true">
+            <shape>
+                <gradient android:startColor="@color/base_start_color_watched" android:endColor="@color/base_end_color_watched" android:angle="270.0" />
+                <corners android:radius="2.0dip" android:topLeftRadius="10.0dip" android:topRightRadius="10.0dip" android:bottomLeftRadius="0.0dip" android:bottomRightRadius="0.0dip" />
+            </shape>
+        </item>
+        <item app:state_downloaded="true">
+            <shape>
+                <gradient android:startColor="@color/base_start_color_downloaded" android:endColor="@color/base_end_color_downloaded" android:angle="270.0" />
+                <corners android:radius="2.0dip" android:topLeftRadius="10.0dip" android:topRightRadius="10.0dip" android:bottomLeftRadius="0.0dip" android:bottomRightRadius="0.0dip" />
+            </shape>
+        </item>
+        <item app:state_released="true">
+            <shape>
+                <gradient android:startColor="@color/base_start_color_released" android:endColor="@color/base_end_color_released" android:angle="270.0" />
+                <corners android:radius="2.0dip" android:topLeftRadius="10.0dip" android:topRightRadius="10.0dip" android:bottomLeftRadius="0.0dip" android:bottomRightRadius="0.0dip" />
+            </shape>
+        </item>
+        <item>
+            <shape>
+                <gradient android:startColor="@color/base_start_color_default" android:endColor="@color/base_end_color_default" android:angle="270.0" />
+                <corners android:radius="2.0dip" android:topLeftRadius="10.0dip" android:topRightRadius="10.0dip" android:bottomLeftRadius="0.0dip" android:bottomRightRadius="0.0dip" />
+            </shape>
+        </item>
+    </selector>
+</inset>

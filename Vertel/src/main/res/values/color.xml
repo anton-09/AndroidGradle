@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="stat_header_text_color">#FFFF00FF</color>
+    <color name="stat_active_text_color">#FFFF0000</color>
+    <color name="menu_text_color">#FFF5EE</color>
+</resources>

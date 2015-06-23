@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView android:id="@+id/list_item_name"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_alignParentTop="true"
+              style="@style/content_page_large_text"/>
+
+    <ViewStub android:id="@+id/list_item_altname"
+              android:inflatedId="@+id/list_item_altname"
+              android:layout="@layout/list_item_altname_textview"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_below="@+id/list_item_name"/>
+
+    <ViewStub android:id="@+id/list_item_dopinfo1_image"
+              android:inflatedId="@+id/list_item_dopinfo1_image"
+              android:layout="@layout/list_item_dopinfo_imageview"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_below="@+id/list_item_altname"/>
+
+    <ViewStub android:id="@+id/list_item_dopinfo1_text"
+              android:inflatedId="@+id/list_item_dopinfo1_text"
+              android:layout="@layout/list_item_dopinfo_textview"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_below="@+id/list_item_altname"
+              android:layout_toRightOf="@+id/list_item_dopinfo1_image"
+              android:layout_alignBottom="@+id/list_item_dopinfo1_image"/>
+
+    <ViewStub android:id="@+id/list_item_dopinfo2_image"
+              android:inflatedId="@+id/list_item_dopinfo2_image"
+              android:layout="@layout/list_item_dopinfo_imageview"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_below="@+id/list_item_altname"
+              android:layout_toRightOf="@+id/list_item_dopinfo1_text"/>
+
+    <ViewStub android:id="@+id/list_item_dopinfo2_text"
+              android:inflatedId="@+id/list_item_dopinfo2_text"
+              android:layout="@layout/list_item_dopinfo_textview"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_below="@+id/list_item_altname"
+              android:layout_toRightOf="@+id/list_item_dopinfo2_image"
+              android:layout_alignBottom="@+id/list_item_dopinfo2_image"/>
+
+    <ViewStub android:id="@+id/list_item_dopinfo3_image"
+              android:inflatedId="@+id/list_item_dopinfo3_image"
+              android:layout="@layout/list_item_dopinfo_imageview"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_below="@+id/list_item_altname"
+              android:layout_toRightOf="@+id/list_item_dopinfo2_text"/>
+
+    <ViewStub android:id="@+id/list_item_dopinfo3_text"
+              android:inflatedId="@+id/list_item_dopinfo3_text"
+              android:layout="@layout/list_item_dopinfo_textview"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_below="@+id/list_item_altname"
+              android:layout_toRightOf="@+id/list_item_dopinfo3_image"
+              android:layout_alignBottom="@+id/list_item_dopinfo3_image"/>
+
+    <ViewStub android:id="@+id/list_item_dopinfo4_image"
+              android:inflatedId="@+id/list_item_dopinfo4_image"
+              android:layout="@layout/list_item_dopinfo_imageview"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_below="@+id/list_item_altname"
+              android:layout_toRightOf="@+id/list_item_dopinfo3_text"/>
+
+    <ViewStub android:id="@+id/list_item_dopinfo4_text"
+              android:inflatedId="@+id/list_item_dopinfo4_text"
+              android:layout="@layout/list_item_dopinfo_textview"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_below="@+id/list_item_altname"
+              android:layout_toRightOf="@+id/list_item_dopinfo4_image"
+              android:layout_alignBottom="@+id/list_item_dopinfo4_image"/>
+
+</merge>

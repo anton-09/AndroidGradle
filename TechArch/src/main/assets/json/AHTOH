@@ -1,0 +1,62 @@
+﻿{
+    "phones": [
+    {
+      "name": "Siemens A35",
+      "date": "01.10.2002",
+      "photo": "SiemensA35.jpg"
+    },
+    {
+      "name": "Motorola C350",
+      "date": "06.09.2003",
+      "photo": "MotorolaC350.jpg"
+    },
+    {
+      "name": "Motorola V635",
+      "date": "17.09.2005",
+      "photo": "MotorolaV635.jpg"
+    },
+    {
+      "name": "HTC Touch Cruise P3650 (HTC Polaris)",
+      "date": "20.08.2008",
+      "photo": "HTCPolaris.jpg"
+    },
+    {
+      "name": "HTC Sensation XL X315 (HTC Runnymede)",
+      "date": "26.12.2011",
+      "photo": "HTCRunnymede.jpg"
+    },
+    {
+      "name": "Alcatel One Touch 232",
+      "date": "01.05.2013",
+      "photo": "AlcatelOneTouch232.jpg"
+    },
+    {
+      "name": "Xiaomi MI2S",
+      "date": "08.06.2013",
+      "photo": "XiaomiMI2S.jpg"
+    }
+  ],
+
+    "cameras": [
+    {
+      "name": "Canon PowerShot A300",
+      "date": "29.01.2004",
+      "photo": "CanonPowerShotA300.jpg"
+    },
+    {
+      "name": "Canon PowerShot A630",
+      "date": "29.01.2007",
+      "photo": "CanonPowerShotA630.jpg"
+    },
+    {
+      "name": "Canon PowerShot A1100 IS",
+      "date": "03.09.2009",
+      "photo": "CanonPowerShotA1100IS.jpg"
+    },
+    {
+      "name": "Canon EOS 500D Kit",
+      "date": "12.04.2010",
+      "photo": "CanonEOS500DKit.jpg"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="header_light">#58567D</color>
+    <color name="header_dark">#48466D</color>
+    <color name="text_seashell">#FFF5EE</color>
+    <color name="grid_highlight">#000000</color>
+</resources>

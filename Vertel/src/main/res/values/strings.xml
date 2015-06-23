@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Vertel</string>
+    <string name="try_button">Мне повезет!</string>
+    <string name="show_stat_button">Статистика</string>
+    <string name="reset_stat_button">Обнулить</string>
+    <string name="change_pack_button">Хочу другие картинки</string>
+    <string name="congratulations">Поздравляю!!!</string>
+    <string name="ok">Применить</string>
+    <string name="cancel">Отменить</string>
+    <string name="no_SD">SD карта отсутствует!</string>
+    <string name="no_images">Проблема загрузки скинов, обратитесь к разработчику, сообщив этот код ошибки GKJ46HS*DF#3L%6K3J4$D!</string>
+    <string name="empty_skin">Без картинок неинтресно играть!</string>
+    <string name="runs">Игры</string>
+    <string name="wins">Победы</string>
+    <string name="percent">Процент</string>
+    <string name="find_pack_button">Искать картинки тут</string>
+    <string name="exit">Выход</string>
+    <string name="chosen">Выбрано</string>
+    <string name="chance">Шанс</string>
+    <string name="menu_clear">Очистить статистику</string>
+
+</resources>
