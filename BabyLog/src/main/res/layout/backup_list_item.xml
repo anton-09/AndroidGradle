@@ -8,6 +8,7 @@
     android:layout_height="wrap_content"
     card_view:cardCornerRadius="5dp"
     card_view:cardElevation="1dp"
+    card_view:contentPaddingLeft="10dp"
     style="@style/CardView">
 
     <RelativeLayout
@@ -18,12 +19,15 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/listItemBackupDate"/>
+            android:id="@+id/listItemBackupDate"
+            android:textSize="16sp"
+            android:textColor="@android:color/black"
+            android:layout_centerVertical="true" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/ic_delete_light"
+            android:background="@drawable/ic_backup_restore_light"
             android:layout_toLeftOf="@+id/buttonDeleteBackup"
             android:id="@+id/buttonRestoreBackup"/>
 

@@ -102,6 +102,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/black"
+                android:textStyle="italic"
                 android:gravity="right"
                 android:id="@+id/listItemComments"/>
 

@@ -14,6 +14,10 @@
     <string name="delete">Удалить?</string>
     <string name="yes">Да</string>
     <string name="no">Нет</string>
+    <string name="backup_write_error">Проблема с записью на SD-карту!</string>
+    <string name="backup_no_sd">Внимание! SD-карта не доступна, бэкап не будет работать!</string>
+    <string name="backup">Бэкапы</string>
+    <string name="app_name_backup">BabyLog Backup</string>
 
     <string-array name="months">
         <item>января</item>
