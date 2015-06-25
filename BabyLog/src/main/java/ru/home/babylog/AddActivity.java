@@ -1,14 +1,15 @@
 package ru.home.babylog;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,7 +23,7 @@ import kankan.wheel.widget.WheelView;
 import kankan.wheel.widget.adapters.ArrayWheelAdapter;
 import kankan.wheel.widget.adapters.NumericWheelAdapter;
 
-public class AddActivity extends Activity
+public class AddActivity extends AppCompatActivity
 {
     SimpleDateFormat dbDateFormat = new SimpleDateFormat("yyyyMMdd");
     Long clickedDayId;
@@ -37,6 +38,17 @@ public class AddActivity extends Activity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_activity);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
 
         Cursor cursor;
 
@@ -82,8 +94,8 @@ public class AddActivity extends Activity
         ((TextView) findViewById(R.id.editFeed)).setText(initialFeed);
         ((TextView) findViewById(R.id.editComments)).setText(initialComments);
 
-        Button confirmDataButton = (Button) findViewById(R.id.buttonConfirm);
-        Button cancelDataButton = (Button) findViewById(R.id.buttonCancel);
+        ImageButton confirmDataButton = (ImageButton) findViewById(R.id.buttonConfirm);
+        ImageButton cancelDataButton = (ImageButton) findViewById(R.id.buttonCancel);
 
         if (clickedDayId != -1)
         {

@@ -119,5 +119,10 @@ public class BabyLogDbAdapter
     {
         mDb.delete(TABLE_BABYLOG, BABYLOG_ID + " = " + id, null);
     }
+
+    public void deleteAllData()
+    {
+        mDb.delete(TABLE_BABYLOG, null, null);
+    }
 }
 

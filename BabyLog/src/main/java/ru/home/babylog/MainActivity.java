@@ -1,13 +1,14 @@
 package ru.home.babylog;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
 
-public class MainActivity extends Activity
+public class MainActivity extends AppCompatActivity
 {
     private static final int REQUEST_CODE_ADD_DATA = 1;
 
@@ -15,10 +16,11 @@ public class MainActivity extends Activity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+        setContentView(R.layout.main_activity);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
@@ -39,7 +41,7 @@ public class MainActivity extends Activity
 
             case R.id.menu_backup:
                 Intent intentBackup = new Intent(this, BackupActivity.class);
-                startActivity(intentBackup);
+                startActivityForResult(intentBackup, REQUEST_CODE_ADD_DATA);
                 return true;
 
             default:

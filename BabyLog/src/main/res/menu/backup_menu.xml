@@ -8,6 +8,6 @@
         android:id="@+id/menu_add"
         android:title="@string/add"
         android:icon="@drawable/ic_plus_dark"
-        android:showAsAction="always" />
+        app:showAsAction="ifRoom|withText"/>
 
 </menu>

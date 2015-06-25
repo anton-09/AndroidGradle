@@ -6,9 +6,8 @@
     android:id="@+id/cardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    card_view:cardCornerRadius="5dp"
-    card_view:cardElevation="1dp"
-    card_view:contentPaddingLeft="10dp"
+    card_view:cardCornerRadius="10dp"
+    card_view:contentPadding="10dp"
     style="@style/CardView">
 
     <RelativeLayout
@@ -24,14 +23,15 @@
             android:textColor="@android:color/black"
             android:layout_centerVertical="true" />
 
-        <Button
+        <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/ic_backup_restore_light"
             android:layout_toLeftOf="@+id/buttonDeleteBackup"
-            android:id="@+id/buttonRestoreBackup"/>
+            android:id="@+id/buttonRestoreBackup"
+            android:layout_marginRight="10dp" />
 
-        <Button
+        <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/ic_delete_light"

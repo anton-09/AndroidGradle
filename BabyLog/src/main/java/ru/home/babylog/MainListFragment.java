@@ -40,7 +40,7 @@ public class MainListFragment extends ListFragment implements LoaderManager.Load
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        return inflater.inflate(R.layout.list_fragment, null);
+        return inflater.inflate(R.layout.main_list_fragment, null);
     }
 
     @Override

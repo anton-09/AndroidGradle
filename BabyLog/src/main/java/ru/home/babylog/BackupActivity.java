@@ -1,37 +1,51 @@
 package ru.home.babylog;
 
-import android.app.Activity;
 import android.app.LoaderManager;
-import android.content.Context;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Environment;
-import android.view.LayoutInflater;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
-public class BackupActivity extends Activity implements LoaderManager.LoaderCallbacks<Cursor>
+public class BackupActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>
 {
     SimpleDateFormat backupDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-    BackupListItemAdapter arrayAdapter;
+    RecyclerViewAdapter adapter;
+    RecyclerView recyclerView;
     File backupStorage;
+    List<String> dataList;
 
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.list_backup);
+        setContentView(R.layout.backup_activity);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
 
         if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
         {
@@ -44,9 +58,18 @@ public class BackupActivity extends Activity implements LoaderManager.LoaderCall
         if (!backupStorage.exists())
             backupStorage.mkdirs();
 
-        arrayAdapter = new BackupListItemAdapter(this, backupStorage.list());
-        ((ListView)findViewById(R.id.listview_backup)).setAdapter(arrayAdapter);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
+        recyclerView = (RecyclerView)findViewById(R.id.recyclerViewBackup);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setItemAnimator(itemAnimator);
+
+        dataList = new ArrayList<String>(Arrays.asList(backupStorage.list()));
+        adapter = new RecyclerViewAdapter(dataList, this);
+        recyclerView.setAdapter(adapter);
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
@@ -78,22 +101,26 @@ public class BackupActivity extends Activity implements LoaderManager.LoaderCall
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor)
     {
-        File fileName = new File(backupStorage, backupDateFormat.format(new Date()) + ".csv");
+        String shortFileName =  backupDateFormat.format(new Date()) + ".csv";
+        File fileName = new File(backupStorage, shortFileName);
 
         try
         {
-            FileWriter f = new FileWriter(fileName);
+            FileWriter fileWriter = new FileWriter(fileName);
 
             cursor.moveToFirst();
             while(!cursor.isAfterLast())
             {
                 String output = cursor.getString(1) + ";" + cursor.getInt(2) + ";" + cursor.getString(3) + ";" + cursor.getString(4) + ";" + cursor.getString(5) + "\n";
-                f.write(output);
+                fileWriter.write(output);
                 cursor.moveToNext();
             }
 
-            f.flush();
-            f.close();
+            fileWriter.flush();
+            fileWriter.close();
+
+            dataList.add(shortFileName);
+            adapter.notifyDataSetChanged();
         }
         catch (Exception e)
         {
@@ -101,8 +128,6 @@ public class BackupActivity extends Activity implements LoaderManager.LoaderCall
             fileName.delete();
         }
 
-        arrayAdapter = new BackupListItemAdapter(this, backupStorage.list());
-        ((ListView)findViewById(R.id.listview_backup)).setAdapter(arrayAdapter);
     }
 
     @Override
@@ -110,25 +135,4 @@ public class BackupActivity extends Activity implements LoaderManager.LoaderCall
     {
     }
 
-    private class BackupListItemAdapter extends ArrayAdapter<String>
-    {
-
-        public BackupListItemAdapter(Context context, String[] items)
-        {
-            super(context, R.layout.backup_list_item, items);
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent)
-        {
-            if (convertView == null)
-            {
-                convertView = LayoutInflater.from(getContext()).inflate(R.layout.backup_list_item, null);
-            }
-
-            ((TextView) convertView.findViewById(R.id.listItemBackupDate)).setText(getItem(position));
-
-            return convertView;
-        }
-    }
 }
