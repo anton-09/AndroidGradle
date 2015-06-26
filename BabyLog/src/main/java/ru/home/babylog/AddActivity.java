@@ -7,9 +7,10 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -68,10 +69,10 @@ public class AddActivity extends AppCompatActivity
 
             initialWeight = cursor.getInt(2);
 
-            if (clickedDayId != -1) {
+            if (clickedDayId != -1)
+            {
                 initialEat = cursor.getString(3);
                 initialFeed = cursor.getString(4);
-                initialComments = cursor.getString(5);
             }
             else
             {
@@ -80,6 +81,8 @@ public class AddActivity extends AppCompatActivity
                 c.add(Calendar.DATE, 1);
                 initialDate = c.getTime();
             }
+
+            initialComments = cursor.getString(5);
         }
 
         prepareIntWheel(R.id.wheelKilo10, initialWeight / 10000);
@@ -94,27 +97,52 @@ public class AddActivity extends AppCompatActivity
         ((TextView) findViewById(R.id.editFeed)).setText(initialFeed);
         ((TextView) findViewById(R.id.editComments)).setText(initialComments);
 
-        ImageButton confirmDataButton = (ImageButton) findViewById(R.id.buttonConfirm);
-        ImageButton cancelDataButton = (ImageButton) findViewById(R.id.buttonCancel);
-
         if (clickedDayId != -1)
         {
-            cancelDataButton.setVisibility(View.VISIBLE);
             findViewById(R.id.wheelDay).setEnabled(false);
             findViewById(R.id.wheelMonth).setEnabled(false);
             findViewById(R.id.wheelYear).setEnabled(false);
         }
-        else
-        {
-            cancelDataButton.setVisibility(View.GONE);
-            findViewById(R.id.wheelDay).setEnabled(true);
-            findViewById(R.id.wheelMonth).setEnabled(true);
-            findViewById(R.id.wheelYear).setEnabled(true);
-        }
+    }
 
-        confirmDataButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        getMenuInflater().inflate(R.menu.edit_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+            case R.id.menu_cancel:
+                AlertDialog.Builder builder = new AlertDialog.Builder(AddActivity.this);
+                builder
+                        .setMessage(R.string.delete)
+                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(DialogInterface dialog, int whichButton)
+                            {
+                                MyApplication.getDBAdapter().deleteData(clickedDayId);
+
+                                setResult(RESULT_OK, new Intent());
+                                finish();
+
+                            }
+                        })
+                        .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                            }
+                        })
+                        .show();
+
+                return true;
+
+            case R.id.menu_confirm:
                 WheelView wheelViewYear = (WheelView) findViewById(R.id.wheelYear);
                 WheelView wheelViewMonth = (WheelView) findViewById(R.id.wheelMonth);
                 WheelView wheelViewDay = (WheelView) findViewById(R.id.wheelDay);
@@ -151,7 +179,7 @@ public class AddActivity extends AppCompatActivity
                     if (MyApplication.getDBAdapter().getDataByDate(dbDateFormat.format(calendar.getTime())).getCount() > 0)
                     {
                         Toast.makeText(AddActivity.this, "Запись в такой датой уже существует", Toast.LENGTH_LONG).show();
-                        return;
+                        return true;
                     }
 
                     MyApplication.getDBAdapter().addData(
@@ -164,39 +192,24 @@ public class AddActivity extends AppCompatActivity
 
                 setResult(RESULT_OK, new Intent());
                 finish();
-            }
-        });
 
-        cancelDataButton.setOnClickListener(new View.OnClickListener()
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu)
+    {
+
+        if (clickedDayId == -1)
         {
-            @Override
-            public void onClick(View view)
-            {
-                AlertDialog.Builder builder = new AlertDialog.Builder(AddActivity.this);
-                builder
-                        .setMessage(R.string.delete)
-                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener()
-                        {
-                            @Override
-                            public void onClick(DialogInterface dialog, int whichButton)
-                            {
-                                MyApplication.getDBAdapter().deleteData(clickedDayId);
+            menu.findItem(R.id.menu_cancel).setVisible(false);
+        }
 
-                                setResult(RESULT_OK, new Intent());
-                                finish();
-
-                            }
-                        })
-                        .setNegativeButton(R.string.no, new DialogInterface.OnClickListener()
-                        {
-                            @Override
-                            public void onClick(DialogInterface dialog, int whichButton)
-                            {
-                            }
-                        })
-                        .show();
-            }
-        });
+        return super.onPrepareOptionsMenu(menu);
     }
 
     public void prepareIntWheel(int wheelId, int value)

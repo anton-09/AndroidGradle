@@ -19,17 +19,33 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/listItemBackupDate"
-            android:textSize="16sp"
-            android:textColor="@android:color/black"
-            android:layout_centerVertical="true" />
+            android:textSize="18sp"
+            android:textColor="@android:color/black" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/darker_gray"
+            android:id="@+id/listItemBackupRowCount"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/listItemBackupDate" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/darker_gray"
+            android:id="@+id/listItemBackupSize"
+            android:layout_alignBottom="@+id/listItemBackupRowCount"
+            android:layout_toLeftOf="@+id/buttonRestoreBackup"
+            android:layout_marginRight="10dp"/>
 
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/ic_backup_restore_light"
             android:layout_toLeftOf="@+id/buttonDeleteBackup"
-            android:id="@+id/buttonRestoreBackup"
-            android:layout_marginRight="10dp" />
+            android:layout_marginRight="10dp"
+            android:id="@+id/buttonRestoreBackup"/>
 
         <ImageButton
             android:layout_width="wrap_content"

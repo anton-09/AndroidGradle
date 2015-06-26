@@ -21,6 +21,8 @@
     <string name="app_name_edit">Edit</string>
     <string name="restore_backup">"Восстановить из бэкапа: "</string>
     <string name="delete_backup">"Удалить бэкап: "</string>
+    <string name="row_count">строк</string>
+    <string name="bytes">байт</string>
 
     <string-array name="months">
         <item>января</item>

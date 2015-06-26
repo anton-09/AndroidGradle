@@ -9,11 +9,4 @@
         android:title="@string/backup"
         android:icon="@drawable/ic_cloud_outline"
         app:showAsAction="ifRoom|withText" />
-
-    <item
-        android:id="@+id/menu_add"
-        android:title="@string/add"
-        android:icon="@drawable/ic_plus_dark"
-        app:showAsAction="ifRoom|withText" />
-
 </menu>

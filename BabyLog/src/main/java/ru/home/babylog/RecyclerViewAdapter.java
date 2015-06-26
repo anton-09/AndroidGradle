@@ -1,8 +1,8 @@
 package ru.home.babylog;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,8 +50,23 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         {
             viewHolder.name.setText(record);
         }
+
         viewHolder.deleteButtonListener.setRecord(record);
         viewHolder.restoreButtonListener.setRecord(record);
+
+        int rowCount=0;
+        try
+        {
+            FileReader fileReader = new FileReader(new File(new File(android.os.Environment.getExternalStorageDirectory(), "/BabyLog"), record));
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            while(bufferedReader.readLine() != null)
+                rowCount++;
+            bufferedReader.close();
+        }
+        catch(Exception e){}
+
+        viewHolder.size.setText(new File(new File(android.os.Environment.getExternalStorageDirectory(), "/BabyLog"), record).length() + " " + context.getString(R.string.bytes));
+        viewHolder.rowCount.setText(rowCount + " " + context.getString(R.string.row_count));
     }
 
     @Override
@@ -125,6 +140,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     {
 
         private TextView name;
+        private TextView size;
+        private TextView rowCount;
         private ImageButton restoreButton;
         private ImageButton deleteButton;
         private RestoreButtonListener restoreButtonListener;
@@ -134,6 +151,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         {
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.listItemBackupDate);
+            size = (TextView) itemView.findViewById(R.id.listItemBackupSize);
+            rowCount = (TextView) itemView.findViewById(R.id.listItemBackupRowCount);
             restoreButton = (ImageButton) itemView.findViewById(R.id.buttonRestoreBackup);
             deleteButton = (ImageButton) itemView.findViewById(R.id.buttonDeleteBackup);
             restoreButtonListener = new RestoreButtonListener();

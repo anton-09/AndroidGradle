@@ -10,8 +10,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -71,26 +69,19 @@ public class BackupActivity extends AppCompatActivity implements LoaderManager.L
 
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
-        getMenuInflater().inflate(R.menu.backup_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        switch (item.getItemId())
-        {
-            case R.id.menu_add:
-                getLoaderManager().initLoader(0, null, this);
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item)
+//    {
+//        switch (item.getItemId())
+//        {
+//            case R.id.menu_add:
+//                getLoaderManager().initLoader(0, null, this);
+//                return true;
+//
+//            default:
+//                return super.onOptionsItemSelected(item);
+//        }
+//    }
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle)

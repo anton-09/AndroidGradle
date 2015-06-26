@@ -34,11 +34,11 @@ public class MainActivity extends AppCompatActivity
     {
         switch (item.getItemId())
         {
-            case R.id.menu_add:
-                Intent intentAdd = new Intent(this, AddActivity.class);
-                startActivityForResult(intentAdd, REQUEST_CODE_ADD_DATA);
-                return true;
-
+//            case R.id.menu_add:
+//                Intent intentAdd = new Intent(this, AddActivity.class);
+//                startActivityForResult(intentAdd, REQUEST_CODE_ADD_DATA);
+//                return true;
+//
             case R.id.menu_backup:
                 Intent intentBackup = new Intent(this, BackupActivity.class);
                 startActivityForResult(intentBackup, REQUEST_CODE_ADD_DATA);
