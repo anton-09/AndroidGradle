@@ -1,17 +1,14 @@
 package ru.home.babylog;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.ParseException;
@@ -37,6 +34,7 @@ public class AddActivity extends AppCompatActivity
 
     public void onCreate(Bundle savedInstanceState)
     {
+        setTheme(MyApplication.getCurrentTheme());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_activity);
 
@@ -46,7 +44,8 @@ public class AddActivity extends AppCompatActivity
         toolbar.setNavigationOnClickListener(new View.OnClickListener()
         {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 onBackPressed();
             }
         });
@@ -54,17 +53,24 @@ public class AddActivity extends AppCompatActivity
         Cursor cursor;
 
         clickedDayId = getIntent().getLongExtra("clickedId", -1);
-        if (clickedDayId != -1) {
+        if (clickedDayId != -1)
+        {
             cursor = MyApplication.getDBAdapter().getDataById(clickedDayId);
-        } else {
+        }
+        else
+        {
             cursor = MyApplication.getDBAdapter().getLastData();
         }
 
         cursor.moveToFirst();
-        if (!cursor.isAfterLast()) {
-            try {
+        if (!cursor.isAfterLast())
+        {
+            try
+            {
                 initialDate = dbDateFormat.parse(cursor.getString(1));
-            } catch (ParseException e) {
+            }
+            catch (ParseException e)
+            {
             }
 
             initialWeight = cursor.getInt(2);
@@ -93,9 +99,9 @@ public class AddActivity extends AppCompatActivity
         prepareIntWheel(R.id.wheelGramm1, initialWeight - initialWeight / 10 * 10);
         prepareDateWheel(R.id.wheelDay, R.id.wheelMonth, R.id.wheelYear, initialDate.getTime());
 
-        ((TextView) findViewById(R.id.editEat)).setText(initialEat);
-        ((TextView) findViewById(R.id.editFeed)).setText(initialFeed);
-        ((TextView) findViewById(R.id.editComments)).setText(initialComments);
+        ((EditText) findViewById(R.id.editEat)).setText(initialEat);
+        ((EditText) findViewById(R.id.editFeed)).setText(initialFeed);
+        ((EditText) findViewById(R.id.editComments)).setText(initialComments);
 
         if (clickedDayId != -1)
         {
@@ -117,31 +123,6 @@ public class AddActivity extends AppCompatActivity
     {
         switch (item.getItemId())
         {
-            case R.id.menu_cancel:
-                AlertDialog.Builder builder = new AlertDialog.Builder(AddActivity.this);
-                builder
-                        .setMessage(R.string.delete)
-                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener()
-                        {
-                            @Override
-                            public void onClick(DialogInterface dialog, int whichButton)
-                            {
-                                MyApplication.getDBAdapter().deleteData(clickedDayId);
-
-                                setResult(RESULT_OK, new Intent());
-                                finish();
-
-                            }
-                        })
-                        .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                            }
-                        })
-                        .show();
-
-                return true;
-
             case R.id.menu_confirm:
                 WheelView wheelViewYear = (WheelView) findViewById(R.id.wheelYear);
                 WheelView wheelViewMonth = (WheelView) findViewById(R.id.wheelMonth);
@@ -200,18 +181,6 @@ public class AddActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu)
-    {
-
-        if (clickedDayId == -1)
-        {
-            menu.findItem(R.id.menu_cancel).setVisible(false);
-        }
-
-        return super.onPrepareOptionsMenu(menu);
-    }
-
     public void prepareIntWheel(int wheelId, int value)
     {
         WheelView wheelView = (WheelView) findViewById(wheelId);
@@ -227,8 +196,10 @@ public class AddActivity extends AppCompatActivity
         final WheelView wheelViewMonth = (WheelView) findViewById(wheelIdMonth);
         final WheelView wheelViewYear = (WheelView) findViewById(wheelIdYear);
 
-        OnWheelChangedListener listener = new OnWheelChangedListener() {
-            public void onChanged(WheelView wheel, int oldValue, int newValue) {
+        OnWheelChangedListener listener = new OnWheelChangedListener()
+        {
+            public void onChanged(WheelView wheel, int oldValue, int newValue)
+            {
                 updateDays(wheelViewYear, wheelViewMonth, wheelViewDay);
             }
         };

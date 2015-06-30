@@ -11,18 +11,22 @@
     <string name="gramm">г</string>
     <string name="empty">Пусто</string>
     <string name="add">Добавить</string>
-    <string name="delete">Удалить?</string>
+    <string name="delete_day">"Удалить запись за: "</string>
     <string name="yes">Да</string>
     <string name="no">Нет</string>
     <string name="backup_write_error">Проблема с записью на SD-карту!</string>
     <string name="backup_no_sd">Внимание! SD-карта не доступна, бэкап не будет работать!</string>
     <string name="backup">Бэкапы</string>
+    <string name="day_night">День/ночь</string>
     <string name="app_name_backup">Backup</string>
     <string name="app_name_edit">Edit</string>
     <string name="restore_backup">"Восстановить из бэкапа: "</string>
     <string name="delete_backup">"Удалить бэкап: "</string>
     <string name="row_count">строк</string>
     <string name="bytes">байт</string>
+    <string name="appbar_scrolling_view_behaviour">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
+    <string name="snack_delete">Удалено</string>
+    <string name="snack_restore">Вернуть!</string>
 
     <string-array name="months">
         <item>января</item>

@@ -9,15 +9,14 @@
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/recyclerViewBackup"/>
+        android:id="@+id/recyclerViewBackup"
+        app:layout_behavior="@string/appbar_scrolling_view_behaviour"/>
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <include
-            layout="@layout/toolbar"
-            app:layout_scrollFlags="scroll|enterAlways"/>
+        <include layout="@layout/toolbar" />
 
     </android.support.design.widget.AppBarLayout>
 

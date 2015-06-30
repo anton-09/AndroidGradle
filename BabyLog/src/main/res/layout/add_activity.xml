@@ -99,8 +99,7 @@
             android:hint="@string/eat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/editEat"
-            android:singleLine="true"/>
+            android:id="@+id/editEat"/>
 
     </android.support.design.widget.TextInputLayout>
 
@@ -113,8 +112,7 @@
             android:hint="@string/feed"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/editFeed"
-            android:singleLine="true"/>
+            android:id="@+id/editFeed"/>
 
     </android.support.design.widget.TextInputLayout>
 
@@ -127,8 +125,7 @@
             android:hint="@string/comments"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/editComments"
-            android:singleLine="true"/>
+            android:id="@+id/editComments"/>
 
     </android.support.design.widget.TextInputLayout>
 

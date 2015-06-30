@@ -5,6 +5,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/menu_day_night"
+        android:title="@string/day_night"
+        android:icon="@drawable/ic_brightness_6"
+        app:showAsAction="ifRoom|withText" />
+
+    <item
         android:id="@+id/menu_backup"
         android:title="@string/backup"
         android:icon="@drawable/ic_cloud_outline"
