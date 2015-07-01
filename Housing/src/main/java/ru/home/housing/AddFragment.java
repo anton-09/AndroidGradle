@@ -8,13 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
+import java.util.Calendar;
+import java.util.Date;
+
 import kankan.wheel.widget.OnWheelChangedListener;
 import kankan.wheel.widget.WheelView;
 import kankan.wheel.widget.adapters.ArrayWheelAdapter;
 import kankan.wheel.widget.adapters.NumericWheelAdapter;
-
-import java.util.Calendar;
-import java.util.Date;
 
 public class AddFragment extends Fragment
 {
@@ -166,6 +167,6 @@ public class AddFragment extends Fragment
 
     public interface onAddEventListener
     {
-        public void NotifyAddEvent();
+        void NotifyAddEvent();
     }
 }

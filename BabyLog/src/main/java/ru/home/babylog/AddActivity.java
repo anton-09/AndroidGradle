@@ -18,18 +18,19 @@ import java.util.Date;
 
 import kankan.wheel.widget.OnWheelChangedListener;
 import kankan.wheel.widget.WheelView;
+import kankan.wheel.widget.adapters.AbstractWheelTextAdapter;
 import kankan.wheel.widget.adapters.ArrayWheelAdapter;
 import kankan.wheel.widget.adapters.NumericWheelAdapter;
 
 public class AddActivity extends AppCompatActivity
 {
-    SimpleDateFormat dbDateFormat = new SimpleDateFormat("yyyyMMdd");
-    Long clickedDayId;
-    Date initialDate = new Date(0);
-    int initialWeight = 0;
-    String initialEat = "";
-    String initialFeed = "";
-    String initialComments = "";
+    private final SimpleDateFormat dbDateFormat = new SimpleDateFormat("yyyyMMdd");
+    private Long clickedDayId;
+    private Date initialDate = new Date(0);
+    private int initialWeight = 0;
+    private String initialEat = "";
+    private String initialFeed = "";
+    private String initialComments = "";
 
 
     public void onCreate(Bundle savedInstanceState)
@@ -69,7 +70,7 @@ public class AddActivity extends AppCompatActivity
             {
                 initialDate = dbDateFormat.parse(cursor.getString(1));
             }
-            catch (ParseException e)
+            catch (ParseException ignored)
             {
             }
 
@@ -94,10 +95,10 @@ public class AddActivity extends AppCompatActivity
         prepareIntWheel(R.id.wheelKilo10, initialWeight / 10000);
         prepareIntWheel(R.id.wheelKilo10, initialWeight / 10000);
         prepareIntWheel(R.id.wheelKilo1, (initialWeight - initialWeight / 10000 * 10000) / 1000);
-        prepareIntWheel(R.id.wheelGramm100, (initialWeight - initialWeight / 1000 * 1000) / 100);
-        prepareIntWheel(R.id.wheelGramm10, (initialWeight - initialWeight / 100 * 100) / 10);
-        prepareIntWheel(R.id.wheelGramm1, initialWeight - initialWeight / 10 * 10);
-        prepareDateWheel(R.id.wheelDay, R.id.wheelMonth, R.id.wheelYear, initialDate.getTime());
+        prepareIntWheel(R.id.wheelGram100, (initialWeight - initialWeight / 1000 * 1000) / 100);
+        prepareIntWheel(R.id.wheelGram10, (initialWeight - initialWeight / 100 * 100) / 10);
+        prepareIntWheel(R.id.wheelGram1, initialWeight - initialWeight / 10 * 10);
+        prepareDateWheel(initialDate.getTime());
 
         ((EditText) findViewById(R.id.editEat)).setText(initialEat);
         ((EditText) findViewById(R.id.editFeed)).setText(initialFeed);
@@ -135,11 +136,11 @@ public class AddActivity extends AppCompatActivity
 
                 WheelView wheelViewKilo10 = (WheelView) findViewById(R.id.wheelKilo10);
                 WheelView wheelViewKilo1 = (WheelView) findViewById(R.id.wheelKilo1);
-                WheelView wheelViewGramm100 = (WheelView) findViewById(R.id.wheelGramm100);
-                WheelView wheelViewGramm10 = (WheelView) findViewById(R.id.wheelGramm10);
-                WheelView wheelViewGramm1 = (WheelView) findViewById(R.id.wheelGramm1);
+                WheelView wheelViewGram100 = (WheelView) findViewById(R.id.wheelGram100);
+                WheelView wheelViewGram10 = (WheelView) findViewById(R.id.wheelGram10);
+                WheelView wheelViewGram1 = (WheelView) findViewById(R.id.wheelGram1);
 
-                int weight = wheelViewKilo10.getCurrentItem() * 10000 + wheelViewKilo1.getCurrentItem() * 1000 + wheelViewGramm100.getCurrentItem() * 100 + wheelViewGramm10.getCurrentItem() * 10 + wheelViewGramm1.getCurrentItem();
+                int weight = wheelViewKilo10.getCurrentItem() * 10000 + wheelViewKilo1.getCurrentItem() * 1000 + wheelViewGram100.getCurrentItem() * 100 + wheelViewGram10.getCurrentItem() * 10 + wheelViewGram1.getCurrentItem();
 
                 EditText eatEditText = (EditText) findViewById(R.id.editEat);
                 EditText feedEditText = (EditText) findViewById(R.id.editFeed);
@@ -181,20 +182,22 @@ public class AddActivity extends AppCompatActivity
         }
     }
 
-    public void prepareIntWheel(int wheelId, int value)
+    private void prepareIntWheel(int wheelId, int value)
     {
         WheelView wheelView = (WheelView) findViewById(wheelId);
         wheelView.setViewAdapter(new NumericWheelAdapter(this, 0, 9));
         wheelView.setVisibleItems(2);
         wheelView.setCurrentItem(value);
         wheelView.setCyclic(true);
+        ((AbstractWheelTextAdapter)wheelView.getViewAdapter()).setTextSize(20);
+        wheelView.setLightTheme(MyApplication.getCurrentTheme() == R.style.AppTheme_Light);
     }
 
-    public void prepareDateWheel(int wheelIdDay, int wheelIdMonth, int wheelIdYear, long value)
+    private void prepareDateWheel(long value)
     {
-        final WheelView wheelViewDay = (WheelView) findViewById(wheelIdDay);
-        final WheelView wheelViewMonth = (WheelView) findViewById(wheelIdMonth);
-        final WheelView wheelViewYear = (WheelView) findViewById(wheelIdYear);
+        final WheelView wheelViewDay = (WheelView) findViewById(R.id.wheelDay);
+        final WheelView wheelViewMonth = (WheelView) findViewById(R.id.wheelMonth);
+        final WheelView wheelViewYear = (WheelView) findViewById(R.id.wheelYear);
 
         OnWheelChangedListener listener = new OnWheelChangedListener()
         {
@@ -214,6 +217,9 @@ public class AddActivity extends AppCompatActivity
         wheelViewMonth.setVisibleItems(2);
         wheelViewMonth.setCurrentItem(initialMonth);
         wheelViewMonth.addChangingListener(listener);
+        ((AbstractWheelTextAdapter)wheelViewMonth.getViewAdapter()).setTextSize(20);
+        wheelViewMonth.setLightTheme(MyApplication.getCurrentTheme() == R.style.AppTheme_Light);
+
 
         // year
         int initialYear = calendar.get(Calendar.YEAR);
@@ -221,14 +227,18 @@ public class AddActivity extends AppCompatActivity
         wheelViewYear.setVisibleItems(2);
         wheelViewYear.setCurrentItem(initialYear + 10 - curYear);
         wheelViewYear.addChangingListener(listener);
+        ((AbstractWheelTextAdapter)wheelViewYear.getViewAdapter()).setTextSize(20);
+        wheelViewYear.setLightTheme(MyApplication.getCurrentTheme() == R.style.AppTheme_Light);
 
         //day
         updateDays(wheelViewYear, wheelViewMonth, wheelViewDay);
         wheelViewDay.setCurrentItem(calendar.get(Calendar.DAY_OF_MONTH) - 1);
         wheelViewDay.setVisibleItems(2);
+        ((AbstractWheelTextAdapter)wheelViewDay.getViewAdapter()).setTextSize(20);
+        wheelViewDay.setLightTheme(MyApplication.getCurrentTheme() == R.style.AppTheme_Light);
     }
 
-    void updateDays(WheelView year, WheelView month, WheelView day)
+    private void updateDays(WheelView year, WheelView month, WheelView day)
     {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR) + year.getCurrentItem());

@@ -79,6 +79,6 @@ public class WheelNumberPicker extends Dialog
 
     public interface OnNumberSetListener
     {
-        public void onNumberSet(int selectedNumber);
+        void onNumberSet(int selectedNumber);
     }
 }

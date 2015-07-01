@@ -71,22 +71,22 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:id="@+id/wheelGramm100"/>
+            android:id="@+id/wheelGram100"/>
         <kankan.wheel.widget.WheelView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:id="@+id/wheelGramm10"/>
+            android:id="@+id/wheelGram10"/>
         <kankan.wheel.widget.WheelView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:id="@+id/wheelGramm1"/>
+            android:id="@+id/wheelGram1"/>
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/gramm"
+            android:text="@string/gram"
             android:layout_gravity="center"/>
     </LinearLayout>
 

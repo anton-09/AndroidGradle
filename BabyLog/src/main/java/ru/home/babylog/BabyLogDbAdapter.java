@@ -8,13 +8,13 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class BabyLogDbAdapter
 {
-    public static final String TABLE_BABYLOG = "babylog";
-    public static final String BABYLOG_ID = "_id";
-    public static final String BABYLOG_DATE = "date";
-    public static final String BABYLOG_WEIGHT = "weight";
-    public static final String BABYLOG_EAT = "eat";
-    public static final String BABYLOG_FEED = "feed";
-    public static final String BABYLOG_COMMENTS = "comments";
+    private static final String TABLE_BABYLOG = "babylog";
+    private static final String BABYLOG_ID = "_id";
+    private static final String BABYLOG_DATE = "date";
+    private static final String BABYLOG_WEIGHT = "weight";
+    private static final String BABYLOG_EAT = "eat";
+    private static final String BABYLOG_FEED = "feed";
+    private static final String BABYLOG_COMMENTS = "comments";
     private static final String DATABASE_NAME = "babylog_db";
     private static final int DATABASE_VERSION = 1;
     private static final String CREATE_BABYLOG = "CREATE TABLE " + TABLE_BABYLOG + " ("
@@ -25,23 +25,16 @@ public class BabyLogDbAdapter
             + BABYLOG_FEED + " TEXT, "
             + BABYLOG_COMMENTS + " TEXT);";
 
-    private DatabaseHelper mDbHelper;
     private SQLiteDatabase mDb;
 
     public BabyLogDbAdapter()
     {
     }
 
-    public BabyLogDbAdapter open() throws SQLException
+    public void open() throws SQLException
     {
-        mDbHelper = new DatabaseHelper();
+        DatabaseHelper mDbHelper = new DatabaseHelper();
         mDb = mDbHelper.getWritableDatabase();
-        return this;
-    }
-
-    public void close()
-    {
-        mDbHelper.close();
     }
 
     public Cursor getData()

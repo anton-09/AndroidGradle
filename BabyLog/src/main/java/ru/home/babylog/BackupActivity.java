@@ -19,7 +19,6 @@ import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -32,11 +31,10 @@ import java.util.List;
 
 public class BackupActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>, RecyclerViewClickListener
 {
-    SimpleDateFormat backupDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-    BackupRecyclerViewAdapter backupRecyclerViewAdapter;
-    RecyclerView recyclerView;
-    File backupStorage;
-    List<File> mList;
+    private final SimpleDateFormat backupDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+    private BackupRecyclerViewAdapter backupRecyclerViewAdapter;
+    private File backupStorage;
+    private List<File> mList;
 
     public void onCreate(Bundle savedInstanceState)
     {
@@ -69,7 +67,7 @@ public class BackupActivity extends AppCompatActivity implements LoaderManager.L
             backupStorage.mkdirs();
         }
 
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerViewBackup);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerViewBackup);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new SimpleRecyclerViewDivider(this));
@@ -145,7 +143,7 @@ public class BackupActivity extends AppCompatActivity implements LoaderManager.L
     }
 
     @Override
-    public void recyclerViewListClicked(View v, final int position)
+    public void recyclerViewListClicked(final int position)
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder
@@ -162,7 +160,7 @@ public class BackupActivity extends AppCompatActivity implements LoaderManager.L
 
                             MyApplication.getDBAdapter().deleteAllData();
 
-                            String line = "";
+                            String line;
                             String[] item;
                             while ((line = bufferedReader.readLine()) != null)
                             {
@@ -172,10 +170,6 @@ public class BackupActivity extends AppCompatActivity implements LoaderManager.L
 
                             setResult(RESULT_OK, new Intent());
                             finish();
-                        }
-                        catch (FileNotFoundException e)
-                        {
-                            e.printStackTrace();
                         }
                         catch (IOException e)
                         {
@@ -194,7 +188,7 @@ public class BackupActivity extends AppCompatActivity implements LoaderManager.L
     }
 
     @Override
-    public void recyclerViewListLongClicked(View v, final int position)
+    public void recyclerViewListLongClicked(final int position)
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder

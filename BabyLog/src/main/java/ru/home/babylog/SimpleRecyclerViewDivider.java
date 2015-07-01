@@ -7,9 +7,9 @@ import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-public class SimpleRecyclerViewDivider extends RecyclerView.ItemDecoration
+class SimpleRecyclerViewDivider extends RecyclerView.ItemDecoration
 {
-    private Paint mPaint;
+    private final Paint mPaint;
 
     public SimpleRecyclerViewDivider(Context context)
     {

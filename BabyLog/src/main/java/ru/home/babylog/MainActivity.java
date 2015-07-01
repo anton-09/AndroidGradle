@@ -27,12 +27,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 {
     private static final int REQUEST_CODE_ADD_DATA = 1;
 
-    RecyclerView recyclerView;
-    MainRecyclerViewAdapter mainRecyclerViewAdapter;
-    SimpleDateFormat viewDateFormat = new SimpleDateFormat("dd.MM.yyyy");
-    SimpleDateFormat dbDateFormat = new SimpleDateFormat("yyyyMMdd");
+    private MainRecyclerViewAdapter mainRecyclerViewAdapter;
+    private final SimpleDateFormat viewDateFormat = new SimpleDateFormat("dd.MM.yyyy");
+    private final SimpleDateFormat dbDateFormat = new SimpleDateFormat("yyyyMMdd");
 
-    ArrayList<ActivityItem> mList;
+    private ArrayList<ActivityItem> mList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -44,12 +43,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerViewMain);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerViewMain);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new SimpleRecyclerViewDivider(this));
 
-        mainRecyclerViewAdapter = new MainRecyclerViewAdapter(this, this);
+        mainRecyclerViewAdapter = new MainRecyclerViewAdapter(this);
         recyclerView.setAdapter(mainRecyclerViewAdapter);
 
         FloatingActionButton floatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
@@ -141,7 +140,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     @Override
-    public void recyclerViewListClicked(View v, int position)
+    public void recyclerViewListClicked(int position)
     {
         Intent intentEdit = new Intent(this, AddActivity.class);
         intentEdit.putExtra("clickedId", mList.get(position).mId);
@@ -149,7 +148,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     @Override
-    public void recyclerViewListLongClicked(View v, final int position)
+    public void recyclerViewListLongClicked(final int position)
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder

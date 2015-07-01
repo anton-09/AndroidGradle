@@ -169,7 +169,7 @@ public class WheelDatePicker extends Dialog
 
     public interface OnDateSetListener
     {
-        public void onDateSet(LocalDateTime selectedDate);
+        void onDateSet(LocalDateTime selectedDate);
     }
 
     /**

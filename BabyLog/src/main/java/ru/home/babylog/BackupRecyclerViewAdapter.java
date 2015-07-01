@@ -16,11 +16,11 @@ import java.util.List;
 
 public class BackupRecyclerViewAdapter extends RecyclerView.Adapter<BackupRecyclerViewAdapter.ViewHolder>
 {
-    SimpleDateFormat mBackupDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-    SimpleDateFormat mBackupHumanReadableDateFormat = new SimpleDateFormat("dd MMM yyyy HH:mm:ss");
-    Context mContext;
-    private List<File> mList;
-    private RecyclerViewClickListener mRecyclerViewClickListener;
+    private final SimpleDateFormat mBackupDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+    private final SimpleDateFormat mBackupHumanReadableDateFormat = new SimpleDateFormat("dd MMM yyyy HH:mm:ss");
+    private final Context mContext;
+    private final List<File> mList;
+    private final RecyclerViewClickListener mRecyclerViewClickListener;
 
     public BackupRecyclerViewAdapter(List<File> list, Context context, RecyclerViewClickListener recyclerViewClickListener)
     {
@@ -61,7 +61,7 @@ public class BackupRecyclerViewAdapter extends RecyclerView.Adapter<BackupRecycl
             }
             bufferedReader.close();
         }
-        catch (Exception e)
+        catch (Exception ignored)
         {
         }
 
@@ -78,9 +78,9 @@ public class BackupRecyclerViewAdapter extends RecyclerView.Adapter<BackupRecycl
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener
     {
-        private TextView name;
-        private TextView size;
-        private TextView rowCount;
+        private final TextView name;
+        private final TextView size;
+        private final TextView rowCount;
 
         public ViewHolder(View itemView)
         {
@@ -96,13 +96,13 @@ public class BackupRecyclerViewAdapter extends RecyclerView.Adapter<BackupRecycl
         @Override
         public void onClick(View view)
         {
-            mRecyclerViewClickListener.recyclerViewListClicked(view, getAdapterPosition());
+            mRecyclerViewClickListener.recyclerViewListClicked(getAdapterPosition());
         }
 
         @Override
         public boolean onLongClick(View view)
         {
-            mRecyclerViewClickListener.recyclerViewListLongClicked(view, getAdapterPosition());
+            mRecyclerViewClickListener.recyclerViewListLongClicked(getAdapterPosition());
             return true;
         }
     }

@@ -1,6 +1,5 @@
 package ru.home.serial.wheel;
 
-import android.database.DataSetObserver;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -10,7 +9,7 @@ public interface WheelViewAdapter
 	 * Gets items count
 	 * @return the count of wheel items
 	 */
-	public int getItemsCount();
+	int getItemsCount();
 	
 	/**
 	 * Get a View that displays the data at the specified position in the data set
@@ -20,7 +19,7 @@ public interface WheelViewAdapter
 	 * @param parent the parent that this view will eventually be attached to
 	 * @return the wheel item View
 	 */
-	public View getItem(int index, View convertView, ViewGroup parent);
+	View getItem(int index, View convertView, ViewGroup parent);
 
 	/**
 	 * Get a View that displays an empty wheel item placed before the first or after
@@ -30,5 +29,5 @@ public interface WheelViewAdapter
      * @param parent the parent that this view will eventually be attached to
 	 * @return the empty item View
 	 */
-	public View getEmptyItem(View convertView, ViewGroup parent);
+	View getEmptyItem(View convertView, ViewGroup parent);
 }

@@ -4,15 +4,24 @@ import android.content.Context;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.view.*;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.*;
-import ru.home.serial.MyApplication;
-import ru.home.serial.R;
+import android.view.WindowManager;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import ru.home.serial.MyApplication;
+import ru.home.serial.R;
 
 public class QuickActionPopupWindow
 {
@@ -246,6 +255,6 @@ public class QuickActionPopupWindow
 	
 	public interface OnActionItemClickListener
     {
-		public abstract void onItemClick(QuickActionPopupWindow source, int pos, int actionId);
+		void onItemClick(QuickActionPopupWindow source, int pos, int actionId);
 	}
 }

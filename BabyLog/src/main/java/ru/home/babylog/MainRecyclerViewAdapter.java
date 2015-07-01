@@ -1,6 +1,5 @@
 package ru.home.babylog;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,15 +13,12 @@ import java.util.List;
 
 public class MainRecyclerViewAdapter extends RecyclerView.Adapter<MainRecyclerViewAdapter.ViewHolder>
 {
-    Context mContext;
+    private final RecyclerViewClickListener mRecyclerViewClickListener;
     private List<ActivityItem> mList;
-    private RecyclerViewClickListener mRecyclerViewClickListener;
 
-
-    public MainRecyclerViewAdapter(Context context, RecyclerViewClickListener recyclerViewClickListener)
+    public MainRecyclerViewAdapter(RecyclerViewClickListener recyclerViewClickListener)
     {
         mList = new ArrayList<ActivityItem>();
-        mContext = context;
         mRecyclerViewClickListener = recyclerViewClickListener;
     }
 
@@ -43,7 +39,6 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter<MainRecyclerVi
     {
         ActivityItem item = mList.get(i);
 
-        viewHolder.itemId = item.mId;
         viewHolder.itemDate.setText(item.mDate);
         viewHolder.itemEat.setText(item.mEat);
 
@@ -79,13 +74,12 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter<MainRecyclerVi
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener
     {
-        public Long itemId;
-        private TextView itemDate;
-        private TextView itemWeight;
-        private TextView itemEat;
-        private TextView itemFeed;
-        private TextView itemComments;
-        private LinearLayout linearLayoutComments;
+        private final TextView itemDate;
+        private final TextView itemWeight;
+        private final TextView itemEat;
+        private final TextView itemFeed;
+        private final TextView itemComments;
+        private final LinearLayout linearLayoutComments;
 
         public ViewHolder(View itemView)
         {
@@ -105,13 +99,13 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter<MainRecyclerVi
         @Override
         public void onClick(View view)
         {
-            mRecyclerViewClickListener.recyclerViewListClicked(view, getAdapterPosition());
+            mRecyclerViewClickListener.recyclerViewListClicked(getAdapterPosition());
         }
 
         @Override
         public boolean onLongClick(View view)
         {
-            mRecyclerViewClickListener.recyclerViewListLongClicked(view, getAdapterPosition());
+            mRecyclerViewClickListener.recyclerViewListLongClicked(getAdapterPosition());
             return true;
         }
     }

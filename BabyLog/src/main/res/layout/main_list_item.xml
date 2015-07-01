@@ -27,7 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:textColor="@color/divider"
+                android:textColor="?attr/myInverseTextColor"
                 android:gravity="right"
                 android:id="@+id/listItemWeight"/>
 
@@ -37,7 +37,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:background="#dddddd"
+            android:background="?attr/myAlternativeColor"
             android:padding="5dp">
 
             <TextView
@@ -78,7 +78,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:background="#dddddd"
+            android:background="?attr/myAlternativeColor"
             android:padding="5dp"
             android:id="@+id/listItemlinearLayoutComments">
 

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <attr name="myTextColorPrimary" format="color|reference" />
+    <attr name="myAlternativeColor" format="color|reference" />
+    <attr name="myInverseTextColor" format="color|reference" />
 </resources>

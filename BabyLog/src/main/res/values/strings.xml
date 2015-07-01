@@ -8,8 +8,7 @@
     <string name="feed">Кормление</string>
     <string name="comments">Примечания</string>
     <string name="kilo">кг</string>
-    <string name="gramm">г</string>
-    <string name="empty">Пусто</string>
+    <string name="gram">г</string>
     <string name="add">Добавить</string>
     <string name="delete_day">"Удалить запись за: "</string>
     <string name="yes">Да</string>
@@ -25,8 +24,6 @@
     <string name="row_count">строк</string>
     <string name="bytes">байт</string>
     <string name="appbar_scrolling_view_behaviour">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
-    <string name="snack_delete">Удалено</string>
-    <string name="snack_restore">Вернуть!</string>
 
     <string-array name="months">
         <item>января</item>
