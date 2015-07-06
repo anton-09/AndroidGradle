@@ -45,7 +45,10 @@ import android.widget.LinearLayout;
 public class WheelView extends View {
 
 	/** Top and bottom shadows colors */
-	private static final int[] SHADOWS_COLORS = new int[] { 0xFF111111,
+	private static final int[] SHADOWS_COLORS_DARK = new int[] { 0xFF111111,
+			0x00AAAAAA, 0x00AAAAAA };
+
+	private static final int[] SHADOWS_COLORS_LIGHT = new int[] { 0xFFEEEEEE,
 			0x00AAAAAA, 0x00AAAAAA };
 
 	/** Top and bottom items offset (to hide that) */
@@ -98,6 +101,8 @@ public class WheelView extends View {
 	private List<OnWheelScrollListener> scrollingListeners = new LinkedList<OnWheelScrollListener>();
     private List<OnWheelClickedListener> clickingListeners = new LinkedList<OnWheelClickedListener>();
 
+	//Theme
+	boolean isLightTheme = false;
 	/**
 	 * Constructor
 	 */
@@ -428,11 +433,11 @@ public class WheelView extends View {
 		}
 
 		if (topShadow == null) {
-			topShadow = new GradientDrawable(Orientation.TOP_BOTTOM, SHADOWS_COLORS);
+			topShadow = new GradientDrawable(Orientation.TOP_BOTTOM, isLightTheme ? SHADOWS_COLORS_LIGHT : SHADOWS_COLORS_DARK);
 		}
 
 		if (bottomShadow == null) {
-			bottomShadow = new GradientDrawable(Orientation.BOTTOM_TOP, SHADOWS_COLORS);
+			bottomShadow = new GradientDrawable(Orientation.BOTTOM_TOP, isLightTheme ? SHADOWS_COLORS_LIGHT : SHADOWS_COLORS_DARK);
 		}
 
 		setBackgroundResource(R.drawable.wheel_bg);
@@ -896,5 +901,10 @@ public class WheelView extends View {
 	 */
 	public void stopScrolling() {
 	    scroller.stopScrolling();
+	}
+
+	public void setLightTheme(boolean lightTheme)
+	{
+		isLightTheme = lightTheme;
 	}
 }
