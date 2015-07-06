@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Fitness</string>
+    <string name="appbar_scrolling_view_behaviour">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
+    <string name="day_night">День/ночь</string>
+
+</resources>

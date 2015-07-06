@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:minHeight="?attr/actionBarSize"
+        app:theme="@style/ToolbarTheme"/>
+
+    <!--<CalendarView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:id="@+id/datePicker"-->
+        <!--android:shownWeekCount="20"/>-->
+
+    <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+        android:id="@+id/calendarView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        app:mcv_dateTextAppearance="@android:style/TextAppearance.Large"/>
+        <!--app:mcv_showOtherDates="boolean"-->
+        <!--app:mcv_arrowColor="color"-->
+        <!--app:mcv_selectionColor="color"-->
+        <!--app:mcv_headerTextAppearance="style"-->
+        <!--app:mcv_weekDayTextAppearance="style"-->
+        <!--app:mcv_weekDayLabels="array"-->
+        <!--app:mcv_monthLabels="array"-->
+        <!--app:mcv_tileSize="dimension"-->
+        <!--app:mcv_firstDayOfWeek="enum"-->
+        <!--app:mcv_leftArrowMask="drawable"-->
+        <!--app:mcv_rightArrowMask="drawable"-->
+
+</LinearLayout>
+
