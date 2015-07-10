@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<app:com.prolificinteractive.materialcalendarview.MaterialCalendarView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/calendar_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:mcv_dateTextAppearance="@android:style/TextAppearance.Large"/>
+    <!--app:mcv_showOtherDates="boolean"-->
+    <!--app:mcv_arrowColor="color"-->
+    <!--app:mcv_selectionColor="color"-->
+    <!--app:mcv_headerTextAppearance="style"-->
+    <!--app:mcv_weekDayTextAppearance="style"-->
+    <!--app:mcv_weekDayLabels="array"-->
+    <!--app:mcv_monthLabels="array"-->
+    <!--app:mcv_tileSize="dimension"-->
+    <!--app:mcv_firstDayOfWeek="enum"-->
+    <!--app:mcv_leftArrowMask="drawable"-->
+    <!--app:mcv_rightArrowMask="drawable"-->

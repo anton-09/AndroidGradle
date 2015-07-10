@@ -3,11 +3,19 @@ package ru.home.fitness;
 import android.app.Application;
 import android.content.Context;
 
+import java.text.SimpleDateFormat;
+
+import ru.home.fitness.adapters.FitnessDbAdapter;
+
 public class MyApplication extends Application
 {
     private static Context mContext;
     private static FitnessDbAdapter mFitnessDbAdapter;
     private static Integer mTheme;
+    public static final SimpleDateFormat dbDateFormat = new SimpleDateFormat("yyyyMMdd");
+    public static final SimpleDateFormat viewDateFormat = new SimpleDateFormat("dd.MM.yyyy");
+
+
 
     public static Context getAppContext()
     {

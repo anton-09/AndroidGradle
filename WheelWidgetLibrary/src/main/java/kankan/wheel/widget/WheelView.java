@@ -45,10 +45,11 @@ import android.widget.LinearLayout;
 public class WheelView extends View {
 
 	/** Top and bottom shadows colors */
-	private static final int[] SHADOWS_COLORS_DARK = new int[] { 0xFF111111,
+	private static final int[] SHADOWS_COLORS_LIGHT = new int[] { 0xFFEEEEEE,
 			0x00AAAAAA, 0x00AAAAAA };
 
-	private static final int[] SHADOWS_COLORS_LIGHT = new int[] { 0xFFEEEEEE,
+	/** Top and bottom shadows colors */
+	private static final int[] SHADOWS_COLORS_DARK = new int[] { 0xFF111111,
 			0x00AAAAAA, 0x00AAAAAA };
 
 	/** Top and bottom items offset (to hide that) */
@@ -102,7 +103,8 @@ public class WheelView extends View {
     private List<OnWheelClickedListener> clickingListeners = new LinkedList<OnWheelClickedListener>();
 
 	//Theme
-	boolean isLightTheme = false;
+	private boolean mLightTheme = false;
+
 	/**
 	 * Constructor
 	 */
@@ -433,11 +435,11 @@ public class WheelView extends View {
 		}
 
 		if (topShadow == null) {
-			topShadow = new GradientDrawable(Orientation.TOP_BOTTOM, isLightTheme ? SHADOWS_COLORS_LIGHT : SHADOWS_COLORS_DARK);
+			topShadow = new GradientDrawable(Orientation.TOP_BOTTOM, mLightTheme ? SHADOWS_COLORS_LIGHT : SHADOWS_COLORS_DARK);
 		}
 
 		if (bottomShadow == null) {
-			bottomShadow = new GradientDrawable(Orientation.BOTTOM_TOP, isLightTheme ? SHADOWS_COLORS_LIGHT : SHADOWS_COLORS_DARK);
+			bottomShadow = new GradientDrawable(Orientation.BOTTOM_TOP, mLightTheme ? SHADOWS_COLORS_LIGHT : SHADOWS_COLORS_DARK);
 		}
 
 		setBackgroundResource(R.drawable.wheel_bg);
@@ -905,6 +907,6 @@ public class WheelView extends View {
 
 	public void setLightTheme(boolean lightTheme)
 	{
-		isLightTheme = lightTheme;
+		mLightTheme = lightTheme;
 	}
 }

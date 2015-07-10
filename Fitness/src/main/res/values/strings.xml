@@ -2,7 +2,22 @@
 <resources>
 
     <string name="app_name">Fitness</string>
-    <string name="appbar_scrolling_view_behaviour">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
+    <string name="app_bar_scrolling_view_behaviour">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
     <string name="day_night">День/ночь</string>
+    <string name="add">Добавить</string>
+    <string name="delete">"Удалить: "</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="reset">Сбросить</string>
+    <string name="name">Наименование</string>
+    <string name="start_date">Дата начала</string>
+    <string name="end_date">Дата окончания</string>
+    <string name="muscle">Мышечная группа</string>
+    <string name="muscles">Мышечные группы</string>
+    <string name="exercise">Упражнение</string>
+    <string name="exercises">Упражнения</string>
+    <string name="workout">Тренировка</string>
+    <string name="workouts">Тренировки</string>
+
 
 </resources>

@@ -1,10 +1,14 @@
-package ru.home.fitness;
+package ru.home.fitness.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import ru.home.fitness.MyApplication;
+import ru.home.fitness.R;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -30,11 +34,28 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
+        Intent intent;
+
         switch (item.getItemId())
         {
             case R.id.menu_day_night:
                 MyApplication.toggleTheme();
                 recreate();
+                return true;
+
+            case R.id.menu_muscle:
+                intent = new Intent(this, MuscleActivity.class);
+                startActivity(intent);
+                return true;
+
+            case R.id.menu_exercise:
+                intent = new Intent(this, ExerciseActivity.class);
+                startActivity(intent);
+                return true;
+
+            case R.id.menu_workout:
+                intent = new Intent(this, WorkoutActivity.class);
+                startActivity(intent);
                 return true;
 
             default:
