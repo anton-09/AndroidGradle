@@ -10,6 +10,7 @@
     <string name="no">Нет</string>
     <string name="reset">Сбросить</string>
     <string name="name">Наименование</string>
+    <string name="comment">Комментарий</string>
     <string name="start_date">Дата начала</string>
     <string name="end_date">Дата окончания</string>
     <string name="muscle">Мышечная группа</string>
@@ -18,6 +19,7 @@
     <string name="exercises">Упражнения</string>
     <string name="workout">Тренировка</string>
     <string name="workouts">Тренировки</string>
+    <string name="calendar">Календарь</string>
 
 
 </resources>

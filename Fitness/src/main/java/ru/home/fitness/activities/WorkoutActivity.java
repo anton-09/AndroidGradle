@@ -136,8 +136,8 @@ public class WorkoutActivity extends AppCompatActivity implements LoaderManager.
     {
         Workout workout = null;
         Exercise exercise;
-        Date startDate = new Date(0);
-        Date endDate = new Date(0);
+        Date startDate;
+        Date endDate;
         Long oldId = -1L;
         mList = new ArrayList<Workout>();
 
@@ -149,10 +149,10 @@ public class WorkoutActivity extends AppCompatActivity implements LoaderManager.
                 oldId = cursor.getLong(0);
 
                 try { startDate = MyApplication.dbDateFormat.parse(cursor.getString(2)); }
-                catch (ParseException e) { }
+                catch (ParseException e) { startDate = new Date(0); }
 
                 try { endDate = MyApplication.dbDateFormat.parse(cursor.getString(3)); }
-                catch (ParseException e) { }
+                catch (ParseException e) { endDate = new Date(0); }
 
                 workout = new Workout(cursor.getLong(0), cursor.getString(1), startDate, endDate);
                 mList.add(workout);

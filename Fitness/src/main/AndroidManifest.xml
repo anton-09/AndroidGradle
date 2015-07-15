@@ -50,6 +50,11 @@
              android:label="@string/workout"
              android:screenOrientation="portrait"/>
 
+        <activity
+            android:name="ru.home.fitness.activities.CalendarActivity"
+            android:label="@string/calendar"
+            android:screenOrientation="portrait"/>
+
     </application>
 
 </manifest>

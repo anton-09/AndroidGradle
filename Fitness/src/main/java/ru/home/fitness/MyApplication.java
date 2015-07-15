@@ -12,8 +12,8 @@ public class MyApplication extends Application
     private static Context mContext;
     private static FitnessDbAdapter mFitnessDbAdapter;
     private static Integer mTheme;
-    public static final SimpleDateFormat dbDateFormat = new SimpleDateFormat("yyyyMMdd");
-    public static final SimpleDateFormat viewDateFormat = new SimpleDateFormat("dd.MM.yyyy");
+    public static final SimpleDateFormat dbDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    public static final SimpleDateFormat viewDateFormat = new SimpleDateFormat("dd MMMM yyyy (EEEE)");
 
 
 

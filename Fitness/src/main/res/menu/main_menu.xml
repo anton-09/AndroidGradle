@@ -13,20 +13,21 @@
     <item
         android:id="@+id/menu_muscle"
         android:title="@string/muscles"
-        android:icon="@drawable/ic_numeric_1_box_outline"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/menu_exercise"
         android:title="@string/exercises"
-        android:icon="@drawable/ic_numeric_2_box_outline"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/menu_workout"
         android:title="@string/workouts"
-        android:icon="@drawable/ic_numeric_3_box_outline"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/menu_calendar"
+        android:title="@string/calendar"
+        app:showAsAction="never" />
 
 </menu>

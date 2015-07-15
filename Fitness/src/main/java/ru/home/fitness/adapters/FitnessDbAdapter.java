@@ -171,7 +171,7 @@ public class FitnessDbAdapter
         {
             open();
         }
-        return mDb.query(TABLE_WORKOUT + " w LEFT JOIN " + TABLE_WORKOUT_EXERCISE_CROSS + " c ON w." + WORKOUT_ID + " = c." + WORKOUT_EXERCISE_CROSS_WORKOUT_ID + " LEFT JOIN " + TABLE_EXERCISE + " e ON c." + WORKOUT_EXERCISE_CROSS_EXERCISE_ID + " = e." + EXERCISE_ID + " LEFT JOIN " + TABLE_MUSCLE + " m ON e." + EXERCISE_MUSCLE_ID + " = m." + MUSCLE_ID, new String[]{"w." + WORKOUT_ID, "w." + WORKOUT_NAME, "w." + WORKOUT_START_DATE, "w." + WORKOUT_END_DATE, "e." + EXERCISE_ID, "e." + EXERCISE_NAME, "m." + MUSCLE_ID, "m." + MUSCLE_NAME}, null, null, null, null, "w." + WORKOUT_ID + " ASC");
+        return mDb.query(TABLE_WORKOUT + " w JOIN " + TABLE_WORKOUT_EXERCISE_CROSS + " c ON w." + WORKOUT_ID + " = c." + WORKOUT_EXERCISE_CROSS_WORKOUT_ID + " JOIN " + TABLE_EXERCISE + " e ON c." + WORKOUT_EXERCISE_CROSS_EXERCISE_ID + " = e." + EXERCISE_ID + " LEFT JOIN " + TABLE_MUSCLE + " m ON e." + EXERCISE_MUSCLE_ID + " = m." + MUSCLE_ID, new String[]{"w." + WORKOUT_ID, "w." + WORKOUT_NAME, "w." + WORKOUT_START_DATE, "w." + WORKOUT_END_DATE, "e." + EXERCISE_ID, "e." + EXERCISE_NAME, "m." + MUSCLE_ID, "m." + MUSCLE_NAME}, null, null, null, null, "w." + WORKOUT_ID + " ASC");
     }
 
     public Cursor getWorkoutDataById(long id)
@@ -180,7 +180,7 @@ public class FitnessDbAdapter
         {
             open();
         }
-        return mDb.query(TABLE_WORKOUT + " w LEFT JOIN " + TABLE_WORKOUT_EXERCISE_CROSS + " c ON w." + WORKOUT_ID + " = c." + WORKOUT_EXERCISE_CROSS_WORKOUT_ID + " LEFT JOIN " + TABLE_EXERCISE + " e ON c." + WORKOUT_EXERCISE_CROSS_EXERCISE_ID + " = e." + EXERCISE_ID + " LEFT JOIN " + TABLE_MUSCLE + " m ON e." + EXERCISE_MUSCLE_ID + " = m." + MUSCLE_ID, new String[]{"w." + WORKOUT_ID, "w." + WORKOUT_NAME, "w." + WORKOUT_START_DATE, "w." + WORKOUT_END_DATE, "e." + EXERCISE_ID, "e." + EXERCISE_NAME, "m." + MUSCLE_ID, "m." + MUSCLE_NAME}, "w." + WORKOUT_ID + " = " + id, null, null, null, "w." + WORKOUT_ID + " ASC");
+        return mDb.query(TABLE_WORKOUT + " w JOIN " + TABLE_WORKOUT_EXERCISE_CROSS + " c ON w." + WORKOUT_ID + " = c." + WORKOUT_EXERCISE_CROSS_WORKOUT_ID + " JOIN " + TABLE_EXERCISE + " e ON c." + WORKOUT_EXERCISE_CROSS_EXERCISE_ID + " = e." + EXERCISE_ID + " LEFT JOIN " + TABLE_MUSCLE + " m ON e." + EXERCISE_MUSCLE_ID + " = m." + MUSCLE_ID, new String[]{"w." + WORKOUT_ID, "w." + WORKOUT_NAME, "w." + WORKOUT_START_DATE, "w." + WORKOUT_END_DATE, "e." + EXERCISE_ID, "e." + EXERCISE_NAME, "m." + MUSCLE_ID, "m." + MUSCLE_NAME}, "w." + WORKOUT_ID + " = " + id, null, null, null, "w." + WORKOUT_ID + " ASC");
     }
 
     public void addWorkoutData(String name, String startDate, String endDate, ArrayList<Long> exercisesId)
@@ -224,6 +224,42 @@ public class FitnessDbAdapter
         mDb.delete(TABLE_WORKOUT_EXERCISE_CROSS, WORKOUT_EXERCISE_CROSS_WORKOUT_ID + " = " + id, null);
     }
 
+
+
+
+
+
+    public Cursor getActionData(String date)
+    {
+        if (!mDb.isOpen())
+        {
+            open();
+        }
+        return mDb.query(TABLE_WORKOUT + " w JOIN " + TABLE_WORKOUT_EXERCISE_CROSS + " c ON w." + WORKOUT_ID + " = c." + WORKOUT_EXERCISE_CROSS_WORKOUT_ID + " JOIN " + TABLE_EXERCISE + " e ON c." + WORKOUT_EXERCISE_CROSS_EXERCISE_ID + " = e." + EXERCISE_ID + " LEFT JOIN " + TABLE_MUSCLE + " m ON e." + EXERCISE_MUSCLE_ID + " = m." + MUSCLE_ID + " LEFT JOIN " + TABLE_ACTION + " a ON e." + EXERCISE_ID + " = a." + ACTION_EXERCISE, new String[]{"a." + ACTION_ID, "CASE WHEN a." + ACTION_DATE + " = '" + date + "' THEN a." + ACTION_DATE + " ELSE '' END", "a." + ACTION_COMMENT, "w." + WORKOUT_NAME, "e." + EXERCISE_ID, "e." + EXERCISE_NAME, "m." + MUSCLE_ID, "m." + MUSCLE_NAME}, "(a." + ACTION_DATE + " = '" + date + "' OR a." + ACTION_DATE + " is null OR a." + ACTION_DATE + " != '" + date + "' AND NOT EXISTS (SELECT * FROM " + TABLE_ACTION + " aaa WHERE aaa." + ACTION_DATE + " = '" + date + "' AND aaa." + ACTION_EXERCISE + " = e." + EXERCISE_ID + ")) AND '" + date + "' BETWEEN CASE WHEN w." + WORKOUT_START_DATE + " = '' THEN '1970-01-01' ELSE w." + WORKOUT_START_DATE + " END AND CASE WHEN w." + WORKOUT_END_DATE + " = '' THEN '9999-12-31' ELSE w." + WORKOUT_END_DATE + " END", null, null, null, "w." + WORKOUT_ID + " ASC");
+    }
+
+    public void addActionData(String date, long exerciseId, String comment)
+    {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(ACTION_DATE, date);
+        contentValues.put(ACTION_EXERCISE, exerciseId);
+        contentValues.put(ACTION_COMMENT, comment);
+        mDb.insert(TABLE_ACTION, null, contentValues);
+    }
+
+    public void updateActionData(long id, String date, long exerciseId, String comment)
+    {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(ACTION_DATE, date);
+        contentValues.put(ACTION_EXERCISE, exerciseId);
+        contentValues.put(ACTION_COMMENT, comment);
+        mDb.update(TABLE_ACTION, contentValues, ACTION_ID + " = " + id, null);
+    }
+
+    public void deleteActionData(long id)
+    {
+        mDb.delete(TABLE_ACTION, ACTION_ID + " = " + id, null);
+    }
 
 
 
