@@ -1,5 +1,8 @@
 package ru.home.fitness.activities;
 
+import android.app.LoaderManager;
+import android.content.AsyncTaskLoader;
+import android.content.Loader;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Shader;
@@ -9,13 +12,16 @@ import android.graphics.drawable.shapes.ArcShape;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 
+import java.lang.ref.WeakReference;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -24,9 +30,11 @@ import ru.home.fitness.MyApplication;
 import ru.home.fitness.R;
 import ru.home.fitness.entities.Action;
 
-public class CalendarActivity extends AppCompatActivity
+public class CalendarActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Object>
 {
-    HashMap<String, List<Action>> hashMap = new HashMap<String, List<Action>>();
+    static MaterialCalendarView materialCalendarView;
+    static HashMap<CalendarDay, List<Action>> hashMap = new HashMap<CalendarDay, List<Action>>();
+    static Calendar calendar = Calendar.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -47,21 +55,107 @@ public class CalendarActivity extends AppCompatActivity
             }
         });
 
-        MaterialCalendarView materialCalendarView = (MaterialCalendarView) findViewById(R.id.calendar_view);
+        materialCalendarView = (MaterialCalendarView) findViewById(R.id.calendar_view);
         materialCalendarView.addDecorator(new OneDayDecorator());
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.DAY_OF_MONTH, 1);
-
-        for (int i = 0; i < 42; i++)
+        materialCalendarView.setOnMonthChangedListener(new OnMonthChangedListener()
         {
+            @Override
+            public void onMonthChanged(MaterialCalendarView materialCalendarView, CalendarDay calendarDay)
+            {
+                Log.e("CalendarActivity", "onMonthChanged calendar");
+                calendar.set(Calendar.MONTH, calendarDay.getMonth());
+                getLoaderManager().restartLoader(0, null, CalendarActivity.this);
+            }
+        });
+    }
 
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        Log.e("CalendarActivity", "onResume activity");
+        getLoaderManager().restartLoader(0, null, this);
+    }
+
+    @Override
+    protected void onPause()
+    {
+        super.onPause();
+        Log.e("CalendarActivity", "onPause activity");
+        getLoaderManager().getLoader(0).cancelLoad();
+    }
+
+    @Override
+    public Loader<Object> onCreateLoader(int i, Bundle bundle)
+    {
+        Log.e("CalendarActivity", "onCreateLoader");
+        MyTaskLoader myTaskLoader = new MyTaskLoader(this);
+        myTaskLoader.forceLoad();
+        return myTaskLoader;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Object> loader, Object cursor)
+    {
+        Log.e("CalendarActivity", "onLoadFinished");
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Object> loader)
+    {
+        Log.e("CalendarActivity", "onLoaderReset");
+    }
+
+    public static class MyTaskLoader extends AsyncTaskLoader<Object>
+    {
+        WeakReference<CalendarActivity> mActivity;
+
+        public MyTaskLoader(CalendarActivity activity)
+        {
+            super(activity);
+            Log.e("CalendarActivity", "MyTaskLoader constructor");
+            mActivity = new WeakReference<CalendarActivity>(activity);
+        }
+
+        @Override
+        public Object loadInBackground()
+        {
+            hashMap.clear();
+            calendar.set(Calendar.DAY_OF_MONTH, 1);
+
+            Log.e("CalendarActivity", "" + calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+            Log.e("CalendarActivity", "" + calendar.get(Calendar.MONTH));
+
+            for (int i = 0; i < calendar.getActualMaximum(Calendar.DAY_OF_MONTH); i++)
+            {
+                if (this.isLoadInBackgroundCanceled())
+                    return null;
+
+                Log.e("CalendarActivity", "CYCLE = " + CalendarDay.from(calendar));
+
+                try { Thread.sleep(200); }
+                catch (InterruptedException e) { e.printStackTrace(); }
+
+                hashMap.put(CalendarDay.from(calendar), null);
+
+                mActivity.get().runOnUiThread(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        materialCalendarView.invalidateDecorators();
+                    }
+                });
+
+                calendar.add(Calendar.DAY_OF_MONTH, 1);
+            }
+
+            return null;
         }
     }
 
     public class OneDayDecorator implements DayViewDecorator
     {
-
         private CalendarDay currentDay;
         private final Drawable highlightDrawable;
 
@@ -74,7 +168,8 @@ public class CalendarActivity extends AppCompatActivity
         @Override
         public boolean shouldDecorate(CalendarDay day)
         {
-            return currentDay.isAfter(day) || currentDay.equals(day);
+            return hashMap.containsKey(day);
+            //return currentDay.isAfter(day) || currentDay.equals(day);
         }
 
         @Override
