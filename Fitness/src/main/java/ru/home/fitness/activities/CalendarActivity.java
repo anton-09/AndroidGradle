@@ -64,9 +64,11 @@ public class CalendarActivity extends AppCompatActivity implements LoaderManager
             {
                 Log.e("CalendarActivity", "onMonthChanged calendar");
                 calendar.set(Calendar.MONTH, calendarDay.getMonth());
-                getLoaderManager().restartLoader(0, null, CalendarActivity.this);
+                getLoaderManager().getLoader(0).forceLoad();
             }
         });
+
+        calendar.setTime(materialCalendarView.getCurrentDate().getDate());
     }
 
     @Override
@@ -122,18 +124,19 @@ public class CalendarActivity extends AppCompatActivity implements LoaderManager
         {
             hashMap.clear();
             calendar.set(Calendar.DAY_OF_MONTH, 1);
+            int daysCountInMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
 
-            Log.e("CalendarActivity", "" + calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+            Log.e("CalendarActivity", "" + daysCountInMonth);
             Log.e("CalendarActivity", "" + calendar.get(Calendar.MONTH));
 
-            for (int i = 0; i < calendar.getActualMaximum(Calendar.DAY_OF_MONTH); i++)
+            for (int i = 0; i < daysCountInMonth; i++)
             {
                 if (this.isLoadInBackgroundCanceled())
                     return null;
 
-                Log.e("CalendarActivity", "CYCLE = " + CalendarDay.from(calendar));
+                Log.e("CalendarActivity", "i = " + i + "CYCLE = " + CalendarDay.from(calendar));
 
-                try { Thread.sleep(200); }
+                try { Thread.sleep(10); }
                 catch (InterruptedException e) { e.printStackTrace(); }
 
                 hashMap.put(CalendarDay.from(calendar), null);
