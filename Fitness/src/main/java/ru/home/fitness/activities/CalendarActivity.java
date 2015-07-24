@@ -3,6 +3,7 @@ package ru.home.fitness.activities;
 import android.app.LoaderManager;
 import android.content.AsyncTaskLoader;
 import android.content.Loader;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Shader;
@@ -24,16 +25,14 @@ import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 import java.lang.ref.WeakReference;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
 
 import ru.home.fitness.MyApplication;
 import ru.home.fitness.R;
-import ru.home.fitness.entities.Action;
 
 public class CalendarActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Object>
 {
     static MaterialCalendarView materialCalendarView;
-    static HashMap<CalendarDay, List<Action>> hashMap = new HashMap<CalendarDay, List<Action>>();
+    static HashMap<CalendarDay, Float> hashMap = new HashMap<CalendarDay, Float>();
     static Calendar calendar = Calendar.getInstance();
 
     @Override
@@ -122,6 +121,9 @@ public class CalendarActivity extends AppCompatActivity implements LoaderManager
         @Override
         public Object loadInBackground()
         {
+            int doneTasks;
+            int unDoneTasks;
+
             hashMap.clear();
             calendar.set(Calendar.DAY_OF_MONTH, 1);
             int daysCountInMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
@@ -131,15 +133,36 @@ public class CalendarActivity extends AppCompatActivity implements LoaderManager
 
             for (int i = 0; i < daysCountInMonth; i++)
             {
+                doneTasks = 0;
+                unDoneTasks = 0;
+
                 if (this.isLoadInBackgroundCanceled())
                     return null;
 
-                Log.e("CalendarActivity", "i = " + i + "CYCLE = " + CalendarDay.from(calendar));
+                Cursor dayDataCursor = MyApplication.getDBAdapter().getActionData(MyApplication.dbDateFormat.format(calendar.getTime()));
+                dayDataCursor.moveToFirst();
 
-                try { Thread.sleep(10); }
-                catch (InterruptedException e) { e.printStackTrace(); }
+                while (!dayDataCursor.isAfterLast())
+                {
+                    try
+                    {
+                        MyApplication.dbDateFormat.parse(dayDataCursor.getString(1));
+                        doneTasks++;
+                    }
+                    catch (Exception e)
+                    {
+                        unDoneTasks++;
+                    }
 
-                hashMap.put(CalendarDay.from(calendar), null);
+                    dayDataCursor.moveToNext();
+                }
+
+                if (doneTasks > 0)
+                {
+                    hashMap.put(CalendarDay.from(calendar), doneTasks * 1.0f / (doneTasks + unDoneTasks));
+                }
+
+                Log.e("CalendarActivity", "i = " + i + " Day = " + CalendarDay.from(calendar) + " Done = " + doneTasks + " Undone = " + unDoneTasks);
 
                 mActivity.get().runOnUiThread(new Runnable()
                 {
@@ -185,7 +208,7 @@ public class CalendarActivity extends AppCompatActivity implements LoaderManager
         {
             final int color = Color.parseColor("#22FF0000");
 
-            ArcShape arcShape = new ArcShape(30, 215);
+            ArcShape arcShape = new ArcShape(0, 360);
 
             ShapeDrawable drawable = new ShapeDrawable(arcShape);
             drawable.setShaderFactory(new ShapeDrawable.ShaderFactory()

@@ -22,6 +22,7 @@ android {
         compile "com.android.support:design:22.2.0"
         compile "com.android.support:recyclerview-v7:22.2.0"
         compile 'com.prolificinteractive:material-calendarview:0.6.1'
+        compile 'com.roomorama:caldroid:2.1.0'
     }
 }
 
