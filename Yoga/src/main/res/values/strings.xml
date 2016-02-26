@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Yoga</string>
+
+    <string name="appbar_scrolling_view_behaviour">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
+</resources>
