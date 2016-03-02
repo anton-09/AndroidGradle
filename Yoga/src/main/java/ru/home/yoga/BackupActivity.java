@@ -19,9 +19,12 @@ import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,7 +43,7 @@ public class BackupActivity extends AppCompatActivity implements LoaderManager.L
     {
         setTheme(MyApplication.getCurrentTheme());
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.backup_activity);
+        setContentView(R.layout.main_coordinator_layout_activity);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -67,7 +70,7 @@ public class BackupActivity extends AppCompatActivity implements LoaderManager.L
             backupStorage.mkdirs();
         }
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view_backup);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new SimpleRecyclerViewDivider(this));
@@ -155,8 +158,9 @@ public class BackupActivity extends AppCompatActivity implements LoaderManager.L
                     {
                         try
                         {
-                            FileReader fileReader = new FileReader(mList.get(position));
-                            BufferedReader bufferedReader = new BufferedReader(fileReader);
+                            FileInputStream fileInputStream = new FileInputStream(mList.get(position));
+                            InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream, "Windows-1251");
+                            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 
                             String line;
                             String[] item;

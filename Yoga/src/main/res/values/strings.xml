@@ -1,6 +1,6 @@
 <resources>
     <string name="app_label_name">Йога</string>
-    <string name="app_label_edit">Редактирование</string>
+    <string name="app_label_edit">Занятие</string>
     <string name="app_label_backup">Бэкапы</string>
 
     <string name="appbar_scrolling_view_behaviour">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
@@ -18,11 +18,14 @@
     <string name="text_view_price">Цена</string>
     <string name="text_view_people">Количество человек</string>
     <string name="text_view_type">Тип занятия</string>
-    <string name="text_view_duration">Продолжительность занятия</string>
+    <string name="text_view_duration">Продолжительность</string>
     <string name="text_view_studio">Место проведения</string>
 
     <string name="backup_write_error">Проблема с записью на SD-карту!</string>
     <string name="backup_no_sd">Внимание! SD-карта не доступна, бэкап не будет работать!</string>
     <string name="restore_backup">"Восстановить из бэкапа: "</string>
     <string name="delete_backup">"Удалить бэкап: "</string>
+    <string name="backup">Бэкапы</string>
+
+    <string name="price">%1$d рублей</string>
 </resources>

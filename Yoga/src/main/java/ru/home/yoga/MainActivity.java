@@ -13,6 +13,8 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import java.text.ParseException;
@@ -40,17 +42,17 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     {
         setTheme(MyApplication.getCurrentTheme());
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_activity);
+        setContentView(R.layout.main_coordinator_layout_activity);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view_main);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new SimpleRecyclerViewDivider(this));
 
-        mainRecyclerViewAdapter = new MainRecyclerViewAdapter(this);
+        mainRecyclerViewAdapter = new MainRecyclerViewAdapter(this, this);
         recyclerView.setAdapter(mainRecyclerViewAdapter);
 
         FloatingActionButton floatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
@@ -65,6 +67,28 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         });
 
         getLoaderManager().initLoader(0, null, this);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+            case R.id.menu_backup:
+                Intent intentBackup = new Intent(this, BackupActivity.class);
+                startActivityForResult(intentBackup, REQUEST_CODE_ADD_DATA);
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override

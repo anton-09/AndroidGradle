@@ -10,6 +10,7 @@ public class YogaDbAdapter
 {
     private static final String DATABASE_NAME = "yoga_db";
     private static final int DATABASE_VERSION = 1;
+    private static final String TABLE_SEQUENCE = "sqlite_sequence";
 
     private static final String TABLE_YOGA = "yoga";
     private static final String YOGA_ID = "_id";
@@ -164,6 +165,7 @@ public class YogaDbAdapter
         mDb.delete(TABLE_TYPE, null, null);
         mDb.delete(TABLE_DURATION, null, null);
         mDb.delete(TABLE_STUDIO, null, null);
+        mDb.delete(TABLE_SEQUENCE, null, null);
     }
 
 
@@ -204,17 +206,6 @@ public class YogaDbAdapter
             db.execSQL(CREATE_TYPE);
             db.execSQL(CREATE_DURATION);
             db.execSQL(CREATE_STUDIO);
-
-            db.execSQL("INSERT INTO type VALUES (1, 'Перинатальная йога')");
-            db.execSQL("INSERT INTO type VALUES (2, 'Йога Айенгара')");
-
-            db.execSQL("INSERT INTO duration VALUES (1, 1.0)");
-            db.execSQL("INSERT INTO duration VALUES (2, 1.5)");
-            db.execSQL("INSERT INTO duration VALUES (3, 2.0)");
-
-            db.execSQL("INSERT INTO studio VALUES (1, 'Капелька')");
-            db.execSQL("INSERT INTO studio VALUES (2, 'Йога +')");
-            db.execSQL("INSERT INTO studio VALUES (3, 'Прана')");
         }
 
         @Override

@@ -1,9 +1,11 @@
 package ru.home.yoga;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -16,10 +18,12 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter<MainRecyclerVi
 {
     private final RecyclerViewClickListener mRecyclerViewClickListener;
     private List<YogaItem> mList;
+    private final Context mContext;
 
-    public MainRecyclerViewAdapter(RecyclerViewClickListener recyclerViewClickListener)
+    public MainRecyclerViewAdapter(Context context, RecyclerViewClickListener recyclerViewClickListener)
     {
         mList = new ArrayList<YogaItem>();
+        mContext = context;
         mRecyclerViewClickListener = recyclerViewClickListener;
     }
 
@@ -41,10 +45,14 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter<MainRecyclerVi
         YogaItem item = mList.get(i);
 
         viewHolder.itemDate.setText(item.getDate());
-        viewHolder.itemPrice.setText(item.getPrice().toString());
+        viewHolder.itemPrice.setText(String.format(mContext.getString(R.string.price), item.getPrice()));
         viewHolder.itemPeople.setText(item.getPeople().toString());
         viewHolder.itemType.setText(item.getType().getTypeName());
-        viewHolder.itemDuration.setText(item.getDuration().getDurationValue().toString());
+        if (item.getDuration().getDurationValue() == 1)
+            viewHolder.itemDuration.setImageResource(R.drawable.duration60);
+        else if (item.getDuration().getDurationValue() == 2)
+            viewHolder.itemDuration.setImageResource(R.drawable.duration120);
+        else viewHolder.itemDuration.setImageResource(R.drawable.duration90);
         viewHolder.itemStudio.setText(item.getStudio().getName());
     }
 
@@ -60,7 +68,7 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter<MainRecyclerVi
         private final TextView itemPrice;
         private final TextView itemPeople;
         private final TextView itemType;
-        private final TextView itemDuration;
+        private final ImageView itemDuration;
         private final TextView itemStudio;
 
         public ViewHolder(View itemView)
@@ -70,7 +78,7 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter<MainRecyclerVi
             itemPrice = (TextView) itemView.findViewById(R.id.text_view_price);
             itemPeople = (TextView) itemView.findViewById(R.id.text_view_people);
             itemType = (TextView) itemView.findViewById(R.id.text_view_type);
-            itemDuration = (TextView) itemView.findViewById(R.id.text_view_duration);
+            itemDuration = (ImageView) itemView.findViewById(R.id.image_view_duration);
             itemStudio = (TextView) itemView.findViewById(R.id.text_view_studio);
 
             itemView.setOnClickListener(this);
