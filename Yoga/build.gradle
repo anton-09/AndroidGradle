@@ -21,7 +21,10 @@ android {
         compile "com.android.support:appcompat-v7:23.2.0"
         compile "com.android.support:design:23.2.0"
         compile "com.android.support:recyclerview-v7:23.2.0"
+        compile "com.prolificinteractive:material-calendarview:1.2.0"
     }
+
+    compileOptions.encoding = 'windows-1251'
 }
 
 dependencies {

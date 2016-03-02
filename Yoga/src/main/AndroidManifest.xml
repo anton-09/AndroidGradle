@@ -3,16 +3,19 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     package="ru.home.yoga" >
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/icon"
-        android:label="@string/app_name"
+        android:label="@string/app_label_name"
         android:theme="@style/AppTheme"
         android:name="ru.home.yoga.MyApplication">
 
         <activity
             android:name="ru.home.yoga.MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_label_name"
+            android:screenOrientation="portrait">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,6 +23,16 @@
             </intent-filter>
 
         </activity>
+
+        <activity
+            android:name="ru.home.yoga.AddActivity"
+            android:label="@string/app_label_edit"
+            android:screenOrientation="portrait"/> <!-- This is for TextInputLayout -->
+
+        <activity
+            android:name="ru.home.yoga.BackupActivity"
+            android:label="@string/app_label_backup"
+            android:screenOrientation="portrait"/>
 
     </application>
 
