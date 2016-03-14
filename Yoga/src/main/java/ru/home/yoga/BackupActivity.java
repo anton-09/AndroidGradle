@@ -5,6 +5,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
@@ -39,23 +43,12 @@ public class BackupActivity extends AppCompatActivity implements LoaderManager.L
     private File backupStorage;
     private List<File> mList;
 
+    Toolbar toolbar;
+
     public void onCreate(Bundle savedInstanceState)
     {
-        setTheme(MyApplication.getCurrentTheme());
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_coordinator_layout_activity);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                onBackPressed();
-            }
-        });
+        setContentView(R.layout.backup_activity);
 
         if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
         {
@@ -64,27 +57,50 @@ public class BackupActivity extends AppCompatActivity implements LoaderManager.L
         }
 
         backupStorage = new File(Environment.getExternalStorageDirectory(), "/Yoga");
-
         if (!backupStorage.exists())
         {
             backupStorage.mkdirs();
         }
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.addItemDecoration(new SimpleRecyclerViewDivider(this));
+        initToolbar();
+        initRecyclerView();
+    }
 
-        File[] filesList = backupStorage.listFiles();
-        Arrays.sort(filesList, new Comparator<File>()
+    private void initToolbar()
+    {
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
+
+        // Workaround to get WHITE back arrow for pre-lollipop devices!!!
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
         {
-            public int compare(File f1, File f2)
-            {
+            Drawable backArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_material);
+            backArrow.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_ATOP);
+            getSupportActionBar().setHomeAsUpIndicator(backArrow);
+        }
+    }
+
+    private void initRecyclerView()
+    {
+        File[] filesList = backupStorage.listFiles();
+        Arrays.sort(filesList, new Comparator<File>() {
+            public int compare(File f1, File f2) {
                 return Long.valueOf(f1.lastModified()).compareTo(f2.lastModified());
             }
         });
         mList = new ArrayList<File>(Arrays.asList(filesList));
 
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.addItemDecoration(new SimpleRecyclerViewDivider(this));
 
         backupRecyclerViewAdapter = new BackupRecyclerViewAdapter(mList, this, this);
         recyclerView.setAdapter(backupRecyclerViewAdapter);
@@ -98,9 +114,7 @@ public class BackupActivity extends AppCompatActivity implements LoaderManager.L
                 getLoaderManager().initLoader(0, null, BackupActivity.this);
             }
         });
-
     }
-
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle)

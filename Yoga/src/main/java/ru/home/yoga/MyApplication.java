@@ -2,12 +2,12 @@ package ru.home.yoga;
 
 import android.app.Application;
 import android.content.Context;
+import android.support.v7.app.AppCompatDelegate;
 
 public class MyApplication extends Application
 {
     private static Context mContext;
     private static YogaDbAdapter mYogaDbAdapter;
-    private static Integer mTheme;
 
     public static Context getAppContext()
     {
@@ -19,17 +19,9 @@ public class MyApplication extends Application
         return MyApplication.mYogaDbAdapter;
     }
 
-    public static void toggleTheme()
+    static
     {
-        if (MyApplication.mTheme == R.style.AppTheme_Light)
-            MyApplication.mTheme = R.style.AppTheme_Dark;
-        else
-            MyApplication.mTheme = R.style.AppTheme_Light;
-    }
-
-    public static Integer getCurrentTheme()
-    {
-        return MyApplication.mTheme;
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO);
     }
 
     @Override
@@ -41,6 +33,5 @@ public class MyApplication extends Application
         mYogaDbAdapter = new YogaDbAdapter();
         mYogaDbAdapter.open();
 
-        mTheme = R.style.AppTheme_Light;
     }
 }

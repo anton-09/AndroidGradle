@@ -7,6 +7,9 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -37,16 +40,72 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private ArrayList<YogaItem> mList;
 
+    Toolbar toolbar;
+    DrawerLayout drawerLayout;
+    NavigationView navigationView;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-        setTheme(MyApplication.getCurrentTheme());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_coordinator_layout_activity);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        initToolbar();
+        initNavigationView();
+        initRecyclerView();
+    }
 
+    private void initToolbar()
+    {
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+    }
+
+    private void initNavigationView()
+    {
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_view_open, R.string.navigation_view_close);
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.syncState();
+
+
+
+        navigationView = (NavigationView) findViewById(R.id.navigation_view);
+        Menu menu = navigationView.getMenu();
+
+        Cursor studioCursor = MyApplication.getDBAdapter().getStudios();
+        studioCursor.moveToFirst();
+        while (!studioCursor.isAfterLast())
+        {
+            menu.add(Menu.NONE, studioCursor.getInt(0), Menu.NONE, studioCursor.getString(1));
+            studioCursor.moveToNext();
+        }
+        studioCursor.close();
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener()
+        {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem item)
+            {
+                drawerLayout.closeDrawers();
+
+                toolbar.setTitle(item.getTitle());
+
+                Bundle bundle = new Bundle();
+                bundle.putInt("StudioId", item.getItemId());
+                getLoaderManager().restartLoader(0, bundle, MainActivity.this);
+
+                return true;
+            }
+        });
+
+        getLoaderManager().initLoader(0, null, MainActivity.this);
+    }
+
+    private void initRecyclerView()
+    {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -56,17 +115,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         recyclerView.setAdapter(mainRecyclerViewAdapter);
 
         FloatingActionButton floatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
-        floatingActionButton.setOnClickListener(new View.OnClickListener()
-        {
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 Intent intentAdd = new Intent(MainActivity.this, AddActivity.class);
                 startActivityForResult(intentAdd, REQUEST_CODE_ADD_DATA);
             }
         });
-
-        getLoaderManager().initLoader(0, null, this);
     }
 
     @Override
@@ -101,7 +156,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle)
     {
-        return new MyCursorLoader();
+        if (bundle != null)
+            return new MyCursorLoader(bundle.getInt("StudioId"));
+        else
+            return new MyCursorLoader();
     }
 
     @Override

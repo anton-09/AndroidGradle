@@ -130,6 +130,24 @@ public class YogaDbAdapter
     }
 
 
+    public Cursor getDataByStudioId(long id)
+    {
+        if (!mDb.isOpen())
+        {
+            open();
+        }
+        return mDb.query(
+                TABLE_YOGA + ", " + TABLE_TYPE + ", " + TABLE_DURATION + ", " + TABLE_STUDIO,
+                new String[]{TABLE_YOGA + "." + YOGA_ID, YOGA_DATE, YOGA_PRICE, YOGA_PEOPLE, YOGA_TYPE, TYPE_NAME, YOGA_DURATION, DURATION_DURATION, YOGA_STUDIO, STUDIO_NAME},
+                TABLE_TYPE + "." + TYPE_ID + " = " + YOGA_TYPE + " AND " + TABLE_DURATION + "." + DURATION_ID + " = " + YOGA_DURATION + " AND " + TABLE_STUDIO + "." + STUDIO_ID + " = " + YOGA_STUDIO + " AND " + TABLE_YOGA + "." + YOGA_STUDIO + " = " + id,
+                null,
+                null,
+                null,
+                YOGA_DATE + " DESC"
+        );
+    }
+
+
     public void addData(String date, int price, int people, int type, int duration, int studio)
     {
         ContentValues contentValues = new ContentValues();

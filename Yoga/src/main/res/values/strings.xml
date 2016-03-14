@@ -28,4 +28,9 @@
     <string name="backup">Бэкапы</string>
 
     <string name="price">%1$d рублей</string>
+
+    <string name="navigation_view_open">Открыть</string>
+    <string name="navigation_view_close">Закрыть</string>
+
+
 </resources>

@@ -3,6 +3,10 @@ package ru.home.yoga;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -41,6 +45,8 @@ public class AddActivity extends AppCompatActivity
     private Integer initialDuration = 0;
     private Integer initialStudio = 0;
 
+    Toolbar toolbar;
+
     MaterialCalendarView materialCalendarView;
     EditText editTextPrice;
     EditText editTextPeople;
@@ -51,21 +57,10 @@ public class AddActivity extends AppCompatActivity
 
     public void onCreate(Bundle savedInstanceState)
     {
-        setTheme(MyApplication.getCurrentTheme());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_activity);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                onBackPressed();
-            }
-        });
+        initToolbar();
 
         materialCalendarView = (MaterialCalendarView) findViewById(R.id.calendar_view);
         editTextPrice = (EditText) findViewById(R.id.edit_text_price);
@@ -113,6 +108,29 @@ public class AddActivity extends AppCompatActivity
 
         materialCalendarView.setSelectedDate(initialDate);
         materialCalendarView.setCalendarDisplayMode(CalendarMode.WEEKS);
+    }
+
+    private void initToolbar()
+    {
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                onBackPressed();
+            }
+        });
+
+        // Workaround to get WHITE back arrow for pre-lollipop devices!!!
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
+        {
+            Drawable backArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_material);
+            backArrow.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_ATOP);
+            getSupportActionBar().setHomeAsUpIndicator(backArrow);
+        }
     }
 
     private void getSpinnerData()
