@@ -2,6 +2,7 @@
     <string name="app_label_name">Йога</string>
     <string name="app_label_edit">Занятие</string>
     <string name="app_label_backup">Бэкапы</string>
+    <string name="app_label_date">Дата</string>
 
     <string name="appbar_scrolling_view_behaviour">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
 
@@ -16,10 +17,10 @@
 
     <string name="text_view_date">Дата</string>
     <string name="text_view_price">Цена</string>
-    <string name="text_view_people">Количество человек</string>
-    <string name="text_view_type">Тип занятия</string>
-    <string name="text_view_duration">Продолжительность</string>
-    <string name="text_view_studio">Место проведения</string>
+    <string name="text_view_people">Человек</string>
+    <string name="text_view_type">Тип</string>
+    <string name="text_view_duration">Время</string>
+    <string name="text_view_studio">Место</string>
 
     <string name="backup_write_error">Проблема с записью на SD-карту!</string>
     <string name="backup_no_sd">Внимание! SD-карта не доступна, бэкап не будет работать!</string>
@@ -31,6 +32,11 @@
 
     <string name="navigation_view_open">Открыть</string>
     <string name="navigation_view_close">Закрыть</string>
+    <string name="row_count">%1$d занятий</string>
+
+    <string name="progress_dialog_load_data_from_db">Выгрузка данных из базы, жди…</string>
+    <string name="progress_dialog_save_data_to_sd">Сохранение данных в файл, жди…</string>
+    <string name="progress_dialog_load_data_from_sd">Загрузка данных из файла, жди…</string>
 
 
 </resources>

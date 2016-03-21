@@ -5,25 +5,48 @@ import android.database.Cursor;
 
 class MyCursorLoader extends CursorLoader
 {
-    int studioId = 0;
+    int mStudioId = 0;
+    String mPrevDate;
+    long mPrevId = -1;
+
+    public MyCursorLoader(String prevDate, long prevId)
+    {
+        super(MyApplication.getAppContext());
+
+        mPrevDate = prevDate;
+        mPrevId = prevId;
+    }
+
+    public MyCursorLoader(String prevDate, long prevId, int id)
+    {
+        super(MyApplication.getAppContext());
+
+        mPrevDate = prevDate;
+        mPrevId = prevId;
+        mStudioId = id;
+    }
 
     public MyCursorLoader()
     {
         super(MyApplication.getAppContext());
     }
 
-    public MyCursorLoader(int id)
-    {
-        super(MyApplication.getAppContext());
-        studioId = id;
-    }
-
     @Override
     public Cursor loadInBackground()
     {
-        if (studioId == 0)
-            return MyApplication.getDBAdapter().getData();
-        else
-            return MyApplication.getDBAdapter().getDataByStudioId(studioId);
+        try {
+            Thread.sleep(50);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
+        if (mStudioId > 0)
+            return MyApplication.getDBAdapter().getPagedDataByStudioId(mPrevDate, mPrevId, mStudioId, MyApplication.ITEMS_PER_PAGE);
+
+        if (mPrevId > -1)
+            return MyApplication.getDBAdapter().getPagedData(mPrevDate, mPrevId, MyApplication.ITEMS_PER_PAGE);
+
+        return MyApplication.getDBAdapter().getBackupData();
     }
 }

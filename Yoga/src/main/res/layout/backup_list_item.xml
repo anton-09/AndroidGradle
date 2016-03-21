@@ -21,15 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/text_view_backup_row_count"
-            android:layout_alignParentLeft="true"
             android:layout_below="@+id/text_view_backup_date" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/text_view_backup_size"
-            android:layout_alignParentRight="true"
-            android:layout_alignBottom="@+id/text_view_backup_row_count"/>
 
     </RelativeLayout>
 

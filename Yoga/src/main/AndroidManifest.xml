@@ -15,6 +15,7 @@
         <activity
             android:name="ru.home.yoga.MainActivity"
             android:label="@string/app_label_name"
+            android:theme="@style/AppTheme.Transparent"
             android:screenOrientation="portrait">
 
             <intent-filter>
@@ -33,6 +34,11 @@
             android:name="ru.home.yoga.BackupActivity"
             android:label="@string/app_label_backup"
             android:screenOrientation="portrait"/>
+
+        <activity
+            android:name="ru.home.yoga.DatePickerActivity"
+            android:label="@string/app_label_date"
+            android:screenOrientation="portrait" />
 
     </application>
 

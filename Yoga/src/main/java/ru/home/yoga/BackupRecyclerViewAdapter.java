@@ -16,8 +16,6 @@ import java.util.List;
 
 public class BackupRecyclerViewAdapter extends RecyclerView.Adapter<BackupRecyclerViewAdapter.ViewHolder>
 {
-    private final SimpleDateFormat mBackupDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-    private final SimpleDateFormat mBackupHumanReadableDateFormat = new SimpleDateFormat("dd MMM yyyy HH:mm:ss");
     private final Context mContext;
     private final List<File> mList;
     private final RecyclerViewClickListener mRecyclerViewClickListener;
@@ -43,7 +41,7 @@ public class BackupRecyclerViewAdapter extends RecyclerView.Adapter<BackupRecycl
 
         try
         {
-            viewHolder.name.setText(mBackupHumanReadableDateFormat.format(mBackupDateFormat.parse(item.getName())));
+            viewHolder.name.setText(MyApplication.mHumanReadableDateFormat.format(MyApplication.mBackupDateFormat.parse(item.getName())));
         }
         catch (ParseException e)
         {
@@ -55,9 +53,10 @@ public class BackupRecyclerViewAdapter extends RecyclerView.Adapter<BackupRecycl
         {
             FileReader fileReader = new FileReader(item);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
-            while (bufferedReader.readLine() != null)
+            String line = bufferedReader.readLine();
+            if (line != null)
             {
-                rowCount++;
+                rowCount = Integer.parseInt(line);
             }
             bufferedReader.close();
         }
@@ -65,8 +64,7 @@ public class BackupRecyclerViewAdapter extends RecyclerView.Adapter<BackupRecycl
         {
         }
 
-        //viewHolder.size.setText(item.length() + " " + mContext.getString(R.string.bytes));
-        //viewHolder.rowCount.setText(rowCount + " " + mContext.getString(R.string.row_count));
+        viewHolder.rowCount.setText(String.format(mContext.getString(R.string.row_count), rowCount));
     }
 
     @Override
@@ -79,14 +77,12 @@ public class BackupRecyclerViewAdapter extends RecyclerView.Adapter<BackupRecycl
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener
     {
         private final TextView name;
-        private final TextView size;
         private final TextView rowCount;
 
         public ViewHolder(View itemView)
         {
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.text_view_backup_date);
-            size = (TextView) itemView.findViewById(R.id.text_view_backup_size);
             rowCount = (TextView) itemView.findViewById(R.id.text_view_backup_row_count);
 
             itemView.setOnClickListener(this);

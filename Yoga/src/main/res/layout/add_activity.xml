@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -13,56 +15,108 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <com.prolificinteractive.materialcalendarview.MaterialCalendarView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/calendar_view"
+    <Button android:id="@+id/button_calendar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:mcv_showOtherDates="all"
-        app:mcv_selectionColor="@color/accent"/>
+        android:background="?android:colorBackground"/>
 
-    <Spinner
+
+    <android.support.v7.widget.GridLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/spinner_type"
-        android:layout_gravity="center_horizontal"/>
+        app:columnCount="2"
+        app:rowCount="4">
+
+        <TextView
+            app:layout_row="0"
+            app:layout_column="0"
+            android:layout_width="wrap_content"
+            android:padding="10dp"
+            android:text="@string/text_view_studio"/>
+
+        <TextView
+            app:layout_row="1"
+            app:layout_column="0"
+            android:layout_width="wrap_content"
+            android:padding="10dp"
+            android:text="@string/text_view_type"/>
+
+        <TextView
+            app:layout_row="2"
+            app:layout_column="0"
+            android:layout_width="wrap_content"
+            android:padding="10dp"
+            android:text="@string/text_view_duration"/>
+
+        <TextView
+            app:layout_row="3"
+            app:layout_column="0"
+            android:layout_width="wrap_content"
+            android:padding="10dp"
+            android:text="@string/text_view_people"
+            app:layout_gravity="center" />
+
+        <Spinner
+            app:layout_row="0"
+            app:layout_column="1"
+            android:layout_width="0dp"
+            app:layout_columnWeight="1"
+            android:id="@+id/spinner_studio"/>
+
+        <Spinner
+            app:layout_row="1"
+            app:layout_column="1"
+            app:layout_columnWeight="1"
+            android:layout_width="0dp"
+            android:id="@+id/spinner_type"/>
+
+        <Spinner
+            app:layout_row="2"
+            app:layout_column="1"
+            app:layout_columnWeight="1"
+            android:layout_width="0dp"
+            android:id="@+id/spinner_duration"/>
+
+        <RelativeLayout
+            app:layout_row="3"
+            app:layout_column="1"
+            app:layout_columnWeight="1"
+            android:layout_width="0dp"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:id="@+id/text_view_people"/>
+
+            <SeekBar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/text_view_people"
+                android:max="10"
+                android:id="@+id/seekbar_people"/>
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.GridLayout>
+
+
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/input_layout_price"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="10dp">
 
         <EditText
             android:id="@+id/edit_text_price"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="number"
             android:hint="@string/hint_price" />
 
     </android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/input_layout_people"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <EditText
-            android:id="@+id/edit_text_people"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/hint_people" />
-
-    </android.support.design.widget.TextInputLayout>
-
-    <Spinner
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/spinner_studio"
-        android:layout_gravity="center_horizontal"/>
-
-    <Spinner
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/spinner_duration"
-        android:layout_gravity="center_horizontal"/>
 
 </LinearLayout>

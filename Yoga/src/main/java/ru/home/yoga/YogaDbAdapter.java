@@ -5,11 +5,18 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteStatement;
+
+import java.util.ArrayList;
+import java.util.Date;
+
+import ru.home.yoga.entity.YogaItem;
 
 public class YogaDbAdapter
 {
     private static final String DATABASE_NAME = "yoga_db";
     private static final int DATABASE_VERSION = 1;
+
     private static final String TABLE_SEQUENCE = "sqlite_sequence";
 
     private static final String TABLE_YOGA = "yoga";
@@ -66,6 +73,181 @@ public class YogaDbAdapter
         mDb = mDbHelper.getWritableDatabase();
     }
 
+
+
+
+
+
+    public Cursor getBackupData()
+    {
+        return getPagedData(MyApplication.mDbDateFormat.format(new Date()), 0, -1);
+    }
+
+    public Cursor getPagedData(String prevDate, long prevId, int pageSize)
+    {
+        if (!mDb.isOpen())
+        {
+            open();
+        }
+        return mDb.query(
+                TABLE_YOGA + ", " + TABLE_TYPE + ", " + TABLE_DURATION + ", " + TABLE_STUDIO,
+                new String[]{TABLE_YOGA + "." + YOGA_ID, YOGA_DATE, YOGA_PRICE, YOGA_PEOPLE, YOGA_TYPE, TYPE_NAME, YOGA_DURATION, DURATION_DURATION, YOGA_STUDIO, STUDIO_NAME},
+                TABLE_TYPE + "." + TYPE_ID + " = " + YOGA_TYPE + " AND " + TABLE_DURATION + "." + DURATION_ID + " = " + YOGA_DURATION + " AND " + TABLE_STUDIO + "." + STUDIO_ID + " = " + YOGA_STUDIO + " AND (" + YOGA_DATE + " < '" + prevDate + "'OR " + YOGA_DATE + " = '" + prevDate + "'AND " + TABLE_YOGA + "." + YOGA_ID + " > " + prevId + " )",
+                null,
+                null,
+                null,
+                YOGA_DATE + " DESC, " + TABLE_YOGA + "." + YOGA_ID + " ASC LIMIT " + pageSize
+        );
+    }
+
+    public Cursor getPagedDataByStudioId(String prevDate, long prevId, int studioId, int pageSize)
+    {
+        if (!mDb.isOpen())
+        {
+            open();
+        }
+        return mDb.query(
+                TABLE_YOGA + ", " + TABLE_TYPE + ", " + TABLE_DURATION + ", " + TABLE_STUDIO,
+                new String[]{TABLE_YOGA + "." + YOGA_ID, YOGA_DATE, YOGA_PRICE, YOGA_PEOPLE, YOGA_TYPE, TYPE_NAME, YOGA_DURATION, DURATION_DURATION, YOGA_STUDIO, STUDIO_NAME},
+                TABLE_TYPE + "." + TYPE_ID + " = " + YOGA_TYPE + " AND " + TABLE_DURATION + "." + DURATION_ID + " = " + YOGA_DURATION + " AND " + TABLE_STUDIO + "." + STUDIO_ID + " = " + YOGA_STUDIO + " AND " + TABLE_YOGA + "." + YOGA_STUDIO + " = " + studioId + " AND (" + YOGA_DATE + " < '" + prevDate + "'OR " + YOGA_DATE + " = '" + prevDate + "'AND " + TABLE_YOGA + "." + YOGA_ID + " > " + prevId + " )",
+                null,
+                null,
+                null,
+                YOGA_DATE + " DESC, " + TABLE_YOGA + "." + YOGA_ID + " ASC LIMIT " + pageSize
+        );
+    }
+
+    public Cursor getDataById(long id)
+    {
+        if (!mDb.isOpen())
+        {
+            open();
+        }
+        return mDb.query(
+                TABLE_YOGA + ", " + TABLE_TYPE + ", " + TABLE_DURATION + ", " + TABLE_STUDIO,
+                new String[]{TABLE_YOGA + "." + YOGA_ID, YOGA_DATE, YOGA_PRICE, YOGA_PEOPLE, YOGA_TYPE, TYPE_NAME, YOGA_DURATION, DURATION_DURATION, YOGA_STUDIO, STUDIO_NAME},
+                TABLE_TYPE + "." + TYPE_ID + " = " + YOGA_TYPE + " AND " + TABLE_DURATION + "." + DURATION_ID + " = " + YOGA_DURATION + " AND " + TABLE_STUDIO + "." + STUDIO_ID + " = " + YOGA_STUDIO + " AND " + TABLE_YOGA + "." + YOGA_ID + " = " + id,
+                null,
+                null,
+                null,
+                null
+        );
+    }
+
+
+
+
+
+
+
+
+
+
+    public void addData(String date, int price, int people, int type, int duration, int studio)
+    {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(YOGA_DATE, date);
+        contentValues.put(YOGA_PRICE, price);
+        contentValues.put(YOGA_PEOPLE, people);
+        contentValues.put(YOGA_TYPE, type);
+        contentValues.put(YOGA_DURATION, duration);
+        contentValues.put(YOGA_STUDIO, studio);
+        mDb.insert(TABLE_YOGA, null, contentValues);
+    }
+
+    public void addBulkData(ArrayList<YogaItem> items)
+    {
+        String sql = "INSERT INTO " + TABLE_YOGA + " (" + YOGA_DATE + ", " + YOGA_PRICE + ", " + YOGA_PEOPLE + ", " + YOGA_TYPE + ", " + YOGA_DURATION + ", " + YOGA_STUDIO + ") VALUES (?, ?, ?, ?, ?, ?)";
+        mDb.beginTransaction();
+
+        SQLiteStatement stmt = mDb.compileStatement(sql);
+        for (int i = 0; i < items.size(); i++)
+        {
+            stmt.bindString(1, items.get(i).getDate());
+            stmt.bindLong(2, items.get(i).getPrice());
+            stmt.bindLong(3, items.get(i).getPeople());
+            stmt.bindLong(4, items.get(i).getType().getId());
+            stmt.bindLong(5, items.get(i).getDuration().getId());
+            stmt.bindLong(6, items.get(i).getStudio().getId());
+            stmt.execute();
+            stmt.clearBindings();
+        }
+
+        mDb.setTransactionSuccessful();
+        mDb.endTransaction();
+    }
+
+
+
+
+
+
+
+
+    public void updateData(long id, String date, int price, int people, int type, int duration, int studio)
+    {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(YOGA_DATE, date);
+        contentValues.put(YOGA_PRICE, price);
+        contentValues.put(YOGA_PEOPLE, people);
+        contentValues.put(YOGA_TYPE, type);
+        contentValues.put(YOGA_DURATION, duration);
+        contentValues.put(YOGA_STUDIO, studio);
+        mDb.update(TABLE_YOGA, contentValues, YOGA_ID + " = " + id, null);
+    }
+
+
+
+
+
+
+
+
+    public void deleteData(long id)
+    {
+        mDb.delete(TABLE_YOGA, YOGA_ID + " = " + id, null);
+    }
+
+    public void deleteAllData()
+    {
+        mDb.delete(TABLE_YOGA, null, null);
+        mDb.delete(TABLE_TYPE, null, null);
+        mDb.delete(TABLE_DURATION, null, null);
+        mDb.delete(TABLE_STUDIO, null, null);
+        mDb.delete(TABLE_SEQUENCE, null, null);
+    }
+
+
+
+
+
+
+
+
+
+
+
+    public void addType(String type)
+    {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(TYPE_NAME, type);
+        mDb.insert(TABLE_TYPE, null, contentValues);
+    }
+
+    public void addDuration(Double duration)
+    {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(DURATION_DURATION, duration);
+        mDb.insert(TABLE_DURATION, null, contentValues);
+    }
+
+    public void addStudio(String studio)
+    {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(STUDIO_NAME, studio);
+        mDb.insert(TABLE_STUDIO, null, contentValues);
+    }
+
     public Cursor getTypes()
     {
         if (!mDb.isOpen())
@@ -94,119 +276,9 @@ public class YogaDbAdapter
     }
 
 
-    public Cursor getData()
-    {
-        if (!mDb.isOpen())
-        {
-            open();
-        }
-        return mDb.query(
-                TABLE_YOGA + ", " + TABLE_TYPE + ", " + TABLE_DURATION + ", " + TABLE_STUDIO,
-                new String[]{TABLE_YOGA + "." + YOGA_ID, YOGA_DATE, YOGA_PRICE, YOGA_PEOPLE, YOGA_TYPE, TYPE_NAME, YOGA_DURATION, DURATION_DURATION, YOGA_STUDIO, STUDIO_NAME},
-                TABLE_TYPE + "." + TYPE_ID + " = " + YOGA_TYPE + " AND " + TABLE_DURATION + "." + DURATION_ID + " = " + YOGA_DURATION + " AND " + TABLE_STUDIO + "." + STUDIO_ID + " = " + YOGA_STUDIO,
-                null,
-                null,
-                null,
-                YOGA_DATE + " DESC"
-        );
-    }
 
 
-    public Cursor getDataById(long id)
-    {
-        if (!mDb.isOpen())
-        {
-            open();
-        }
-        return mDb.query(
-                TABLE_YOGA + ", " + TABLE_TYPE + ", " + TABLE_DURATION + ", " + TABLE_STUDIO,
-                new String[]{TABLE_YOGA + "." + YOGA_ID, YOGA_DATE, YOGA_PRICE, YOGA_PEOPLE, YOGA_TYPE, TYPE_NAME, YOGA_DURATION, DURATION_DURATION, YOGA_STUDIO, STUDIO_NAME},
-                TABLE_TYPE + "." + TYPE_ID + " = " + YOGA_TYPE + " AND " + TABLE_DURATION + "." + DURATION_ID + " = " + YOGA_DURATION + " AND " + TABLE_STUDIO + "." + STUDIO_ID + " = " + YOGA_STUDIO + " AND " + TABLE_YOGA + "." + YOGA_ID + " = " + id,
-                null,
-                null,
-                null,
-                null
-        );
-    }
 
-
-    public Cursor getDataByStudioId(long id)
-    {
-        if (!mDb.isOpen())
-        {
-            open();
-        }
-        return mDb.query(
-                TABLE_YOGA + ", " + TABLE_TYPE + ", " + TABLE_DURATION + ", " + TABLE_STUDIO,
-                new String[]{TABLE_YOGA + "." + YOGA_ID, YOGA_DATE, YOGA_PRICE, YOGA_PEOPLE, YOGA_TYPE, TYPE_NAME, YOGA_DURATION, DURATION_DURATION, YOGA_STUDIO, STUDIO_NAME},
-                TABLE_TYPE + "." + TYPE_ID + " = " + YOGA_TYPE + " AND " + TABLE_DURATION + "." + DURATION_ID + " = " + YOGA_DURATION + " AND " + TABLE_STUDIO + "." + STUDIO_ID + " = " + YOGA_STUDIO + " AND " + TABLE_YOGA + "." + YOGA_STUDIO + " = " + id,
-                null,
-                null,
-                null,
-                YOGA_DATE + " DESC"
-        );
-    }
-
-
-    public void addData(String date, int price, int people, int type, int duration, int studio)
-    {
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(YOGA_DATE, date);
-        contentValues.put(YOGA_PRICE, price);
-        contentValues.put(YOGA_PEOPLE, people);
-        contentValues.put(YOGA_TYPE, type);
-        contentValues.put(YOGA_DURATION, duration);
-        contentValues.put(YOGA_STUDIO, studio);
-        mDb.insert(TABLE_YOGA, null, contentValues);
-    }
-
-    public void updateData(long id, String date, int price, int people, int type, int duration, int studio)
-    {
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(YOGA_DATE, date);
-        contentValues.put(YOGA_PRICE, price);
-        contentValues.put(YOGA_PEOPLE, people);
-        contentValues.put(YOGA_TYPE, type);
-        contentValues.put(YOGA_DURATION, duration);
-        contentValues.put(YOGA_STUDIO, studio);
-        mDb.update(TABLE_YOGA, contentValues, YOGA_ID + " = " + id, null);
-    }
-
-    public void deleteData(long id)
-    {
-        mDb.delete(TABLE_YOGA, YOGA_ID + " = " + id, null);
-    }
-
-    public void deleteAllData()
-    {
-        mDb.delete(TABLE_YOGA, null, null);
-        mDb.delete(TABLE_TYPE, null, null);
-        mDb.delete(TABLE_DURATION, null, null);
-        mDb.delete(TABLE_STUDIO, null, null);
-        mDb.delete(TABLE_SEQUENCE, null, null);
-    }
-
-
-    public void addType(String type)
-    {
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(TYPE_NAME, type);
-        mDb.insert(TABLE_TYPE, null, contentValues);
-    }
-
-    public void addDuration(Double duration)
-    {
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(DURATION_DURATION, duration);
-        mDb.insert(TABLE_DURATION, null, contentValues);
-    }
-
-    public void addStudio(String studio)
-    {
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(STUDIO_NAME, studio);
-        mDb.insert(TABLE_STUDIO, null, contentValues);
-    }
 
 
 

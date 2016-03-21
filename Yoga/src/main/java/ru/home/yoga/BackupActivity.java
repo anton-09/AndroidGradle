@@ -1,6 +1,7 @@
 package ru.home.yoga;
 
 import android.app.LoaderManager;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
@@ -8,10 +9,12 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -24,26 +27,27 @@ import android.widget.Toast;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.text.SimpleDateFormat;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import ru.home.yoga.entity.YogaItem;
+
 public class BackupActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>, RecyclerViewClickListener
 {
-    private final SimpleDateFormat backupDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-    private BackupRecyclerViewAdapter backupRecyclerViewAdapter;
-    private File backupStorage;
-    private List<File> mList;
-
     Toolbar toolbar;
+    BackupRecyclerViewAdapter backupRecyclerViewAdapter;
+    ProgressDialog mProgressDialog;
+
+    File backupStorage;
+    List<File> mList;
 
     public void onCreate(Bundle savedInstanceState)
     {
@@ -81,7 +85,7 @@ public class BackupActivity extends AppCompatActivity implements LoaderManager.L
         // Workaround to get WHITE back arrow for pre-lollipop devices!!!
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
         {
-            Drawable backArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_material);
+            Drawable backArrow = ContextCompat.getDrawable(this, R.drawable.abc_ic_ab_back_material);
             backArrow.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_ATOP);
             getSupportActionBar().setHomeAsUpIndicator(backArrow);
         }
@@ -95,7 +99,7 @@ public class BackupActivity extends AppCompatActivity implements LoaderManager.L
                 return Long.valueOf(f1.lastModified()).compareTo(f2.lastModified());
             }
         });
-        mList = new ArrayList<File>(Arrays.asList(filesList));
+        mList = new ArrayList<>(Arrays.asList(filesList));
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -111,6 +115,13 @@ public class BackupActivity extends AppCompatActivity implements LoaderManager.L
             @Override
             public void onClick(View view)
             {
+                mProgressDialog = new ProgressDialog(BackupActivity.this);
+                mProgressDialog.setCancelable(false);
+                mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                mProgressDialog.setIndeterminate(true);
+                mProgressDialog.setTitle(getString(R.string.progress_dialog_load_data_from_db));
+                mProgressDialog.show();
+
                 getLoaderManager().initLoader(0, null, BackupActivity.this);
             }
         });
@@ -125,33 +136,104 @@ public class BackupActivity extends AppCompatActivity implements LoaderManager.L
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor)
     {
-        String shortFileName = backupDateFormat.format(new Date()) + ".csv";
-        File fileName = new File(backupStorage, shortFileName);
-
-        try
+        new AsyncTask<Cursor, Integer, File>()
         {
-            FileWriter fileWriter = new FileWriter(fileName);
-
-            cursor.moveToFirst();
-            while (!cursor.isAfterLast())
+            @Override
+            protected void onPreExecute()
             {
-                String output = cursor.getString(1) + ";" + cursor.getInt(2) + ";" + cursor.getString(3).replace("\n", " ") + ";" + cursor.getString(4).replace("\n", " ") + ";" + cursor.getString(5).replace("\n", " ") + "\n";
-                fileWriter.write(output);
-                cursor.moveToNext();
+                super.onPreExecute();
+
+                mProgressDialog.setIndeterminate(false);
+                mProgressDialog.setMax(100);
+                mProgressDialog.setTitle(getString(R.string.progress_dialog_save_data_to_sd));
             }
 
-            fileWriter.flush();
-            fileWriter.close();
+            @Override
+            protected File doInBackground(Cursor... cursor)
+            {
+                String shortFileName = MyApplication.mBackupDateFormat.format(new Date()) + ".csv";
+                File fileName = new File(backupStorage, shortFileName);
 
-            mList.add(fileName);
-            backupRecyclerViewAdapter.notifyDataSetChanged();
-        }
-        catch (Exception e)
-        {
-            Toast.makeText(this, R.string.backup_write_error, Toast.LENGTH_LONG).show();
-            fileName.delete();
-        }
+                try
+                {
 
+                    int i = 0;
+                    int iCount = cursor[0].getCount();
+
+                    FileOutputStream fileOutputStream = new FileOutputStream(fileName);
+                    OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream, "Windows-1251");
+                    PrintWriter printWriter = new PrintWriter(outputStreamWriter);
+
+                    cursor[0].moveToFirst();
+
+                    printWriter.println(iCount);
+                    while (!cursor[0].isAfterLast())
+                    {
+                        publishProgress(++i * 100 / iCount);
+                        printWriter.println(cursor[0].getString(1) + ";" + cursor[0].getString(2) + ";" + cursor[0].getString(3) + ";" + cursor[0].getString(4) + ";" + cursor[0].getString(6) + ";" + cursor[0].getString(8));
+                        cursor[0].moveToNext();
+                    }
+
+
+                    Cursor tempCursor;
+
+                    tempCursor = MyApplication.getDBAdapter().getTypes();
+                    printWriter.println(tempCursor.getCount());
+                    tempCursor.moveToFirst();
+                    while (!tempCursor.isAfterLast())
+                    {
+                        printWriter.println(tempCursor.getString(1));
+                        tempCursor.moveToNext();
+
+                    }
+
+                    tempCursor = MyApplication.getDBAdapter().getDurations();
+                    printWriter.println(tempCursor.getCount());
+                    tempCursor.moveToFirst();
+                    while (!tempCursor.isAfterLast())
+                    {
+                        printWriter.println(tempCursor.getString(1));
+                        tempCursor.moveToNext();
+                    }
+
+                    tempCursor = MyApplication.getDBAdapter().getStudios();
+                    printWriter.println(tempCursor.getCount());
+                    tempCursor.moveToFirst();
+                    while (!tempCursor.isAfterLast())
+                    {
+                        printWriter.println(tempCursor.getString(1));
+                        tempCursor.moveToNext();
+                    }
+
+                    tempCursor.close();
+                    printWriter.close();
+                }
+                catch (Exception e)
+                {
+                    Toast.makeText(BackupActivity.this, R.string.backup_write_error, Toast.LENGTH_LONG).show();
+                    fileName.delete();
+                }
+
+                return fileName;
+            }
+
+            @Override
+            protected void onProgressUpdate(Integer... values)
+            {
+                super.onProgressUpdate(values);
+
+                mProgressDialog.setProgress(values[0]);
+            }
+
+            @Override
+            protected void onPostExecute(File filename)
+            {
+                mProgressDialog.dismiss();
+
+                mList.add(filename);
+                backupRecyclerViewAdapter.notifyDataSetChanged();
+            }
+        }.execute(cursor);
     }
 
     @Override
@@ -170,71 +252,101 @@ public class BackupActivity extends AppCompatActivity implements LoaderManager.L
                     @Override
                     public void onClick(DialogInterface dialog, int whichButton)
                     {
-                        try
+                        new AsyncTask<Void, Void, Void>()
                         {
-                            FileInputStream fileInputStream = new FileInputStream(mList.get(position));
-                            InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream, "Windows-1251");
-                            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-
-                            String line;
-                            String[] item;
-                            int itemCount;
-                            int typeCount;
-                            int durationCount;
-                            int studioCount;
-                            int i;
-
-                            line = bufferedReader.readLine();
-                            item = line.split(";", -1);
-                            itemCount = Integer.parseInt(item[0]);
-                            typeCount = Integer.parseInt(item[1]);
-                            durationCount = Integer.parseInt(item[2]);
-                            studioCount = Integer.parseInt(item[3]);
-
-                            MyApplication.getDBAdapter().deleteAllData();
-
-                            for (i = 0; i < typeCount; i++)
+                            @Override
+                            protected void onPreExecute()
                             {
-                                line = bufferedReader.readLine();
-                                MyApplication.getDBAdapter().addType(line);
+                                super.onPreExecute();
+
+                                mProgressDialog = new ProgressDialog(BackupActivity.this);
+                                mProgressDialog.setCancelable(false);
+                                mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                                mProgressDialog.setIndeterminate(true);
+                                mProgressDialog.setTitle(getString(R.string.progress_dialog_load_data_from_sd));
+                                mProgressDialog.show();
                             }
 
-                            for (i = 0; i < durationCount; i++)
+                            @Override
+                            protected Void doInBackground(Void... nothing)
                             {
-                                line = bufferedReader.readLine();
-                                MyApplication.getDBAdapter().addDuration(Double.parseDouble(line));
+                                try
+                                {
+                                    FileInputStream fileInputStream = new FileInputStream(mList.get(position));
+                                    InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream, "Windows-1251");
+                                    BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+                                    String line;
+                                    String[] item;
+                                    int itemCount;
+                                    int typeCount;
+                                    int durationCount;
+                                    int studioCount;
+                                    int i;
+                                    ArrayList<YogaItem> yogaItemArrayList = new ArrayList<>();
+
+                                    MyApplication.getDBAdapter().deleteAllData();
+
+                                    // Bulk insert is 10 times faster than 1-by-1, because it is done in 1 transaction
+                                    line = bufferedReader.readLine();
+                                    itemCount = Integer.parseInt(line);
+                                    for (i = 0; i < itemCount; i++)
+                                    {
+                                        line = bufferedReader.readLine();
+                                        item = line.split(";", -1);
+                                        yogaItemArrayList.add(new YogaItem(item[0], Integer.parseInt(item[1]), Integer.parseInt(item[2]), Integer.parseInt(item[3]), Integer.parseInt(item[4]), Integer.parseInt(item[5])));
+                                        //MyApplication.getDBAdapter().addData(item[0], Integer.parseInt(item[1]), Integer.parseInt(item[2]), Integer.parseInt(item[3]), Integer.parseInt(item[4]), Integer.parseInt(item[5]));
+                                    }
+                                    MyApplication.getDBAdapter().addBulkData(yogaItemArrayList);
+
+                                    line = bufferedReader.readLine();
+                                    typeCount = Integer.parseInt(line);
+                                    for (i = 0; i < typeCount; i++)
+                                    {
+                                        line = bufferedReader.readLine();
+                                        MyApplication.getDBAdapter().addType(line);
+                                    }
+
+                                    line = bufferedReader.readLine();
+                                    durationCount = Integer.parseInt(line);
+                                    for (i = 0; i < durationCount; i++)
+                                    {
+                                        line = bufferedReader.readLine();
+                                        MyApplication.getDBAdapter().addDuration(Double.parseDouble(line));
+                                    }
+
+                                    line = bufferedReader.readLine();
+                                    studioCount = Integer.parseInt(line);
+                                    for (i = 0; i < studioCount; i++)
+                                    {
+                                        line = bufferedReader.readLine();
+                                        MyApplication.getDBAdapter().addStudio(line);
+                                    }
+
+                                    bufferedReader.close();
+                                }
+                                catch (IOException e)
+                                {
+                                    e.printStackTrace();
+                                }
+
+                                return null;
                             }
 
-                            for (i = 0; i < studioCount; i++)
+                            @Override
+                            protected void onPostExecute(Void nothing)
                             {
-                                line = bufferedReader.readLine();
-                                MyApplication.getDBAdapter().addStudio(line);
+                                mProgressDialog.dismiss();
+
+                                setResult(RESULT_OK, new Intent());
+                                finish();
                             }
-
-                            for (i = 0; i < itemCount; i++)
-                            {
-                                line = bufferedReader.readLine();
-                                item = line.split(";", -1);
-                                MyApplication.getDBAdapter().addData(item[0], Integer.parseInt(item[1]), Integer.parseInt(item[2]), Integer.parseInt(item[3]), Integer.parseInt(item[4]), Integer.parseInt(item[5]));
-                            }
-
-                            bufferedReader.close();
-
-
-                            setResult(RESULT_OK, new Intent());
-                            finish();
-                        }
-                        catch (IOException e)
-                        {
-                            e.printStackTrace();
-                        }
+                        }.execute();
                     }
                 })
-                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener()
-                {
+                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int whichButton)
-                    {
+                    public void onClick(DialogInterface dialog, int whichButton) {
                     }
                 })
                 .show();
@@ -246,21 +358,17 @@ public class BackupActivity extends AppCompatActivity implements LoaderManager.L
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder
                 .setMessage(getString(R.string.delete_backup) + mList.get(position) + "?")
-                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener()
-                {
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int whichButton)
-                    {
+                    public void onClick(DialogInterface dialog, int whichButton) {
                         mList.get(position).delete();
                         mList.remove(position);
                         backupRecyclerViewAdapter.notifyItemRemoved(position);
                     }
                 })
-                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener()
-                {
+                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int whichButton)
-                    {
+                    public void onClick(DialogInterface dialog, int whichButton) {
                     }
                 })
                 .show();

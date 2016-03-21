@@ -4,28 +4,32 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 class SimpleRecyclerViewDivider extends RecyclerView.ItemDecoration
 {
-    private final Paint mPaint;
+    //private final Paint mPaint;
+    private Drawable mDivider;
 
     public SimpleRecyclerViewDivider(Context context)
     {
-        mPaint = new Paint();
-        mPaint.setColor(context.getResources().getColor(R.color.accent));
-        mPaint.setStrokeWidth(3);
+        mDivider = ContextCompat.getDrawable(context, R.drawable.line_divider);
+//        mPaint = new Paint();
+//        mPaint.setColor(context.getResources().getColor(R.color.colorAccent));
+//        mPaint.setStrokeWidth(2);
     }
 
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state)
     {
-        outRect.set(0, 0, 0, (int) mPaint.getStrokeWidth());
+        outRect.set(0, 0, 0, mDivider.getIntrinsicHeight());
     }
 
     @Override
-    public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state)
+    public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state)
     {
         int left = parent.getPaddingLeft();
         int right = parent.getWidth() - parent.getPaddingRight();
@@ -38,10 +42,15 @@ class SimpleRecyclerViewDivider extends RecyclerView.ItemDecoration
 
             RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
 
-            int top = child.getBottom() + params.bottomMargin + (int) mPaint.getStrokeWidth() / 2;
-            int bottom = top;
+//            int top = child.getBottom() + params.bottomMargin + (int) mPaint.getStrokeWidth() / 2;
+//            int bottom = top;
+//
+//            c.drawLine(left, top, right, bottom, mPaint);
+            int top = child.getBottom() + params.bottomMargin;
+            int bottom = top + mDivider.getIntrinsicHeight();
 
-            c.drawLine(left, top, right, bottom, mPaint);
+            mDivider.setBounds(left, top, right, bottom);
+            mDivider.draw(c);
         }
     }
 }
