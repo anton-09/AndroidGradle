@@ -8,6 +8,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -181,7 +182,7 @@ public class AddActivity extends AppCompatActivity
                 } catch (ParseException ignored) {
                 }
                 startActivityForResult(intent, REQUEST_CODE_SET_DATE);
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                overridePendingTransition(R.animator.slide_in_right, R.animator.slide_out_left);
             }
         });
 
@@ -285,7 +286,7 @@ public class AddActivity extends AppCompatActivity
     {
         ArrayList<EntityGeneric> list;
 
-        public MySpinnerAdapter(Context context, int textViewResourceId, ArrayList<EntityGeneric> objects)
+        MySpinnerAdapter(Context context, int textViewResourceId, ArrayList<EntityGeneric> objects)
         {
             super(context, textViewResourceId, objects);
 
@@ -298,8 +299,9 @@ public class AddActivity extends AppCompatActivity
             return getView(position, convertView, parent);
         }
 
+        @NonNull
         @Override
-        public View getView(int position, View convertView, ViewGroup parent)
+        public View getView(int position, View convertView, @NonNull ViewGroup parent)
         {
             if (convertView == null)
             {
@@ -313,7 +315,7 @@ public class AddActivity extends AppCompatActivity
             return convertView;
         }
 
-        public int getPositionById(Integer id)
+        int getPositionById(Integer id)
         {
             for (EntityGeneric listItem : list)
             {

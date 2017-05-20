@@ -201,14 +201,14 @@ public class TechArchActivity extends Activity
         @Override
         public void onDrawerClosed(View view)
         {
-            Log.d("CustomActionBarDrawerToggle", "onDrawerClosed");
+            Log.d("CustActBarDrawTog", "onDrawerClosed");
             invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
         }
 
         @Override
         public void onDrawerOpened(View drawerView)
         {
-            Log.d("CustomActionBarDrawerToggle", "onDrawerOpened");
+            Log.d("CustActBarDrawTog", "onDrawerOpened");
             invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
         }
     }

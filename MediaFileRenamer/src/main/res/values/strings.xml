@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">MediaRenamer</string>
+    <string name="open_back">Вверх</string>
+    <string name="open_go">Выбрать</string>
+    <string name="choose_another_folder">Выбрать папку</string>
+    <string name="current_folder">Текущая папка</string>
+    <string name="process_files">Обработать файлы</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="menu_setting">Настройки</string>
+    <string name="menu_revert">Откат</string>
+    <string name="setting_extensions">Что преобразовываем</string>
+    <string name="setting_ui">Что видим</string>
+    <string name="setting_verbose_log">все файлы в логе</string>
+    <string name="setting_show_media_files">медиа-файлы при выборе папки</string>
+    <string name="setting_mask">Маска переименования</string>
+    <string name="setting_initial_folder">Рабочая папка</string>
+</resources>
+

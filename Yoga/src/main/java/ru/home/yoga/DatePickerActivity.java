@@ -6,6 +6,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -40,7 +41,7 @@ public class DatePickerActivity extends AppCompatActivity
         materialCalendarView.setCurrentDate(dateDefault);
         materialCalendarView.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
-            public void onDateSelected(MaterialCalendarView widget, CalendarDay date, boolean selected) {
+            public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
                 exitIntent.putExtra("date", date.getDate().getTime());
             }
         });
@@ -75,7 +76,7 @@ public class DatePickerActivity extends AppCompatActivity
     public void finish()
     {
         super.finish();
-        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+        overridePendingTransition(R.animator.slide_in_left, R.animator.slide_out_right);
     }
 
 }

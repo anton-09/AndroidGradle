@@ -101,7 +101,7 @@ public class ContainerFragment extends ListFragment
 
                 FragmentManager fragmentManager = getFragmentManager();
                 fragmentManager.beginTransaction()
-                        .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_left, R.anim.slide_in_right, R.anim.slide_out_right)
+                        .setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_left, R.animator.slide_in_right, R.animator.slide_out_right)
                         .replace(R.id.details, DetailFragment.newInstance(((Hardware) getListView().getItemAtPosition(mCurrentCheckedPosition)).mPhoto, mCurrentCheckedPosition))
                         .commit();
             }

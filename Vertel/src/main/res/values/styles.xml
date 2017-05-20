@@ -2,8 +2,8 @@
 <resources>
 	
 	<style name="MenuDialogAnimation">
-		<item name="@android:windowEnterAnimation">@anim/appear</item>
-		<item name="@android:windowExitAnimation">@anim/disappear</item>
+		<item name="@android:windowEnterAnimation">@animator/appear</item>
+		<item name="@android:windowExitAnimation">@animator/disappear</item>
 	</style>
 
 </resources>
