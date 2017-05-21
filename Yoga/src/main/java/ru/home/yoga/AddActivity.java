@@ -182,7 +182,7 @@ public class AddActivity extends AppCompatActivity
                 } catch (ParseException ignored) {
                 }
                 startActivityForResult(intent, REQUEST_CODE_SET_DATE);
-                overridePendingTransition(R.animator.slide_in_right, R.animator.slide_out_left);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
 
@@ -294,7 +294,7 @@ public class AddActivity extends AppCompatActivity
         }
 
         @Override
-        public View getDropDownView(int position, View convertView, ViewGroup parent)
+        public View getDropDownView(int position, View convertView, @NonNull ViewGroup parent)
         {
             return getView(position, convertView, parent);
         }

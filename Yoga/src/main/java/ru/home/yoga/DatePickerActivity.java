@@ -76,7 +76,7 @@ public class DatePickerActivity extends AppCompatActivity
     public void finish()
     {
         super.finish();
-        overridePendingTransition(R.animator.slide_in_left, R.animator.slide_out_right);
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 
 }

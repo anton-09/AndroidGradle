@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion '25.0.3'
+    compileSdkVersion rootProject.compileSdkVersion
+    buildToolsVersion rootProject.buildToolsVersion
 
     defaultConfig {
+        minSdkVersion rootProject.minSdkVersion
+        targetSdkVersion rootProject.targetSdkVersion
         applicationId 'ru.home.yoga'
-        minSdkVersion 22
-        targetSdkVersion 25
         versionCode 1
         versionName '1.0'
     }
@@ -18,11 +18,11 @@ android {
         }
     }
     dependencies {
-        compile "com.android.support:appcompat-v7:25.3.1"
-        compile "com.android.support:design:25.3.1"
-        compile "com.android.support:recyclerview-v7:25.3.1"
-        compile "com.android.support:gridlayout-v7:25.3.1"
-        compile "com.prolificinteractive:material-calendarview:1.2.0"
+        compile "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
+        compile "com.android.support:design:$rootProject.supportLibraryVersion"
+        compile "com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion"
+        compile "com.android.support:gridlayout-v7:$rootProject.supportLibraryVersion"
+        compile "com.prolificinteractive:material-calendarview:$rootProject.calendarviewVersion"
     }
 
     compileOptions.encoding = 'windows-1251'
