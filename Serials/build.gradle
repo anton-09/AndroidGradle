@@ -20,10 +20,10 @@ android {
     }
 
     dependencies {
-        compile "joda-time:joda-time:$rootProject.jodatimeVersion"
-        compile "com.android.support:support-v4:$rootProject.supportLibraryVersion"
-        compile "com.actionbarsherlock:actionbarsherlock:$rootProject.actionbarSherlockVersion"
-        compile project(":CollapsableSearchMenuLibrary")
+        implementation "joda-time:joda-time:$rootProject.jodatimeVersion"
+        implementation "com.android.support:support-v4:'22.2.0'"
+        implementation "com.actionbarsherlock:actionbarsherlock:$rootProject.actionbarSherlockVersion"
+        implementation project(":CollapsableSearchMenuLibrary")
     }
 
     compileOptions.encoding = 'windows-1251'

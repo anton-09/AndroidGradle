@@ -19,6 +19,6 @@ android {
     }
 
     dependencies {
-        compile "com.actionbarsherlock:actionbarsherlock:$rootProject.actionbarSherlockVersion"
+        api "com.actionbarsherlock:actionbarsherlock:$rootProject.actionbarSherlockVersion"
     }
 }

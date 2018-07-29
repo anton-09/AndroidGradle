@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:android="http://schemas.android.com/apk/res/android">
-	
-	<!-- LIST --> 
-	
-	<style name="list_item_top">
-		<item name="android:clickable">true</item>
-		<item name="android:paddingTop">10dip</item>
-		<item name="android:paddingBottom">10dip</item>
-		<item name="android:paddingLeft">10dip</item>
-    	<item name="android:paddingRight">10dip</item>
-    	<item name="android:minHeight">60dip</item>
+<resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schemas.android.com/apk/res/android ">
+
+    <!-- LIST -->
+
+    <style name="list_item_top">
+        <item name="android:clickable">true</item>
+        <item name="android:paddingTop">10dip</item>
+        <item name="android:paddingBottom">10dip</item>
+        <item name="android:paddingLeft">10dip</item>
+        <item name="android:paddingRight">10dip</item>
+        <item name="android:minHeight">60dip</item>
         <item name="android:gravity">center_vertical</item>
-    	<item name="android:background">@drawable/background_view_rounded_top</item>
-	</style>
+        <item name="android:background">@drawable/background_view_rounded_top</item>
+    </style>
 
     <style name="list_item_top_left">
         <item name="android:clickable">true</item>
@@ -36,27 +36,27 @@
         <item name="android:background">@drawable/background_view_rounded_top_right</item>
     </style>
 
-	<style name="list_item_middle">
-		<item name="android:clickable">true</item>
-		<item name="android:paddingTop">10dip</item>
-		<item name="android:paddingBottom">10dip</item>
-		<item name="android:paddingLeft">10dip</item>
-    	<item name="android:paddingRight">10dip</item>
+    <style name="list_item_middle">
+        <item name="android:clickable">true</item>
+        <item name="android:paddingTop">10dip</item>
+        <item name="android:paddingBottom">10dip</item>
+        <item name="android:paddingLeft">10dip</item>
+        <item name="android:paddingRight">10dip</item>
         <item name="android:minHeight">60dip</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:background">@drawable/background_view_rounded_middle</item>
-	</style>
+    </style>
 
-	<style name="list_item_bottom">
-		<item name="android:clickable">true</item>
-		<item name="android:paddingTop">10dip</item>
-		<item name="android:paddingBottom">10dip</item>
-		<item name="android:paddingLeft">10dip</item>
-    	<item name="android:paddingRight">10dip</item>
-    	<item name="android:minHeight">60dip</item>
+    <style name="list_item_bottom">
+        <item name="android:clickable">true</item>
+        <item name="android:paddingTop">10dip</item>
+        <item name="android:paddingBottom">10dip</item>
+        <item name="android:paddingLeft">10dip</item>
+        <item name="android:paddingRight">10dip</item>
+        <item name="android:minHeight">60dip</item>
         <item name="android:gravity">center_vertical</item>
-    	<item name="android:background">@drawable/background_view_rounded_bottom</item>
-	</style>
+        <item name="android:background">@drawable/background_view_rounded_bottom</item>
+    </style>
 
     <style name="list_item_bottom_left">
         <item name="android:clickable">true</item>
@@ -79,17 +79,17 @@
         <item name="android:gravity">center_vertical</item>
         <item name="android:background">@drawable/background_view_rounded_bottom_right</item>
     </style>
-	
-	<style name="list_item_single">
-		<item name="android:clickable">true</item>
-		<item name="android:paddingTop">10dip</item>
-		<item name="android:paddingBottom">10dip</item>
-		<item name="android:paddingLeft">10dip</item>
-    	<item name="android:paddingRight">10dip</item>
-    	<item name="android:minHeight">60dip</item>
-    	<item name="android:gravity">center_vertical</item>
-    	<item name="android:background">@drawable/background_view_rounded_single</item>
-	</style>
+
+    <style name="list_item_single">
+        <item name="android:clickable">true</item>
+        <item name="android:paddingTop">10dip</item>
+        <item name="android:paddingBottom">10dip</item>
+        <item name="android:paddingLeft">10dip</item>
+        <item name="android:paddingRight">10dip</item>
+        <item name="android:minHeight">60dip</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:background">@drawable/background_view_rounded_single</item>
+    </style>
 
     <style name="list_item_left">
         <item name="android:clickable">true</item>
@@ -133,7 +133,6 @@
     </style>
 
 
-
     <style name="list_item_chevron">
         <item name="android:paddingLeft">4.0dip</item>
         <item name="android:paddingTop">2.0dip</item>
@@ -143,10 +142,10 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:src">@drawable/chevron</item>
         <item name="android:duplicateParentState">true</item>
-    </style>	
-	
-	
-	<!-- TEXT -->
+    </style>
+
+
+    <!-- TEXT -->
     <style name="content_page_large_text">
         <item name="android:duplicateParentState">true</item>
         <item name="android:textSize">16.0dip</item>
@@ -159,8 +158,8 @@
         <item name="android:singleLine">true</item>
     </style>
 
-	<style name="content_page_small_text">
-		<item name="android:duplicateParentState">true</item>
+    <style name="content_page_small_text">
+        <item name="android:duplicateParentState">true</item>
         <item name="android:textSize">12.0dip</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -194,54 +193,52 @@
     </style>
 
 
+    <style name="Animations"/>
 
+    <!-- PopDownMenu -->
+    <style name="Animations.PopDownMenu"/>
 
-    <style name="Animations" />
+    <style name="Animations.PopDownMenu.Center">
+        <item name="android:windowEnterAnimation">@anim/grow_from_top</item>
+        <item name="android:windowExitAnimation">@anim/shrink_from_bottom</item>
+    </style>
 
-	<!-- PopDownMenu -->
-	<style name="Animations.PopDownMenu" />
-	
-	<style name="Animations.PopDownMenu.Center">
-		<item name="@android:windowEnterAnimation">@anim/grow_from_top</item>
-		<item name="@android:windowExitAnimation">@anim/shrink_from_bottom</item>
-	</style>
-	
-	<style name="Animations.PopDownMenu.Left">
-		<item name="@android:windowEnterAnimation">@anim/grow_from_topleft_to_bottomright</item>
-		<item name="@android:windowExitAnimation">@anim/shrink_from_bottomright_to_topleft</item>
-	</style>
-	
-	<style name="Animations.PopDownMenu.Right">
-		<item name="@android:windowEnterAnimation">@anim/grow_from_topright_to_bottomleft</item>
-		<item name="@android:windowExitAnimation">@anim/shrink_from_bottomleft_to_topright</item>
-	</style>
-	
-	<style name="Animations.PopDownMenu.Reflect">
-		<item name="@android:windowEnterAnimation">@anim/pump_top</item>
-		<item name="@android:windowExitAnimation">@anim/disappear</item>
-	</style>
-	
-	<!-- PopUpMenu -->
-	<style name="Animations.PopUpMenu" />
-	
-	<style name="Animations.PopUpMenu.Center">
-		<item name="@android:windowEnterAnimation">@anim/grow_from_bottom</item>
-		<item name="@android:windowExitAnimation">@anim/shrink_from_top</item>
-	</style>
-	
-	<style name="Animations.PopUpMenu.Left">
-		<item name="@android:windowEnterAnimation">@anim/grow_from_bottomleft_to_topright</item>
-		<item name="@android:windowExitAnimation">@anim/shrink_from_topright_to_bottomleft</item>
-	</style>
-	
-	<style name="Animations.PopUpMenu.Right">
-		<item name="@android:windowEnterAnimation">@anim/grow_from_bottomright_to_topleft</item>
-		<item name="@android:windowExitAnimation">@anim/shrink_from_topleft_to_bottomright</item>
-	</style>
-	
-	<style name="Animations.PopUpMenu.Reflect">
-		<item name="@android:windowEnterAnimation">@anim/pump_bottom</item>
-		<item name="@android:windowExitAnimation">@anim/disappear</item>
-	</style>
+    <style name="Animations.PopDownMenu.Left">
+        <item name="android:windowEnterAnimation">@anim/grow_from_topleft_to_bottomright</item>
+        <item name="android:windowExitAnimation">@anim/shrink_from_bottomright_to_topleft</item>
+    </style>
+
+    <style name="Animations.PopDownMenu.Right">
+        <item name="android:windowEnterAnimation">@anim/grow_from_topright_to_bottomleft</item>
+        <item name="android:windowExitAnimation">@anim/shrink_from_bottomleft_to_topright</item>
+    </style>
+
+    <style name="Animations.PopDownMenu.Reflect">
+        <item name="android:windowEnterAnimation">@anim/pump_top</item>
+        <item name="android:windowExitAnimation">@anim/disappear</item>
+    </style>
+
+    <!-- PopUpMenu -->
+    <style name="Animations.PopUpMenu"/>
+
+    <style name="Animations.PopUpMenu.Center">
+        <item name="android:windowEnterAnimation">@anim/grow_from_bottom</item>
+        <item name="android:windowExitAnimation">@anim/shrink_from_top</item>
+    </style>
+
+    <style name="Animations.PopUpMenu.Left">
+        <item name="android:windowEnterAnimation">@anim/grow_from_bottomleft_to_topright</item>
+        <item name="android:windowExitAnimation">@anim/shrink_from_topright_to_bottomleft</item>
+    </style>
+
+    <style name="Animations.PopUpMenu.Right">
+        <item name="@android:windowEnterAnimation">@anim/grow_from_bottomright_to_topleft</item>
+        <item name="@android:windowExitAnimation">@anim/shrink_from_topleft_to_bottomright</item>
+    </style>
+
+    <style name="Animations.PopUpMenu.Reflect">
+        <item name="android:windowEnterAnimation">@anim/pump_bottom</item>
+        <item name="android:windowExitAnimation">@anim/disappear</item>
+    </style>
 
 </resources>
