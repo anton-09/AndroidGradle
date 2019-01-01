@@ -8,4 +8,8 @@
     <color name="textColorSecondary">#9E9E9E</color>
     <color name="background">#FFFFFF</color>
 
+    <color name="minus">#E57373</color>
+    <color name="plus">#AED581</color>
+
+
 </resources>

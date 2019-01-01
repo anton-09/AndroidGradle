@@ -26,6 +26,7 @@ public class PracticeDuration extends EntityGeneric
     {
         return mId;
     }
+
     @Override
     public String getEntityValue()
     {

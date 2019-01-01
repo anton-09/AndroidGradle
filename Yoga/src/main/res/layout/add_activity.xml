@@ -102,6 +102,39 @@
 
     </android.support.v7.widget.GridLayout>
 
+    <info.hoang8f.android.segmented.SegmentedGroup
+        android:orientation="horizontal"
+        android:padding="10.0dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        segmentedgroup:sc_tint_color="@color/colorAccent"
+        xmlns:segmentedgroup="http://schemas.android.com/apk/res-auto">
+
+        <RadioButton
+            android:id="@+id/button_pay_type_minus"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="@string/pay_type_minus"
+            style="@style/RadioButton"/>
+
+        <RadioButton
+            android:id="@+id/button_pay_type_ok"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="@string/pay_type_ok"
+            style="@style/RadioButton"/>
+
+        <RadioButton
+            android:id="@+id/button_pay_type_plus"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="@string/pay_type_plus"
+            style="@style/RadioButton"/>
+
+    </info.hoang8f.android.segmented.SegmentedGroup>
 
 
     <android.support.design.widget.TextInputLayout
@@ -116,6 +149,21 @@
             android:layout_height="wrap_content"
             android:inputType="number"
             android:hint="@string/hint_price" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_fio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+        <EditText
+            android:id="@+id/edit_text_fio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:hint="@string/hint_fio" />
 
     </android.support.design.widget.TextInputLayout>
 

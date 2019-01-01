@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ru.home.yoga" >
+    package="ru.home.yoga">
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -39,6 +39,12 @@
             android:name="ru.home.yoga.DatePickerActivity"
             android:label="@string/app_label_date"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name="ru.home.yoga.SummaryActivity"
+            android:label="@string/app_label_summary"
+            android:screenOrientation="portrait"/>
+
 
     </application>
 

@@ -16,16 +16,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import java.text.ParseException;
+import org.joda.time.LocalDate;
+
 import java.util.ArrayList;
-import java.util.Date;
 
 import ru.home.yoga.entity.EntityGeneric;
 import ru.home.yoga.entity.PracticeDuration;
@@ -45,15 +47,22 @@ public class AddActivity extends AppCompatActivity
     Spinner spinnerType;
     Spinner spinnerDuration;
     Spinner spinnerStudio;
+    EditText editTextFIO;
 
-    Date initialDate = new Date();
+    RadioButton radioButtonMinus;
+    RadioButton radioButtonOk;
+    RadioButton radioButtonPlus;
+
+
+    LocalDate initialDate = new LocalDate();
     long clickedDayId;
     int initialPrice = 0;
+    String initialPayType = "=";
     int initialPeople = 0;
     int initialType = 0;
     int initialDuration = 0;
     int initialStudio = 0;
-
+    String initialFIO = "";
 
 
     public void onCreate(Bundle savedInstanceState)
@@ -68,6 +77,11 @@ public class AddActivity extends AppCompatActivity
         spinnerType = (Spinner) findViewById(R.id.spinner_type);
         spinnerDuration = (Spinner) findViewById(R.id.spinner_duration);
         spinnerStudio = (Spinner) findViewById(R.id.spinner_studio);
+        editTextFIO = (EditText) findViewById(R.id.edit_text_fio);
+        radioButtonMinus = (RadioButton) findViewById(R.id.button_pay_type_minus);
+        radioButtonOk = (RadioButton) findViewById(R.id.button_pay_type_ok);
+        radioButtonPlus = (RadioButton) findViewById(R.id.button_pay_type_plus);
+
 
         initToolbar();
         getInitValues();
@@ -84,17 +98,10 @@ public class AddActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
+                setResult(0);
                 onBackPressed();
             }
         });
-
-        // Workaround to get WHITE back arrow for pre-lollipop devices!!!
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
-        {
-            Drawable backArrow = ContextCompat.getDrawable(this, R.drawable.abc_ic_ab_back_material);
-            backArrow.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_ATOP);
-            getSupportActionBar().setHomeAsUpIndicator(backArrow);
-        }
     }
 
     public void getInitValues()
@@ -103,7 +110,7 @@ public class AddActivity extends AppCompatActivity
         ArrayList arrayList;
         ArrayAdapter<EntityGeneric> arrayAdapter;
 
-
+        initialStudio = getIntent().getIntExtra("studioId", 0);
         clickedDayId = getIntent().getLongExtra("clickedId", -1);
         if (clickedDayId != -1)
         {
@@ -112,19 +119,14 @@ public class AddActivity extends AppCompatActivity
             cursor.moveToFirst();
             if (!cursor.isAfterLast())
             {
-                try
-                {
-                    initialDate = MyApplication.mDbDateFormat.parse(cursor.getString(1));
-                }
-                catch (ParseException ignored)
-                {
-                }
-
+                initialDate = MyApplication.mDbDateFormat.parseLocalDate(cursor.getString(1));
                 initialPrice = cursor.getInt(2);
-                initialPeople = cursor.getInt(3);
-                initialType = cursor.getInt(4);
-                initialDuration = cursor.getInt(6);
-                initialStudio = cursor.getInt(8);
+                initialPayType = cursor.getString(3);
+                initialPeople = cursor.getInt(4);
+                initialType = cursor.getInt(5);
+                initialDuration = cursor.getInt(7);
+                initialStudio = cursor.getInt(9);
+                initialFIO = cursor.getString(12);
             }
             cursor.close();
         }
@@ -162,7 +164,7 @@ public class AddActivity extends AppCompatActivity
         cursor.moveToFirst();
         while (!cursor.isAfterLast())
         {
-            arrayList.add(new Studio(cursor.getInt(0), cursor.getString(1)));
+            arrayList.add(new Studio(cursor.getInt(0), cursor.getString(1), cursor.getInt(2)));
             cursor.moveToNext();
         }
         cursor.close();
@@ -172,36 +174,52 @@ public class AddActivity extends AppCompatActivity
 
     private void initComponents()
     {
-        buttonDate.setText(MyApplication.mViewFullDateFormat.format(initialDate));
-        buttonDate.setOnClickListener(new View.OnClickListener() {
+        buttonDate.setText(initialDate.toString(MyApplication.mViewFullDateFormat));
+        buttonDate.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 Intent intent = new Intent(AddActivity.this, DatePickerActivity.class);
-                try {
-                    intent.putExtra("date", MyApplication.mViewFullDateFormat.parse(buttonDate.getText().toString()).getTime());
-                } catch (ParseException ignored) {
-                }
+                intent.putExtra("date", buttonDate.getText().toString());
                 startActivityForResult(intent, REQUEST_CODE_SET_DATE);
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
 
+        if (initialPayType.equals("-"))
+        {
+            radioButtonMinus.setChecked(true);
+        }
+        if (initialPayType.equals("="))
+        {
+            radioButtonOk.setChecked(true);
+        }
+        if (initialPayType.equals("+"))
+        {
+            radioButtonPlus.setChecked(true);
+        }
 
         editTextPrice.setText(String.valueOf(initialPrice));
+        editTextFIO.setText(initialFIO);
 
 
-        seekBarPeople.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        seekBarPeople.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
+        {
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
+            {
                 textViewPeople.setText(String.valueOf(progress));
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
+            public void onStartTrackingTouch(SeekBar seekBar)
+            {
             }
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
+            public void onStopTrackingTouch(SeekBar seekBar)
+            {
             }
         });
         seekBarPeople.setProgress(1);
@@ -211,6 +229,27 @@ public class AddActivity extends AppCompatActivity
         spinnerType.setSelection(((MySpinnerAdapter) spinnerType.getAdapter()).getPositionById(initialType));
         spinnerDuration.setSelection(((MySpinnerAdapter) spinnerDuration.getAdapter()).getPositionById(initialDuration));
         spinnerStudio.setSelection(((MySpinnerAdapter) spinnerStudio.getAdapter()).getPositionById(initialStudio));
+        spinnerStudio.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l)
+            {
+                if (((Studio) adapterView.getItemAtPosition(i)).isGroup())
+                {
+                    findViewById(R.id.input_layout_fio).setVisibility(View.GONE);
+                    findViewById(R.id.seekbar_people).setEnabled(true);
+                }
+                else
+                {
+                    findViewById(R.id.input_layout_fio).setVisibility(View.VISIBLE);
+                    findViewById(R.id.seekbar_people).setEnabled(false);
+                }
+            }
+
+            public void onNothingSelected(AdapterView<?> adapterView)
+            {
+            }
+        });
+
     }
 
     @Override
@@ -218,7 +257,7 @@ public class AddActivity extends AppCompatActivity
     {
         super.onActivityResult(requestCode, resultCode, data);
 
-        buttonDate.setText(MyApplication.mViewFullDateFormat.format(new Date(data.getLongExtra("date", -1))));
+        buttonDate.setText(data.getStringExtra("date"));
     }
 
     @Override
@@ -235,40 +274,61 @@ public class AddActivity extends AppCompatActivity
         {
             case R.id.menu_confirm:
 
-                try
-                {
-                    initialDate = MyApplication.mViewFullDateFormat.parse(buttonDate.getText().toString());
-                }
-                catch (ParseException ignored)
-                {
-                }
+                initialDate = MyApplication.mViewFullDateFormat.parseLocalDate(buttonDate.getText().toString());
                 initialPrice = Integer.parseInt(editTextPrice.getText().toString());
                 initialPeople = seekBarPeople.getProgress();
                 initialType = ((Type) spinnerType.getSelectedItem()).getId();
                 initialDuration = ((PracticeDuration) spinnerDuration.getSelectedItem()).getId();
                 initialStudio = ((Studio) spinnerStudio.getSelectedItem()).getId();
+                initialFIO = editTextFIO.getText().toString();
+
+                if (radioButtonMinus.isChecked())
+                {
+                    initialPayType = "-";
+                }
+                if (radioButtonOk.isChecked())
+                {
+                    initialPayType = "=";
+                }
+                if (radioButtonPlus.isChecked())
+                {
+                    initialPayType = "+";
+                }
+
+                if (((Studio) spinnerStudio.getSelectedItem()).isGroup())
+                {
+                    initialFIO = "";
+                }
+                else
+                {
+                    initialPeople = 1;
+                }
 
                 if (clickedDayId != -1)
                 {
                     MyApplication.getDBAdapter().updateData(
                             clickedDayId,
-                            MyApplication.mDbDateFormat.format(initialDate),
+                            initialDate.toString(MyApplication.mDbDateFormat),
                             initialPrice,
+                            initialPayType,
                             initialPeople,
                             initialType,
                             initialDuration,
-                            initialStudio
+                            initialStudio,
+                            initialFIO
                     );
                 }
                 else
                 {
                     MyApplication.getDBAdapter().addData(
-                            MyApplication.mDbDateFormat.format(initialDate),
+                            initialDate.toString(MyApplication.mDbDateFormat),
                             initialPrice,
+                            initialPayType,
                             initialPeople,
                             initialType,
                             initialDuration,
-                            initialStudio
+                            initialStudio,
+                            initialFIO
                     );
                 }
 
@@ -320,7 +380,9 @@ public class AddActivity extends AppCompatActivity
             for (EntityGeneric listItem : list)
             {
                 if (listItem.getEntityId().intValue() == id.intValue())
+                {
                     return getPosition(listItem);
+                }
             }
 
             return 0;

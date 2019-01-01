@@ -18,11 +18,14 @@ android {
         }
     }
     dependencies {
-        compile "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
-        compile "com.android.support:design:$rootProject.supportLibraryVersion"
-        compile "com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion"
-        compile "com.android.support:gridlayout-v7:$rootProject.supportLibraryVersion"
-        compile "com.prolificinteractive:material-calendarview:$rootProject.calendarviewVersion"
+        implementation "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
+        implementation "com.android.support:design:$rootProject.supportLibraryVersion"
+        implementation "com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion"
+        implementation "com.android.support:gridlayout-v7:$rootProject.supportLibraryVersion"
+        implementation ("com.prolificinteractive:material-calendarview:$rootProject.calendarviewVersion") { exclude group: 'com.android.support' }
+        // TODO исправить на Java 8 Time
+        implementation "joda-time:joda-time:2.10.1"
+        implementation "info.hoang8f:android-segmented:1.0.6"
     }
 
     compileOptions.encoding = 'windows-1251'

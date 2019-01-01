@@ -12,13 +12,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
-import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
+import org.joda.time.LocalDate;
+
 
 public class DatePickerActivity extends AppCompatActivity
 {
@@ -34,20 +32,22 @@ public class DatePickerActivity extends AppCompatActivity
 
         initToolbar();
 
-        Date dateDefault = new Date(getIntent().getLongExtra("date", -1));
+        LocalDate dateDefault = MyApplication.mViewFullDateFormat.parseLocalDate(getIntent().getStringExtra("date"));
 
         MaterialCalendarView materialCalendarView = (MaterialCalendarView) findViewById(R.id.material_calendar_view);
-        materialCalendarView.setSelectedDate(dateDefault);
-        materialCalendarView.setCurrentDate(dateDefault);
-        materialCalendarView.setOnDateChangedListener(new OnDateSelectedListener() {
+        materialCalendarView.setSelectedDate(dateDefault.toDate());
+        materialCalendarView.setCurrentDate(dateDefault.toDate());
+        materialCalendarView.setOnDateChangedListener(new OnDateSelectedListener()
+        {
             @Override
-            public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
-                exitIntent.putExtra("date", date.getDate().getTime());
+            public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected)
+            {
+                exitIntent.putExtra("date", LocalDate.fromDateFields(date.getDate()).toString(MyApplication.mViewFullDateFormat));
             }
         });
 
         exitIntent = new Intent();
-        exitIntent.putExtra("date", dateDefault.getTime());
+        exitIntent.putExtra("date", dateDefault.toString(MyApplication.mViewFullDateFormat));
         setResult(0, exitIntent);
     }
 
@@ -56,20 +56,14 @@ public class DatePickerActivity extends AppCompatActivity
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        toolbar.setNavigationOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 onBackPressed();
             }
         });
-
-        // Workaround to get WHITE back arrow for pre-lollipop devices!!!
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
-        {
-            Drawable backArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_material);
-            backArrow.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_ATOP);
-            getSupportActionBar().setHomeAsUpIndicator(backArrow);
-        }
     }
 
     @Override

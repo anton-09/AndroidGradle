@@ -1,10 +1,12 @@
 package ru.home.yoga;
 
+import android.Manifest;
 import android.app.LoaderManager;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -13,7 +15,10 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +28,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Toast;
+
+import org.joda.time.LocalDateTime;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -35,7 +42,6 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 
 import ru.home.yoga.entity.YogaItem;
@@ -44,7 +50,10 @@ public class BackupActivity extends AppCompatActivity implements LoaderManager.L
 {
     Toolbar toolbar;
     BackupRecyclerViewAdapter backupRecyclerViewAdapter;
+    //TODO
     ProgressDialog mProgressDialog;
+
+    View containerForSnackBar;
 
     File backupStorage;
     List<File> mList;
@@ -53,7 +62,31 @@ public class BackupActivity extends AppCompatActivity implements LoaderManager.L
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.backup_activity);
+        containerForSnackBar = findViewById(R.id.activity_container);
 
+        initToolbar();
+
+        initStorage();
+    }
+
+    private void initToolbar()
+    {
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                onBackPressed();
+            }
+        });
+    }
+
+    private void initRecyclerView()
+    {
+        //TODO
         if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
         {
             Toast.makeText(this, R.string.backup_no_sd, Toast.LENGTH_LONG).show();
@@ -66,36 +99,11 @@ public class BackupActivity extends AppCompatActivity implements LoaderManager.L
             backupStorage.mkdirs();
         }
 
-        initToolbar();
-        initRecyclerView();
-    }
-
-    private void initToolbar()
-    {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
-
-        // Workaround to get WHITE back arrow for pre-lollipop devices!!!
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
-        {
-            Drawable backArrow = ContextCompat.getDrawable(this, R.drawable.abc_ic_ab_back_material);
-            backArrow.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_ATOP);
-            getSupportActionBar().setHomeAsUpIndicator(backArrow);
-        }
-    }
-
-    private void initRecyclerView()
-    {
         File[] filesList = backupStorage.listFiles();
-        Arrays.sort(filesList, new Comparator<File>() {
-            public int compare(File f1, File f2) {
+        Arrays.sort(filesList, new Comparator<File>()
+        {
+            public int compare(File f1, File f2)
+            {
                 return Long.valueOf(f1.lastModified()).compareTo(f2.lastModified());
             }
         });
@@ -136,6 +144,7 @@ public class BackupActivity extends AppCompatActivity implements LoaderManager.L
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor)
     {
+        //TODO
         new AsyncTask<Cursor, Integer, File>()
         {
             @Override
@@ -151,7 +160,7 @@ public class BackupActivity extends AppCompatActivity implements LoaderManager.L
             @Override
             protected File doInBackground(Cursor... cursor)
             {
-                String shortFileName = MyApplication.mBackupDateFormat.format(new Date()) + ".csv";
+                String shortFileName = LocalDateTime.now().toString(MyApplication.mBackupDateFormat);
                 File fileName = new File(backupStorage, shortFileName);
 
                 try
@@ -170,7 +179,7 @@ public class BackupActivity extends AppCompatActivity implements LoaderManager.L
                     while (!cursor[0].isAfterLast())
                     {
                         publishProgress(++i * 100 / iCount);
-                        printWriter.println(cursor[0].getString(1) + ";" + cursor[0].getString(2) + ";" + cursor[0].getString(3) + ";" + cursor[0].getString(4) + ";" + cursor[0].getString(6) + ";" + cursor[0].getString(8));
+                        printWriter.println(cursor[0].getString(1) + ";" + cursor[0].getString(2) + ";" + cursor[0].getString(3) + ";" + cursor[0].getString(4) + ";" + cursor[0].getString(5) + ";" + cursor[0].getString(7) + ";" + cursor[0].getString(9) + ";" + cursor[0].getString(12));
                         cursor[0].moveToNext();
                     }
 
@@ -201,14 +210,13 @@ public class BackupActivity extends AppCompatActivity implements LoaderManager.L
                     tempCursor.moveToFirst();
                     while (!tempCursor.isAfterLast())
                     {
-                        printWriter.println(tempCursor.getString(1));
+                        printWriter.println(tempCursor.getString(1) + ";" + tempCursor.getString(2));
                         tempCursor.moveToNext();
                     }
 
                     tempCursor.close();
                     printWriter.close();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     Toast.makeText(BackupActivity.this, R.string.backup_write_error, Toast.LENGTH_LONG).show();
                     fileName.delete();
@@ -294,7 +302,7 @@ public class BackupActivity extends AppCompatActivity implements LoaderManager.L
                                     {
                                         line = bufferedReader.readLine();
                                         item = line.split(";", -1);
-                                        yogaItemArrayList.add(new YogaItem(item[0], Integer.parseInt(item[1]), Integer.parseInt(item[2]), Integer.parseInt(item[3]), Integer.parseInt(item[4]), Integer.parseInt(item[5])));
+                                        yogaItemArrayList.add(new YogaItem(item[0], Integer.parseInt(item[1]), item[2], Integer.parseInt(item[3]), Integer.parseInt(item[4]), Integer.parseInt(item[5]), Integer.parseInt(item[6]), item[7]));
                                         //MyApplication.getDBAdapter().addData(item[0], Integer.parseInt(item[1]), Integer.parseInt(item[2]), Integer.parseInt(item[3]), Integer.parseInt(item[4]), Integer.parseInt(item[5]));
                                     }
                                     MyApplication.getDBAdapter().addBulkData(yogaItemArrayList);
@@ -320,12 +328,11 @@ public class BackupActivity extends AppCompatActivity implements LoaderManager.L
                                     for (i = 0; i < studioCount; i++)
                                     {
                                         line = bufferedReader.readLine();
-                                        MyApplication.getDBAdapter().addStudio(line);
+                                        MyApplication.getDBAdapter().addStudio(line.split(";")[0], Integer.parseInt(line.split(";")[1]));
                                     }
 
                                     bufferedReader.close();
-                                }
-                                catch (IOException e)
+                                } catch (IOException e)
                                 {
                                     e.printStackTrace();
                                 }
@@ -344,9 +351,11 @@ public class BackupActivity extends AppCompatActivity implements LoaderManager.L
                         }.execute();
                     }
                 })
-                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener()
+                {
                     @Override
-                    public void onClick(DialogInterface dialog, int whichButton) {
+                    public void onClick(DialogInterface dialog, int whichButton)
+                    {
                     }
                 })
                 .show();
@@ -358,19 +367,93 @@ public class BackupActivity extends AppCompatActivity implements LoaderManager.L
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder
                 .setMessage(getString(R.string.delete_backup) + mList.get(position) + "?")
-                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener()
+                {
                     @Override
-                    public void onClick(DialogInterface dialog, int whichButton) {
+                    public void onClick(DialogInterface dialog, int whichButton)
+                    {
                         mList.get(position).delete();
                         mList.remove(position);
                         backupRecyclerViewAdapter.notifyItemRemoved(position);
                     }
                 })
-                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener()
+                {
                     @Override
-                    public void onClick(DialogInterface dialog, int whichButton) {
+                    public void onClick(DialogInterface dialog, int whichButton)
+                    {
                     }
                 })
                 .show();
+    }
+
+
+    // ============================
+    // === New permission model ===
+    // ============================
+
+    public static final int REQUEST_WRITE_STORAGE_REQUEST_CODE = 1;
+
+
+    private void initStorage()
+    {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+        {
+            // Permission is already available
+            initRecyclerView();
+        }
+        else
+        {
+            // Permission is missing and must be requested.
+            requestWriteStoragePermission();
+            //requestReadStoragePermission();
+        }
+    }
+
+    private void requestWriteStoragePermission()
+    {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE))
+        {
+            // Provide an additional rationale to the user if the permission was not granted
+            // and the user would benefit from additional context for the use of the permission.
+            // Display a SnackBar with cda button to request the missing permission.
+            Snackbar.make(containerForSnackBar, R.string.write_storage_required,
+                    Snackbar.LENGTH_INDEFINITE).setAction(R.string.yes, new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View view)
+                {
+                    // Request the permission
+                    ActivityCompat.requestPermissions(BackupActivity.this,
+                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                            REQUEST_WRITE_STORAGE_REQUEST_CODE);
+                }
+            }).show();
+
+        }
+        else
+        {
+            Snackbar.make(containerForSnackBar, R.string.write_storage_unavailable, Snackbar.LENGTH_SHORT).show();
+            // Request the permission. The result will be received in onRequestPermissionResult().
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_STORAGE_REQUEST_CODE);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
+    {
+        if (requestCode == REQUEST_WRITE_STORAGE_REQUEST_CODE)
+        {
+            // Request for write storage permission.
+            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+            {
+                // Permission has been granted
+                initRecyclerView();
+            }
+            else
+            {
+            }
+        }
     }
 }

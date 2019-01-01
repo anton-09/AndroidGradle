@@ -10,9 +10,8 @@ import android.widget.TextView;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
+
 
 public class BackupRecyclerViewAdapter extends RecyclerView.Adapter<BackupRecyclerViewAdapter.ViewHolder>
 {
@@ -28,25 +27,18 @@ public class BackupRecyclerViewAdapter extends RecyclerView.Adapter<BackupRecycl
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i)
+    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType)
     {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.backup_list_item, viewGroup, false);
         return new ViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, int i)
+    public void onBindViewHolder(ViewHolder viewHolder, int position)
     {
-        File item = mList.get(i);
+        File item = mList.get(position);
 
-        try
-        {
-            viewHolder.name.setText(MyApplication.mHumanReadableDateFormat.format(MyApplication.mBackupDateFormat.parse(item.getName())));
-        }
-        catch (ParseException e)
-        {
-            viewHolder.name.setText(item.getName());
-        }
+        viewHolder.name.setText(MyApplication.mBackupDateFormat.parseLocalDateTime(item.getName()).toString(MyApplication.mHumanReadableDateFormat));
 
         int rowCount = 0;
         try
@@ -59,8 +51,7 @@ public class BackupRecyclerViewAdapter extends RecyclerView.Adapter<BackupRecycl
                 rowCount = Integer.parseInt(line);
             }
             bufferedReader.close();
-        }
-        catch (Exception ignored)
+        } catch (Exception ignored)
         {
         }
 

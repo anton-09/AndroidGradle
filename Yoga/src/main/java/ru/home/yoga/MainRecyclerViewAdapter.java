@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -51,7 +52,8 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter
         {
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.main_list_item, parent, false);
             vh = new YogaItemViewHolder(v);
-        } else
+        }
+        else
         {
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.progess_bar, parent, false);
             vh = new ProgressViewHolder(v);
@@ -66,14 +68,37 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter
         {
             YogaItem item = mList.get(position);
 
-            ((YogaItemViewHolder)viewHolder).itemDate.setText(item.getDate());
-            ((YogaItemViewHolder)viewHolder).itemPrice.setText(String.format(mContext.getString(R.string.price), item.getPrice()));
-            ((YogaItemViewHolder)viewHolder).itemPeople.setText(item.getPeople().toString());
-            ((YogaItemViewHolder)viewHolder).itemType.setText(item.getType().getTypeName());
+            ((YogaItemViewHolder) viewHolder).itemDate.setText(item.getDate());
+            ((YogaItemViewHolder) viewHolder).itemPrice.setText(String.format(mContext.getString(R.string.price), item.getPrice()));
+            ((YogaItemViewHolder) viewHolder).itemPeople.setText(item.getPeople().toString());
+            ((YogaItemViewHolder) viewHolder).itemType.setText(item.getType().getTypeName());
+            ((YogaItemViewHolder) viewHolder).itemFIO.setText(item.getFIO());
+
+            if (item.getFIO().isEmpty())
+            {
+                ((YogaItemViewHolder) viewHolder).itemFIO.setVisibility(View.GONE);
+            }
+            else
+            {
+                ((YogaItemViewHolder) viewHolder).itemFIO.setVisibility(View.VISIBLE);
+            }
+
+            switch (item.getPayType())
+            {
+                case "+":
+                    ((YogaItemViewHolder) viewHolder).frameLayout.setBackgroundResource(R.color.plus);
+                    break;
+                case "-":
+                    ((YogaItemViewHolder) viewHolder).frameLayout.setBackgroundResource(R.color.minus);
+                    break;
+                default:
+                    ((YogaItemViewHolder) viewHolder).frameLayout.setBackgroundResource(R.color.background);
+                    break;
+            }
         }
         else
         {
-            ((ProgressViewHolder)viewHolder).progressBar.setIndeterminate(true);
+            ((ProgressViewHolder) viewHolder).progressBar.setIndeterminate(true);
         }
 
 
@@ -87,18 +112,24 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter
 
     class YogaItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener
     {
+        private final FrameLayout frameLayout;
         private final TextView itemDate;
-        private final TextView itemPrice;
         private final TextView itemPeople;
+        private final TextView itemPrice;
         private final TextView itemType;
+        private final TextView itemFIO;
+
 
         public YogaItemViewHolder(View itemView)
         {
             super(itemView);
+
+            frameLayout = (FrameLayout) itemView.findViewById(R.id.frame);
             itemDate = (TextView) itemView.findViewById(R.id.text_view_date);
             itemPrice = (TextView) itemView.findViewById(R.id.text_view_price);
             itemPeople = (TextView) itemView.findViewById(R.id.text_view_people);
             itemType = (TextView) itemView.findViewById(R.id.text_view_type);
+            itemFIO = (TextView) itemView.findViewById(R.id.text_view_fio);
 
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);

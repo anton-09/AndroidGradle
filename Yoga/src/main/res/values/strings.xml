@@ -3,10 +3,12 @@
     <string name="app_label_edit">Занятие</string>
     <string name="app_label_backup">Бэкапы</string>
     <string name="app_label_date">Дата</string>
+    <string name="app_label_summary">Статистика по месяцам</string>
 
     <string name="appbar_scrolling_view_behaviour">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
 
     <string name="hint_price">Цена</string>
+    <string name="hint_fio">Имя (для персонального занятия)</string>
     <string name="hint_people">Количество человек</string>
     <string name="hint_date">Дата</string>
 
@@ -26,7 +28,9 @@
     <string name="backup_no_sd">Внимание! SD-карта не доступна, бэкап не будет работать!</string>
     <string name="restore_backup">"Восстановить из бэкапа: "</string>
     <string name="delete_backup">"Удалить бэкап: "</string>
-    <string name="backup">Бэкапы</string>
+
+    <string name="menu_backup">Бэкапы</string>
+    <string name="menu_summary">Итоги</string>
 
     <string name="price">%1$d рублей</string>
 
@@ -38,5 +42,11 @@
     <string name="progress_dialog_save_data_to_sd">Сохранение данных в файл, жди…</string>
     <string name="progress_dialog_load_data_from_sd">Загрузка данных из файла, жди…</string>
 
+    <string name="write_storage_required">Это нужно включить для работы программы!</string>
+    <string name="write_storage_unavailable">Бэкапы теперь делать нельзя!</string>
+
+    <string name="pay_type_minus">Долг</string>
+    <string name="pay_type_ok">OK</string>
+    <string name="pay_type_plus">Переплата</string>
 
 </resources>

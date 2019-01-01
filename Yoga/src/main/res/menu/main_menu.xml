@@ -5,8 +5,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/menu_summary"
+        android:title="@string/menu_summary"
+        android:icon="@drawable/ic_information_outline"
+        app:showAsAction="ifRoom|withText" />
+
+    <item
         android:id="@+id/menu_backup"
-        android:title="@string/backup"
+        android:title="@string/menu_backup"
         android:icon="@drawable/ic_cloud_outline"
         app:showAsAction="ifRoom|withText" />
 </menu>

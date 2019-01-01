@@ -21,9 +21,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import java.text.ParseException;
+import org.joda.time.LocalDate;
+
 import java.util.ArrayList;
-import java.util.Date;
 
 import ru.home.yoga.entity.PracticeDuration;
 import ru.home.yoga.entity.Studio;
@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private static final int REQUEST_CODE_ADD_DATA = 1;
     private static final int REQUEST_CODE_BACKUP = 2;
+    private static final int REQUEST_CODE_SUMMARY = 3;
 
     private MainRecyclerViewAdapter mainRecyclerViewAdapter;
 
@@ -46,13 +47,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     DrawerLayout drawerLayout;
     NavigationView navigationView;
 
-    String mPrevDate = MyApplication.mDbDateFormat.format(new Date());
-    long mPrevId = 0;
+    String mInitDate = LocalDate.now().toString(MyApplication.mDbDateFormat);
+    long mInitId = 0;
     boolean mIsLoading = false;
     boolean mIsLastPage = false;
     int mTotalItemCount;
     int mLastVisibleItemPosition;
     int mVisibleThreshold = 5;
+    int mSelectedStudioId = 0;
 
 
     @Override
@@ -66,8 +68,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         initRecyclerView();
 
         Bundle bundle = new Bundle();
-        bundle.putString("PrevDate", mPrevDate);
-        bundle.putLong("PrevId", mPrevId);
+        bundle.putInt("StudioId", mSelectedStudioId);
+        bundle.putString("PrevDate", mInitDate);
+        bundle.putLong("PrevId", mInitId);
         getLoaderManager().initLoader(0, bundle, MainActivity.this);
     }
 
@@ -85,8 +88,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
 
-
-
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
         Menu menu = navigationView.getMenu();
 
@@ -99,17 +100,21 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         }
         studioCursor.close();
 
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener()
+        {
             @Override
-            public boolean onNavigationItemSelected(MenuItem item) {
+            public boolean onNavigationItemSelected(MenuItem item)
+            {
                 drawerLayout.closeDrawers();
 
                 toolbar.setTitle(item.getTitle());
 
+                mSelectedStudioId = item.getItemId();
+
                 Bundle bundle = new Bundle();
-                bundle.putInt("StudioId", item.getItemId());
-                bundle.putString("PrevDate", mPrevDate);
-                bundle.putLong("PrevId", mPrevId);
+                bundle.putInt("StudioId", mSelectedStudioId);
+                bundle.putString("PrevDate", mInitDate);
+                bundle.putLong("PrevId", mInitId);
                 getLoaderManager().restartLoader(0, bundle, MainActivity.this);
 
                 return true;
@@ -130,36 +135,40 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mainRecyclerViewAdapter = new MainRecyclerViewAdapter(this, this);
         recyclerView.setAdapter(mainRecyclerViewAdapter);
 
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener()
+        {
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy)
+            {
                 super.onScrolled(recyclerView, dx, dy);
 
                 mTotalItemCount = mLinearLayoutManager.getItemCount();
                 mLastVisibleItemPosition = mLinearLayoutManager.findLastVisibleItemPosition();
 
                 if (!mIsLoading && !mIsLastPage &&
-                        ((mLastVisibleItemPosition + mVisibleThreshold) >= mTotalItemCount) &&
-                        mTotalItemCount >= MyApplication.ITEMS_PER_PAGE)
+                        ((mLastVisibleItemPosition + mVisibleThreshold) >= mTotalItemCount))
+                //                        mTotalItemCount >= MyApplication.ITEMS_PER_PAGE
                 {
-                    Log.i(TAG, "initRecyclerView set mIsLoading TRUE");
                     Log.i(TAG, "initRecyclerView LastVisible = " + mLastVisibleItemPosition + ", Total = " + mTotalItemCount);
-                    mIsLoading = true;
                     loadMoreItems();
                 }
             }
 
             @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState)
+            {
                 super.onScrollStateChanged(recyclerView, newState);
             }
         });
 
         FloatingActionButton floatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+        floatingActionButton.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 Intent intentAdd = new Intent(MainActivity.this, AddActivity.class);
+                intentAdd.putExtra("studioId", mSelectedStudioId);
                 startActivityForResult(intentAdd, REQUEST_CODE_ADD_DATA);
             }
         });
@@ -177,6 +186,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     {
         switch (item.getItemId())
         {
+            case R.id.menu_summary:
+                Intent intentSummary = new Intent(this, SummaryActivity.class);
+                startActivityForResult(intentSummary, REQUEST_CODE_SUMMARY);
+                return true;
+
             case R.id.menu_backup:
                 Intent intentBackup = new Intent(this, BackupActivity.class);
                 startActivityForResult(intentBackup, REQUEST_CODE_BACKUP);
@@ -192,29 +206,29 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     {
         super.onActivityResult(requestCode, resultCode, intent);
 
+        if (resultCode == RESULT_CANCELED)
+        {
+            return;
+        }
+
         // Fill Navigation Drawer with studios
         if (requestCode == REQUEST_CODE_BACKUP)
+        {
             initNavigationView();
+        }
 
         Bundle bundle = new Bundle();
-        bundle.putString("PrevDate", mPrevDate);
-        bundle.putLong("PrevId", mPrevId);
+        bundle.putInt("StudioId", mSelectedStudioId);
+        bundle.putString("PrevDate", mInitDate);
+        bundle.putLong("PrevId", mInitId);
         getLoaderManager().restartLoader(0, bundle, MainActivity.this);
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle)
     {
-        if (bundle.getInt("StudioId") > 0)
-        {
-            Log.i(TAG, "onCreateLoader id = " + i + ", prevDate = " + bundle.getString("PrevDate") + ", prevId = " + bundle.getLong("PrevId") + ", studioId = " + bundle.getInt("StudioId"));
-            return new MyCursorLoader(bundle.getString("PrevDate"), bundle.getLong("PrevId"), bundle.getInt("StudioId"));
-        }
-        else
-        {
-            Log.i(TAG, "onCreateLoader id = " + i + ", prevDate = " + bundle.getString("PrevDate") + ", prevId = " + bundle.getLong("PrevId"));
-            return new MyCursorLoader(bundle.getString("PrevDate"), bundle.getLong("PrevId"));
-        }
+        Log.i(TAG, "onCreateLoader id = " + i + ", prevDate = " + bundle.getString("PrevDate") + ", prevId = " + bundle.getLong("PrevId") + ", studioId = " + bundle.getInt("StudioId"));
+        return new MyCursorLoader(bundle.getString("PrevDate"), bundle.getLong("PrevId"), bundle.getInt("StudioId"));
     }
 
     @Override
@@ -240,28 +254,20 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         }
 
         YogaItem yogaItem;
-        Date date;
 
         data.moveToFirst();
         while (!data.isAfterLast())
         {
-            try
-            {
-                date = MyApplication.mDbDateFormat.parse(data.getString(1));
-            }
-            catch (ParseException e)
-            {
-                date = new Date(0);
-            }
-
             yogaItem = new YogaItem(
                     data.getLong(0),
-                    MyApplication.mViewShortDateFormat.format(date),
+                    MyApplication.mDbDateFormat.parseLocalDate(data.getString(1)).toString(MyApplication.mViewShortDateFormat),
                     data.getInt(2),
-                    data.getInt(3),
-                    new Type(data.getInt(4), data.getString(5)),
-                    new PracticeDuration(data.getInt(6), data.getDouble(7)),
-                    new Studio(data.getInt(8), data.getString(9)));
+                    data.getString(3),
+                    data.getInt(4),
+                    new Type(data.getInt(5), data.getString(6)),
+                    new PracticeDuration(data.getInt(7), data.getDouble(8)),
+                    new Studio(data.getInt(9), data.getString(10), data.getInt(11)),
+                    data.getString(12));
 
             mList.add(yogaItem);
             mainRecyclerViewAdapter.notifyItemInserted(mList.size());
@@ -297,6 +303,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                         MyApplication.getDBAdapter().deleteData(mList.get(position).getId());
                         mList.remove(position);
                         mainRecyclerViewAdapter.notifyItemRemoved(position);
+                        mTotalItemCount = mLinearLayoutManager.getItemCount();
+                        mLastVisibleItemPosition = mLinearLayoutManager.findLastVisibleItemPosition();
+                        Log.i(TAG, "onDelete LastVisible = " + mLastVisibleItemPosition + ", Total = " + mTotalItemCount + ", mIsLoading = " + mIsLoading + ", mIsLastPage = " + mIsLastPage);
+                        if (!mIsLoading && !mIsLastPage && ((mLastVisibleItemPosition + mVisibleThreshold) >= mTotalItemCount))
+                        {
+                            loadMoreItems();
+                        }
+
                     }
                 })
                 .setNegativeButton(R.string.no, new DialogInterface.OnClickListener()
@@ -312,19 +326,17 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     public void loadMoreItems()
     {
+        mIsLoading = true;
+
         Log.i(TAG, "loadMoreItems mIsLoading = " + mIsLoading);
 
         mList.add(null);
         mainRecyclerViewAdapter.notifyItemInserted(mList.size() - 1);
 
         Bundle bundle = new Bundle();
-        try
-        {
-            bundle.putString("PrevDate", MyApplication.mDbDateFormat.format(MyApplication.mViewShortDateFormat.parse(mList.get(mList.size() - 2).getDate())));
-        } catch (ParseException ignored)
-        {
-        }
-        bundle.putLong("PrevId",  mList.get(mList.size() - 2).getId());
+        bundle.putString("PrevDate", MyApplication.mViewShortDateFormat.parseLocalDate(mList.get((mList.size() - 2)).getDate()).toString(MyApplication.mDbDateFormat));
+        bundle.putLong("PrevId", mList.get(mList.size() - 2).getId());
+        bundle.putInt("StudioId", mSelectedStudioId);
         getLoaderManager().restartLoader(0, bundle, MainActivity.this);
     }
 }
