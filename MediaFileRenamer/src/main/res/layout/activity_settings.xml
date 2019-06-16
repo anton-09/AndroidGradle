@@ -36,6 +36,30 @@
             tools:layout_editor_absoluteY="8dp">
 
             <Switch
+                android:id="@+id/jpg_switch"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:id="@+id/jpg_text_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:paddingLeft="10dp"
+                android:text="*.jpg"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="8dp">
+
+            <Switch
                 android:id="@+id/mp4_switch"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -61,18 +85,18 @@
             tools:layout_editor_absoluteY="8dp">
 
             <Switch
-                android:id="@+id/jpg_switch"
+                android:id="@+id/jpeg_switch"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"/>
 
             <TextView
-                android:id="@+id/jpg_text_view"
+                android:id="@+id/jpeg_text_view"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="5"
                 android:paddingLeft="10dp"
-                android:text="*.jpg"/>
+                android:text="*.jpeg"/>
 
         </LinearLayout>
 
@@ -148,7 +172,7 @@
             android:ems="10"
             android:inputType="textNoSuggestions"
             android:text="/"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+            app:layout_constraintTop_toBottomOf="@+id/linear_layout_folder"
             tools:layout_editor_absoluteX="8dp"/>
 
         <TextView
@@ -166,9 +190,19 @@
             android:ems="10"
             android:inputType="textNoSuggestions"
             android:text="yyyy-MM-dd HH-mm-ss"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+            app:layout_constraintTop_toBottomOf="@+id/linear_layout_folder"
             tools:layout_editor_absoluteX="8dp"/>
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text="@string/app_version"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="0dp"/>
 
 </android.support.constraint.ConstraintLayout>

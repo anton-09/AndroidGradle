@@ -3,6 +3,7 @@ package ru.home.mediafilerenamer;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -43,7 +44,7 @@ public class ChooseDirActivity extends AppCompatActivity implements RecyclerView
 
         simpleRecyclerViewAdapter = new SimpleRecyclerViewAdapter(this);
         simpleRecyclerViewAdapter.setDataModel(arrayDir);
-        simpleRecyclerViewAdapter.setCurrentItem(new MediaDir(null, "", ""));
+        simpleRecyclerViewAdapter.setCurrentItem(new MediaDir(null, "", "", ""));
         recyclerView.setAdapter(simpleRecyclerViewAdapter);
 
         updateListDir(new File(MyApplication.getInitialFolder()));
@@ -69,7 +70,7 @@ public class ChooseDirActivity extends AppCompatActivity implements RecyclerView
 
         textPath.setText(file.getAbsolutePath());
 
-        FileCountHelper.processFile(file, true, this);
+        FileCountHelper.processFile(file, true, this, null, true);
     }
 
 
@@ -79,7 +80,7 @@ public class ChooseDirActivity extends AppCompatActivity implements RecyclerView
         if (position >= 0)
             updateListDir(arrayDir.get(position).getUrl());
         else
-            updateListDir(currentItem.getUrl().getParentFile() != null ? currentItem.getUrl().getParentFile() : currentItem.getUrl());
+            updateListDir((currentItem.getUrl().getParentFile() != null && !currentItem.getUrl().equals(Environment.getExternalStorageDirectory())) ? currentItem.getUrl().getParentFile() : currentItem.getUrl());
     }
 
     @Override
