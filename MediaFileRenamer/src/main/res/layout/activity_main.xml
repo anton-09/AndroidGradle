@@ -21,7 +21,7 @@
         app:layout_constraintHorizontal_bias="0.0"/>
 
     <LinearLayout
-        android:id="@+id/linearLayout"
+        android:id="@+id/linear_layout_folder"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="0dp"
@@ -32,7 +32,7 @@
         android:paddingTop="5dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+        app:layout_constraintTop_toBottomOf="@+id/linear_layout_folder_header">
 
         <TextView
             android:id="@+id/text_view"
@@ -42,7 +42,7 @@
             android:textColor="@color/textColorPrimary"/>
 
         <TextView
-            android:id="@+id/text_view_photo_count"
+            android:id="@+id/text_view_photo_jpg_count"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -50,7 +50,15 @@
             android:textColor="@color/textColorSecondary"/>
 
         <TextView
-            android:id="@+id/text_view_video_count"
+            android:id="@+id/text_view_video_mp4_count"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/textColorSecondary"/>
+
+        <TextView
+            android:id="@+id/text_view_photo_jpeg_count"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -71,7 +79,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout"/>
+        app:layout_constraintTop_toBottomOf="@+id/linear_layout_folder"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/log_recycler_view"
@@ -102,7 +110,53 @@
         app:layout_constraintRight_toRightOf="parent"/>
 
     <LinearLayout
-        android:id="@+id/linearLayout2"
+        android:id="@+id/linear_layout_folder_header"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="0dp"
+        android:orientation="horizontal"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linear_layout_date_picker">
+
+        <TextView
+            android:id="@+id/current_path"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:text="@string/current_folder"
+            android:textColor="@color/textColorPrimary"/>
+
+        <ImageView
+            android:id="@+id/image_jpg"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/ic_photo_camera_black_24dp"/>
+
+        <ImageView
+            android:id="@+id/image_mp4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/ic_videocam_black_24dp"/>
+
+        <ImageView
+            android:id="@+id/image_jpeg"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/ic_photo_camera_black_24dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linear_layout_date_picker"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="0dp"
@@ -117,25 +171,22 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button">
 
-        <TextView
-            android:id="@+id/current_path"
+        <Button
+            android:id="@+id/date_picker_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="5"
-            android:text="@string/current_folder"
-            android:textColor="@color/textColorPrimary"/>
+            android:onClick="doSelectDate"
+            android:text="@string/select_date_for_jpeg"/>
 
-        <ImageView
+        <CheckBox
+            android:id="@+id/take_all_dates_check_box"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:src="@drawable/ic_photo_camera_black_24dp"/>
-
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@drawable/ic_videocam_black_24dp"/>
+            android:layout_gravity="center_vertical"
+            android:onClick="allDatesCheckBoxClicked"
+            android:text="@string/all_dates"/>
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

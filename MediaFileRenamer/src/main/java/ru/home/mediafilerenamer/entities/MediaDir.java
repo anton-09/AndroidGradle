@@ -8,14 +8,16 @@ import java.io.File;
 public class MediaDir implements Parcelable
 {
     private File mUrl;
-    private String mPhotoCount;
-    private String mVideoCount;
+    private String mPhotoJpgCount;
+    private String mVideoMp4Count;
+    private String mPhotoJpegCount;
 
-    public MediaDir(File url, String photoCount, String videoCount)
+    public MediaDir(File url, String photoJpgCount, String videoMp4Count, String photoJpegCount)
     {
         mUrl = url;
-        mPhotoCount = photoCount;
-        mVideoCount = videoCount;
+        mPhotoJpgCount = photoJpgCount;
+        mVideoMp4Count = videoMp4Count;
+        mPhotoJpegCount = photoJpegCount;
     }
 
     public File getUrl()
@@ -23,14 +25,19 @@ public class MediaDir implements Parcelable
         return mUrl;
     }
 
-    public String getPhotoCount()
+    public String getPhotoJpgCount()
     {
-        return mPhotoCount;
+        return mPhotoJpgCount;
     }
 
-    public String getVideoCount()
+    public String getVideoMp4Count()
     {
-        return mVideoCount;
+        return mVideoMp4Count;
+    }
+
+    public String getPhotoJpegCount()
+    {
+        return mPhotoJpegCount;
     }
 
     @Override
@@ -43,8 +50,9 @@ public class MediaDir implements Parcelable
     public void writeToParcel(Parcel parcel, int i)
     {
         parcel.writeString(mUrl.getAbsolutePath());
-        parcel.writeString(mPhotoCount);
-        parcel.writeString(mVideoCount);
+        parcel.writeString(mPhotoJpgCount);
+        parcel.writeString(mVideoMp4Count);
+        parcel.writeString(mPhotoJpegCount);
     }
 
     public static final Parcelable.Creator<MediaDir> CREATOR = new
@@ -52,7 +60,7 @@ public class MediaDir implements Parcelable
             {
                 @Override
                 public MediaDir createFromParcel(Parcel in) {
-                    return new MediaDir(new File(in.readString()),in.readString(),in.readString());
+                    return new MediaDir(new File(in.readString()),in.readString(),in.readString(),in.readString());
                 }
 
                 @Override

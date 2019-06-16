@@ -11,32 +11,43 @@ public class MyApplication extends Application
 
     private static SharedPreferences mSharedPreferences;
 
-    private static boolean mJPGon;
-    private static boolean mMP4on;
+    private static boolean mJpgOn;
+    private static boolean mMp4On;
+    private static boolean mJpegOn;
     private static boolean mVerboseLog;
     private static boolean mShowMediaFiles;
     private static String mInitialFolder;
     private static String mRenameMask;
 
 
-    public static boolean isJPGon()
+    public static boolean isJpgOn()
     {
-        return MyApplication.mJPGon;
+        return MyApplication.mJpgOn;
     }
 
-    public static void setJPGon(boolean isJPGon)
+    public static void setJpgOn(boolean isJpgOn)
     {
-        MyApplication.mJPGon = isJPGon;
+        MyApplication.mJpgOn = isJpgOn;
     }
 
-    public static boolean isMP4on()
+    public static boolean isMp4On()
     {
-        return MyApplication.mMP4on;
+        return MyApplication.mMp4On;
     }
 
-    public static void setMP4on(boolean isMP4on)
+    public static void setMp4On(boolean isMp4On)
     {
-        MyApplication.mMP4on = isMP4on;
+        MyApplication.mMp4On = isMp4On;
+    }
+
+    public static boolean isJpegOn()
+    {
+        return MyApplication.mJpegOn;
+    }
+
+    public static void setJpegOn(boolean isJpegOn)
+    {
+        MyApplication.mJpegOn = isJpegOn;
     }
 
     public static boolean isVerboseLog()
@@ -79,6 +90,7 @@ public class MyApplication extends Application
         MyApplication.mRenameMask = renameMask;
     }
 
+
     public static Context getAppContext()
     {
         return MyApplication.mContext;
@@ -96,11 +108,12 @@ public class MyApplication extends Application
         MyApplication.mContext = getApplicationContext();
         MyApplication.mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-        MyApplication.mJPGon = MyApplication.mSharedPreferences.getBoolean("mJPGon", false);
-        MyApplication.mMP4on = MyApplication.mSharedPreferences.getBoolean("mMP4on", true);
+        MyApplication.mJpgOn = MyApplication.mSharedPreferences.getBoolean("mJpgOn", false);
+        MyApplication.mMp4On = MyApplication.mSharedPreferences.getBoolean("mMp4On", true);
+        MyApplication.mJpegOn = MyApplication.mSharedPreferences.getBoolean("mJpegOn", false);
         MyApplication.mVerboseLog = MyApplication.mSharedPreferences.getBoolean("mVerboseLog", true);
         MyApplication.mShowMediaFiles = MyApplication.mSharedPreferences.getBoolean("mShowMediaFiles", true);
-        MyApplication.mInitialFolder = MyApplication.mSharedPreferences.getString("mInitialFolder", "/");
+        MyApplication.mInitialFolder = MyApplication.mSharedPreferences.getString("mInitialFolder", "/storage/emulated/0/");
         MyApplication.mRenameMask = MyApplication.mSharedPreferences.getString("mRenameMask", "yyyy-MM-dd HH-mm-ss");
 
     }

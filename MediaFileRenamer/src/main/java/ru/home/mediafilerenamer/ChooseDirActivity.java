@@ -43,7 +43,7 @@ public class ChooseDirActivity extends AppCompatActivity implements RecyclerView
 
         simpleRecyclerViewAdapter = new SimpleRecyclerViewAdapter(this);
         simpleRecyclerViewAdapter.setDataModel(arrayDir);
-        simpleRecyclerViewAdapter.setCurrentItem(new MediaDir(null, "", ""));
+        simpleRecyclerViewAdapter.setCurrentItem(new MediaDir(null, "", "", ""));
         recyclerView.setAdapter(simpleRecyclerViewAdapter);
 
         updateListDir(new File(MyApplication.getInitialFolder()));
@@ -69,7 +69,7 @@ public class ChooseDirActivity extends AppCompatActivity implements RecyclerView
 
         textPath.setText(file.getAbsolutePath());
 
-        FileCountHelper.processFile(file, true, this);
+        FileCountHelper.processFile(file, true, this, null, true);
     }
 
 

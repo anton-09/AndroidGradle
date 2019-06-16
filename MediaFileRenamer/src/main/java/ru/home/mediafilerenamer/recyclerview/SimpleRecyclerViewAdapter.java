@@ -79,8 +79,9 @@ public class SimpleRecyclerViewAdapter extends RecyclerView.Adapter
         if (holder instanceof DirViewHolder)
         {
             ((DirViewHolder)holder).textView.setText(mList.get(position - 1).getUrl().getName());
-            ((DirViewHolder)holder).textViewPhotoCount.setText(mList.get(position - 1).getPhotoCount());
-            ((DirViewHolder)holder).textViewVideoCount.setText(mList.get(position - 1).getVideoCount());
+            ((DirViewHolder)holder).textViewPhotoJpgCount.setText(mList.get(position - 1).getPhotoJpgCount());
+            ((DirViewHolder)holder).textViewVideoMp4Count.setText(mList.get(position - 1).getVideoMp4Count());
+            ((DirViewHolder)holder).textViewPhotoJpegCount.setText(mList.get(position - 1).getPhotoJpegCount());
         }
         else if (holder instanceof FileViewHolder)
         {
@@ -89,8 +90,9 @@ public class SimpleRecyclerViewAdapter extends RecyclerView.Adapter
         else if (holder instanceof UpViewHolder)
         {
             ((UpViewHolder)holder).textView.setText("...");
-            ((UpViewHolder)holder).textViewPhotoCount.setText(mCurrentItem.getPhotoCount());
-            ((UpViewHolder)holder).textViewVideoCount.setText(mCurrentItem.getVideoCount());
+            ((UpViewHolder)holder).textViewPhotoJpgCount.setText(mCurrentItem.getPhotoJpgCount());
+            ((UpViewHolder)holder).textViewVideoMp4Count.setText(mCurrentItem.getVideoMp4Count());
+            ((UpViewHolder)holder).textViewPhotoJpegCount.setText(mCurrentItem.getPhotoJpegCount());
         }
     }
 
@@ -102,15 +104,17 @@ public class SimpleRecyclerViewAdapter extends RecyclerView.Adapter
     private class DirViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
     {
         TextView textView;
-        TextView textViewPhotoCount;
-        TextView textViewVideoCount;
+        TextView textViewPhotoJpgCount;
+        TextView textViewVideoMp4Count;
+        TextView textViewPhotoJpegCount;
 
         DirViewHolder(View itemView)
         {
             super(itemView);
             textView = (TextView) itemView.findViewById(R.id.text_view);
-            textViewPhotoCount = (TextView) itemView.findViewById(R.id.text_view_photo_count);
-            textViewVideoCount = (TextView) itemView.findViewById(R.id.text_view_video_count);
+            textViewPhotoJpgCount = (TextView) itemView.findViewById(R.id.text_view_photo_jpg_count);
+            textViewVideoMp4Count = (TextView) itemView.findViewById(R.id.text_view_video_mp4_count);
+            textViewPhotoJpegCount = (TextView) itemView.findViewById(R.id.text_view_photo_jpeg_count);
 
             itemView.setOnClickListener(this);
         }
@@ -137,15 +141,17 @@ public class SimpleRecyclerViewAdapter extends RecyclerView.Adapter
     private class UpViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
     {
         TextView textView;
-        TextView textViewPhotoCount;
-        TextView textViewVideoCount;
+        TextView textViewPhotoJpgCount;
+        TextView textViewVideoMp4Count;
+        TextView textViewPhotoJpegCount;
 
         UpViewHolder(View itemView)
         {
             super(itemView);
             textView = (TextView) itemView.findViewById(R.id.text_view);
-            textViewPhotoCount = (TextView) itemView.findViewById(R.id.text_view_photo_count);
-            textViewVideoCount = (TextView) itemView.findViewById(R.id.text_view_video_count);
+            textViewPhotoJpgCount = (TextView) itemView.findViewById(R.id.text_view_photo_jpg_count);
+            textViewVideoMp4Count = (TextView) itemView.findViewById(R.id.text_view_video_mp4_count);
+            textViewPhotoJpegCount = (TextView) itemView.findViewById(R.id.text_view_photo_jpeg_count);
 
             itemView.setOnClickListener(this);
         }
