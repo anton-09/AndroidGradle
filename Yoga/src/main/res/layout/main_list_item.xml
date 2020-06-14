@@ -37,6 +37,16 @@
                     android:text="@string/text_view_type"
                     android:id="@+id/text_view_type"/>
 
+                <ImageView
+                    android:id="@+id/image_view_studio"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp" />
+
+                <ImageView
+                    android:id="@+id/image_view_place"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp" />
+
                 <TextView
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
@@ -64,7 +74,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/text_view_fio"/>
+                android:id="@+id/text_view_comment"/>
 
         </LinearLayout>
 

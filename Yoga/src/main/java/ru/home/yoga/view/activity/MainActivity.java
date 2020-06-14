@@ -1,4 +1,4 @@
-package ru.home.yoga;
+package ru.home.yoga.view.activity;
 
 import android.app.LoaderManager;
 import android.content.DialogInterface;
@@ -25,10 +25,17 @@ import org.joda.time.LocalDate;
 
 import java.util.ArrayList;
 
-import ru.home.yoga.entity.PracticeDuration;
-import ru.home.yoga.entity.Studio;
-import ru.home.yoga.entity.Type;
-import ru.home.yoga.entity.YogaItem;
+import ru.home.yoga.MyApplication;
+import ru.home.yoga.R;
+import ru.home.yoga.model.Place;
+import ru.home.yoga.model.PracticeDuration;
+import ru.home.yoga.model.Studio;
+import ru.home.yoga.model.Type;
+import ru.home.yoga.model.YogaItem;
+import ru.home.yoga.model.db.MyCursorLoader;
+import ru.home.yoga.view.RecyclerViewClickListener;
+import ru.home.yoga.view.SimpleRecyclerViewDivider;
+import ru.home.yoga.view.adapter.MainRecyclerViewAdapter;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>, RecyclerViewClickListener
 {
@@ -74,6 +81,26 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         getLoaderManager().initLoader(0, bundle, MainActivity.this);
     }
 
+    // Вызывается при вызове invalidateOptionsMenu() для обновления сортировки студий
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu)
+    {
+        navigationView = (NavigationView) findViewById(R.id.navigation_view);
+        Menu studioListMenu = navigationView.getMenu();
+        studioListMenu.clear();
+
+        Cursor studioCursor = MyApplication.getDBAdapter().getStudiosChrono();
+        studioCursor.moveToFirst();
+        while (!studioCursor.isAfterLast())
+        {
+            studioListMenu.add(Menu.NONE, studioCursor.getInt(0), Menu.NONE, studioCursor.getString(1));
+            studioCursor.moveToNext();
+        }
+        studioCursor.close();
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
     private void initToolbar()
     {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -84,31 +111,26 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     {
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_view_open, R.string.navigation_view_close);
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_view_open, R.string.navigation_view_close)
+        {
+            @Override
+            public void onDrawerOpened(View drawerView)
+            {
+                invalidateOptionsMenu();
+            }
+
+        };
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
 
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
-        Menu menu = navigationView.getMenu();
-
-        Cursor studioCursor = MyApplication.getDBAdapter().getStudios();
-        studioCursor.moveToFirst();
-        while (!studioCursor.isAfterLast())
-        {
-            menu.add(Menu.NONE, studioCursor.getInt(0), Menu.NONE, studioCursor.getString(1));
-            studioCursor.moveToNext();
-        }
-        studioCursor.close();
-
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener()
         {
             @Override
             public boolean onNavigationItemSelected(MenuItem item)
             {
                 drawerLayout.closeDrawers();
-
                 toolbar.setTitle(item.getTitle());
-
                 mSelectedStudioId = item.getItemId();
 
                 Bundle bundle = new Bundle();
@@ -121,6 +143,23 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             }
         });
 
+        View headerView = navigationView.getHeaderView(0);
+        headerView.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                drawerLayout.closeDrawers();
+                toolbar.setTitle(R.string.app_label_name);
+                mSelectedStudioId = 0;
+
+                Bundle bundle = new Bundle();
+                bundle.putInt("StudioId", mSelectedStudioId);
+                bundle.putString("PrevDate", mInitDate);
+                bundle.putLong("PrevId", mInitId);
+                getLoaderManager().restartLoader(0, bundle, MainActivity.this);
+            }
+        });
     }
 
     private void initRecyclerView()
@@ -214,7 +253,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         // Fill Navigation Drawer with studios
         if (requestCode == REQUEST_CODE_BACKUP)
         {
-            initNavigationView();
+            invalidateOptionsMenu();
         }
 
         Bundle bundle = new Bundle();
@@ -266,8 +305,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                     data.getInt(4),
                     new Type(data.getInt(5), data.getString(6)),
                     new PracticeDuration(data.getInt(7), data.getDouble(8)),
-                    new Studio(data.getInt(9), data.getString(10), data.getInt(11)),
-                    data.getString(12));
+                    new Studio(data.getInt(9), data.getString(10), data.getInt(11), data.getString(12)),
+                    new Place(data.getInt(13), data.getString(14), data.getString(15)),
+                    data.getString(16));
 
             mList.add(yogaItem);
             mainRecyclerViewAdapter.notifyItemInserted(mList.size());

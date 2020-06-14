@@ -1,4 +1,4 @@
-package ru.home.yoga;
+package ru.home.yoga.view.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -8,7 +8,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import ru.home.yoga.entity.SummaryItem;
+import ru.home.yoga.model.SummaryItem;
+import ru.home.yoga.view.activity.TabPagerFragment;
 
 public class TabPagerFragmentAdapter extends FragmentPagerAdapter
 {

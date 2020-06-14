@@ -1,11 +1,11 @@
-package ru.home.yoga.entity;
+package ru.home.yoga.model;
 
 
 public class SummaryItem
 {
-    String mStudioName;
-    Integer mCount;
-    Integer mPrice;
+    private String mStudioName;
+    private Integer mCount;
+    private Integer mPrice;
 
     public SummaryItem(String studioName, Integer count, Integer price)
     {

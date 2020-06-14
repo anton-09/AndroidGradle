@@ -1,3 +1,12 @@
+// https://icons8.com/icon/l7Iqa1k8Ft-i/crowd
+// https://icons8.com/icon/110276/crowd
+// https://icons8.com/icon/11901/people
+// https://icons8.com/icon/7csVZvHoQrLW/zoom
+// https://icons8.com/icon/63204/skype
+// https://icons8.com/icon/32323/instagram
+// letter icons
+// font @Gungsuh
+// size 29
 package ru.home.yoga;
 
 import android.app.Application;
@@ -6,6 +15,8 @@ import android.support.v7.app.AppCompatDelegate;
 
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+
+import ru.home.yoga.model.db.YogaDbAdapter;
 
 
 public class MyApplication extends Application

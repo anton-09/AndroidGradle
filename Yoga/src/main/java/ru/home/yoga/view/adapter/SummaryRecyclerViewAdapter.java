@@ -1,4 +1,4 @@
-package ru.home.yoga;
+package ru.home.yoga.view.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -9,7 +9,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import ru.home.yoga.entity.SummaryItem;
+import ru.home.yoga.R;
+import ru.home.yoga.model.SummaryItem;
 
 public class SummaryRecyclerViewAdapter extends RecyclerView.Adapter
 {

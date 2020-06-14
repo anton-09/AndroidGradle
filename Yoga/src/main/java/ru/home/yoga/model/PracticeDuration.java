@@ -1,24 +1,14 @@
-package ru.home.yoga.entity;
+package ru.home.yoga.model;
 
 public class PracticeDuration extends EntityGeneric
 {
-    final Integer mId;
-    final Double mDuration;
+    private final Integer mId;
+    private final Double mDuration;
 
     public PracticeDuration(Integer id, Double duration)
     {
         mId = id;
         mDuration = duration;
-    }
-
-    public Integer getId()
-    {
-        return mId;
-    }
-
-    public Double getDurationValue()
-    {
-        return mDuration;
     }
 
     @Override

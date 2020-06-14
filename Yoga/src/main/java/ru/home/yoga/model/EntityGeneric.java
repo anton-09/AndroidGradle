@@ -1,4 +1,4 @@
-package ru.home.yoga.entity;
+package ru.home.yoga.model;
 
 public abstract class EntityGeneric
 {

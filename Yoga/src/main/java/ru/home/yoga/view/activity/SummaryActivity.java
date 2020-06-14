@@ -1,16 +1,11 @@
-package ru.home.yoga;
+package ru.home.yoga.view.activity;
 
 import android.app.LoaderManager;
 import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -20,7 +15,10 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
 
-import ru.home.yoga.entity.SummaryItem;
+import ru.home.yoga.MyApplication;
+import ru.home.yoga.R;
+import ru.home.yoga.model.SummaryItem;
+import ru.home.yoga.view.adapter.TabPagerFragmentAdapter;
 
 public class SummaryActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>
 {

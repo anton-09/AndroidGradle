@@ -1,18 +1,19 @@
-package ru.home.yoga.entity;
+package ru.home.yoga.model;
 
 public class YogaItem
 {
-    final Long mId;
-    final String mDate;
-    final Integer mPrice;
-    final String mPayType;
-    final Integer mPeople;
-    final Type mType;
-    final PracticeDuration mDuration;
-    final Studio mStudio;
-    final String mFIO;
+    private final Long mId;
+    private final String mDate;
+    private final Integer mPrice;
+    private final String mPayType;
+    private final Integer mPeople;
+    private final Type mType;
+    private final PracticeDuration mDuration;
+    private final Studio mStudio;
+    private final Place mPlace;
+    private final String mComment;
 
-    public YogaItem(String date, int price, String payType, int people, int type, int duration, int studio, String fio)
+    public YogaItem(String date, int price, String payType, int people, int type, int duration, int studio, int place, String comment)
     {
         mId = -1L;
         mDate = date;
@@ -21,11 +22,12 @@ public class YogaItem
         mPeople = people;
         mType = new Type(type, "");
         mDuration = new PracticeDuration(duration, -1D);
-        mStudio = new Studio(studio, "", -1);
-        mFIO = fio;
+        mStudio = new Studio(studio, "", -1, "");
+        mPlace = new Place(place, "", "");
+        mComment = comment;
     }
 
-    public YogaItem(long id, String date, int price, String payType, int people, Type type, PracticeDuration duration, Studio studio, String fio)
+    public YogaItem(long id, String date, int price, String payType, int people, Type type, PracticeDuration duration, Studio studio, Place place, String comment)
     {
         mId = id;
         mDate = date;
@@ -35,7 +37,8 @@ public class YogaItem
         mType = type;
         mDuration = duration;
         mStudio = studio;
-        mFIO = fio;
+        mPlace = place;
+        mComment = comment;
     }
 
     public Long getId()
@@ -78,9 +81,14 @@ public class YogaItem
         return mStudio;
     }
 
-    public String getFIO()
+    public Place getPlace()
     {
-        return mFIO;
+        return mPlace;
+    }
+
+    public String getComment()
+    {
+        return mComment;
     }
 }
 

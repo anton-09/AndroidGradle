@@ -1,4 +1,4 @@
-package ru.home.yoga;
+package ru.home.yoga.view.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -6,13 +6,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.home.yoga.entity.YogaItem;
+import ru.home.yoga.MyApplication;
+import ru.home.yoga.R;
+import ru.home.yoga.model.YogaItem;
+import ru.home.yoga.view.RecyclerViewClickListener;
 
 
 public class MainRecyclerViewAdapter extends RecyclerView.Adapter
@@ -71,16 +75,18 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter
             ((YogaItemViewHolder) viewHolder).itemDate.setText(item.getDate());
             ((YogaItemViewHolder) viewHolder).itemPrice.setText(String.format(mContext.getString(R.string.price), item.getPrice()));
             ((YogaItemViewHolder) viewHolder).itemPeople.setText(item.getPeople().toString());
-            ((YogaItemViewHolder) viewHolder).itemType.setText(item.getType().getTypeName());
-            ((YogaItemViewHolder) viewHolder).itemFIO.setText(item.getFIO());
+            ((YogaItemViewHolder) viewHolder).itemType.setText(item.getType().getEntityValue());
+            ((YogaItemViewHolder) viewHolder).itemComment.setText(item.getComment());
+            ((YogaItemViewHolder) viewHolder).itemStudio.setImageResource(MyApplication.getAppContext().getResources().getIdentifier(item.getStudio().getIcon(), "drawable", MyApplication.getAppContext().getPackageName()));
+            ((YogaItemViewHolder) viewHolder).itemPlace.setImageResource(MyApplication.getAppContext().getResources().getIdentifier(item.getPlace().getIcon(), "drawable", MyApplication.getAppContext().getPackageName()));
 
-            if (item.getFIO().isEmpty())
+            if (item.getComment().isEmpty())
             {
-                ((YogaItemViewHolder) viewHolder).itemFIO.setVisibility(View.GONE);
+                ((YogaItemViewHolder) viewHolder).itemComment.setVisibility(View.GONE);
             }
             else
             {
-                ((YogaItemViewHolder) viewHolder).itemFIO.setVisibility(View.VISIBLE);
+                ((YogaItemViewHolder) viewHolder).itemComment.setVisibility(View.VISIBLE);
             }
 
             switch (item.getPayType())
@@ -117,7 +123,9 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter
         private final TextView itemPeople;
         private final TextView itemPrice;
         private final TextView itemType;
-        private final TextView itemFIO;
+        private final TextView itemComment;
+        private final ImageView itemStudio;
+        private final ImageView itemPlace;
 
 
         public YogaItemViewHolder(View itemView)
@@ -129,7 +137,9 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter
             itemPrice = (TextView) itemView.findViewById(R.id.text_view_price);
             itemPeople = (TextView) itemView.findViewById(R.id.text_view_people);
             itemType = (TextView) itemView.findViewById(R.id.text_view_type);
-            itemFIO = (TextView) itemView.findViewById(R.id.text_view_fio);
+            itemComment = (TextView) itemView.findViewById(R.id.text_view_comment);
+            itemStudio = (ImageView) itemView.findViewById(R.id.image_view_studio);
+            itemPlace = (ImageView) itemView.findViewById(R.id.image_view_place);
 
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
@@ -150,11 +160,11 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter
         }
     }
 
-    class ProgressViewHolder extends RecyclerView.ViewHolder
+    static class ProgressViewHolder extends RecyclerView.ViewHolder
     {
         private final ProgressBar progressBar;
 
-        public ProgressViewHolder(View itemView)
+        ProgressViewHolder(View itemView)
         {
             super(itemView);
             progressBar = (ProgressBar) itemView.findViewById(R.id.progress_bar);

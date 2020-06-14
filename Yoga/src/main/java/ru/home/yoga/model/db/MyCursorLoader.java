@@ -1,13 +1,15 @@
-package ru.home.yoga;
+package ru.home.yoga.model.db;
 
 import android.content.CursorLoader;
 import android.database.Cursor;
 
-class MyCursorLoader extends CursorLoader
+import ru.home.yoga.MyApplication;
+
+public class MyCursorLoader extends CursorLoader
 {
-    int mStudioId = 0;
-    String mPrevDate;
-    long mPrevId = -1;
+    private int mStudioId = 0;
+    private String mPrevDate;
+    private long mPrevId = -1;
 
     public MyCursorLoader(String prevDate, long prevId, int studioId)
     {

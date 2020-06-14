@@ -1,6 +1,6 @@
-package ru.home.yoga;
+package ru.home.yoga.view;
 
-interface RecyclerViewClickListener
+public interface RecyclerViewClickListener
 {
     void recyclerViewListClicked(int position);
 

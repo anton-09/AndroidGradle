@@ -1,15 +1,10 @@
-package ru.home.yoga;
+package ru.home.yoga.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -29,10 +24,13 @@ import org.joda.time.LocalDate;
 
 import java.util.ArrayList;
 
-import ru.home.yoga.entity.EntityGeneric;
-import ru.home.yoga.entity.PracticeDuration;
-import ru.home.yoga.entity.Studio;
-import ru.home.yoga.entity.Type;
+import ru.home.yoga.MyApplication;
+import ru.home.yoga.R;
+import ru.home.yoga.model.EntityGeneric;
+import ru.home.yoga.model.Place;
+import ru.home.yoga.model.PracticeDuration;
+import ru.home.yoga.model.Studio;
+import ru.home.yoga.model.Type;
 
 
 public class AddActivity extends AppCompatActivity
@@ -47,7 +45,8 @@ public class AddActivity extends AppCompatActivity
     Spinner spinnerType;
     Spinner spinnerDuration;
     Spinner spinnerStudio;
-    EditText editTextFIO;
+    Spinner spinnerPlace;
+    EditText editTextComment;
 
     RadioButton radioButtonMinus;
     RadioButton radioButtonOk;
@@ -62,7 +61,8 @@ public class AddActivity extends AppCompatActivity
     int initialType = 0;
     int initialDuration = 0;
     int initialStudio = 0;
-    String initialFIO = "";
+    int initialPlace = 0;
+    String initialComment = "";
 
 
     public void onCreate(Bundle savedInstanceState)
@@ -77,7 +77,8 @@ public class AddActivity extends AppCompatActivity
         spinnerType = (Spinner) findViewById(R.id.spinner_type);
         spinnerDuration = (Spinner) findViewById(R.id.spinner_duration);
         spinnerStudio = (Spinner) findViewById(R.id.spinner_studio);
-        editTextFIO = (EditText) findViewById(R.id.edit_text_fio);
+        spinnerPlace = (Spinner) findViewById(R.id.spinner_place);
+        editTextComment = (EditText) findViewById(R.id.edit_text_comment);
         radioButtonMinus = (RadioButton) findViewById(R.id.button_pay_type_minus);
         radioButtonOk = (RadioButton) findViewById(R.id.button_pay_type_ok);
         radioButtonPlus = (RadioButton) findViewById(R.id.button_pay_type_plus);
@@ -126,7 +127,8 @@ public class AddActivity extends AppCompatActivity
                 initialType = cursor.getInt(5);
                 initialDuration = cursor.getInt(7);
                 initialStudio = cursor.getInt(9);
-                initialFIO = cursor.getString(12);
+                initialPlace = cursor.getInt(13);
+                initialComment = cursor.getString(16);
             }
             cursor.close();
         }
@@ -160,16 +162,29 @@ public class AddActivity extends AppCompatActivity
 
 
         arrayList = new ArrayList<>();
-        cursor = MyApplication.getDBAdapter().getStudios();
+        cursor = MyApplication.getDBAdapter().getStudiosChrono();
         cursor.moveToFirst();
         while (!cursor.isAfterLast())
         {
-            arrayList.add(new Studio(cursor.getInt(0), cursor.getString(1), cursor.getInt(2)));
+            arrayList.add(new Studio(cursor.getInt(0), cursor.getString(1), cursor.getInt(2), cursor.getString(3)));
             cursor.moveToNext();
         }
         cursor.close();
         arrayAdapter = new MySpinnerAdapter(this, android.R.layout.simple_spinner_item, arrayList);
         spinnerStudio.setAdapter(arrayAdapter);
+
+
+        arrayList = new ArrayList<>();
+        cursor = MyApplication.getDBAdapter().getPlaces();
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast())
+        {
+            arrayList.add(new Place(cursor.getInt(0), cursor.getString(1), cursor.getString(2)));
+            cursor.moveToNext();
+        }
+        cursor.close();
+        arrayAdapter = new MySpinnerAdapter(this, android.R.layout.simple_spinner_item, arrayList);
+        spinnerPlace.setAdapter(arrayAdapter);
     }
 
     private void initComponents()
@@ -201,7 +216,7 @@ public class AddActivity extends AppCompatActivity
         }
 
         editTextPrice.setText(String.valueOf(initialPrice));
-        editTextFIO.setText(initialFIO);
+        editTextComment.setText(initialComment);
 
 
         seekBarPeople.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
@@ -234,22 +249,16 @@ public class AddActivity extends AppCompatActivity
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l)
             {
                 if (((Studio) adapterView.getItemAtPosition(i)).isGroup())
-                {
-                    findViewById(R.id.input_layout_fio).setVisibility(View.GONE);
                     findViewById(R.id.seekbar_people).setEnabled(true);
-                }
                 else
-                {
-                    findViewById(R.id.input_layout_fio).setVisibility(View.VISIBLE);
                     findViewById(R.id.seekbar_people).setEnabled(false);
-                }
             }
 
             public void onNothingSelected(AdapterView<?> adapterView)
             {
             }
         });
-
+        spinnerPlace.setSelection(((MySpinnerAdapter) spinnerPlace.getAdapter()).getPositionById(initialPlace));
     }
 
     @Override
@@ -277,10 +286,11 @@ public class AddActivity extends AppCompatActivity
                 initialDate = MyApplication.mViewFullDateFormat.parseLocalDate(buttonDate.getText().toString());
                 initialPrice = Integer.parseInt(editTextPrice.getText().toString());
                 initialPeople = seekBarPeople.getProgress();
-                initialType = ((Type) spinnerType.getSelectedItem()).getId();
-                initialDuration = ((PracticeDuration) spinnerDuration.getSelectedItem()).getId();
-                initialStudio = ((Studio) spinnerStudio.getSelectedItem()).getId();
-                initialFIO = editTextFIO.getText().toString();
+                initialType = ((Type) spinnerType.getSelectedItem()).getEntityId();
+                initialDuration = ((PracticeDuration) spinnerDuration.getSelectedItem()).getEntityId();
+                initialStudio = ((Studio) spinnerStudio.getSelectedItem()).getEntityId();
+                initialPlace = ((Place) spinnerPlace.getSelectedItem()).getEntityId();
+                initialComment = editTextComment.getText().toString();
 
                 if (radioButtonMinus.isChecked())
                 {
@@ -295,11 +305,7 @@ public class AddActivity extends AppCompatActivity
                     initialPayType = "+";
                 }
 
-                if (((Studio) spinnerStudio.getSelectedItem()).isGroup())
-                {
-                    initialFIO = "";
-                }
-                else
+                if (!((Studio) spinnerStudio.getSelectedItem()).isGroup())
                 {
                     initialPeople = 1;
                 }
@@ -315,7 +321,8 @@ public class AddActivity extends AppCompatActivity
                             initialType,
                             initialDuration,
                             initialStudio,
-                            initialFIO
+                            initialPlace,
+                            initialComment
                     );
                 }
                 else
@@ -328,7 +335,8 @@ public class AddActivity extends AppCompatActivity
                             initialType,
                             initialDuration,
                             initialStudio,
-                            initialFIO
+                            initialPlace,
+                            initialComment
                     );
                 }
 

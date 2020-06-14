@@ -1,4 +1,4 @@
-package ru.home.yoga;
+package ru.home.yoga.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -8,7 +8,9 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-class SimpleRecyclerViewDivider extends RecyclerView.ItemDecoration
+import ru.home.yoga.R;
+
+public class SimpleRecyclerViewDivider extends RecyclerView.ItemDecoration
 {
     //private final Paint mPaint;
     private Drawable mDivider;

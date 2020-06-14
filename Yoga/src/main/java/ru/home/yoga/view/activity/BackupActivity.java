@@ -1,4 +1,4 @@
-package ru.home.yoga;
+package ru.home.yoga.view.activity;
 
 import android.Manifest;
 import android.app.LoaderManager;
@@ -8,18 +8,13 @@ import android.content.Intent;
 import android.content.Loader;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -44,7 +39,13 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-import ru.home.yoga.entity.YogaItem;
+import ru.home.yoga.MyApplication;
+import ru.home.yoga.R;
+import ru.home.yoga.model.YogaItem;
+import ru.home.yoga.model.db.MyCursorLoader;
+import ru.home.yoga.view.SimpleRecyclerViewDivider;
+import ru.home.yoga.view.adapter.BackupRecyclerViewAdapter;
+import ru.home.yoga.view.RecyclerViewClickListener;
 
 public class BackupActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>, RecyclerViewClickListener
 {
@@ -179,7 +180,7 @@ public class BackupActivity extends AppCompatActivity implements LoaderManager.L
                     while (!cursor[0].isAfterLast())
                     {
                         publishProgress(++i * 100 / iCount);
-                        printWriter.println(cursor[0].getString(1) + ";" + cursor[0].getString(2) + ";" + cursor[0].getString(3) + ";" + cursor[0].getString(4) + ";" + cursor[0].getString(5) + ";" + cursor[0].getString(7) + ";" + cursor[0].getString(9) + ";" + cursor[0].getString(12));
+                        printWriter.println(cursor[0].getString(1) + ";" + cursor[0].getString(2) + ";" + cursor[0].getString(3) + ";" + cursor[0].getString(4) + ";" + cursor[0].getString(5) + ";" + cursor[0].getString(7) + ";" + cursor[0].getString(9) + ";" + cursor[0].getString(13) + ";" + cursor[0].getString(16));
                         cursor[0].moveToNext();
                     }
 
@@ -206,6 +207,15 @@ public class BackupActivity extends AppCompatActivity implements LoaderManager.L
                     }
 
                     tempCursor = MyApplication.getDBAdapter().getStudios();
+                    printWriter.println(tempCursor.getCount());
+                    tempCursor.moveToFirst();
+                    while (!tempCursor.isAfterLast())
+                    {
+                        printWriter.println(tempCursor.getString(1) + ";" + tempCursor.getString(2) + ";" + tempCursor.getString(3));
+                        tempCursor.moveToNext();
+                    }
+
+                    tempCursor = MyApplication.getDBAdapter().getPlaces();
                     printWriter.println(tempCursor.getCount());
                     tempCursor.moveToFirst();
                     while (!tempCursor.isAfterLast())
@@ -290,6 +300,7 @@ public class BackupActivity extends AppCompatActivity implements LoaderManager.L
                                     int typeCount;
                                     int durationCount;
                                     int studioCount;
+                                    int placeCount;
                                     int i;
                                     ArrayList<YogaItem> yogaItemArrayList = new ArrayList<>();
 
@@ -302,7 +313,7 @@ public class BackupActivity extends AppCompatActivity implements LoaderManager.L
                                     {
                                         line = bufferedReader.readLine();
                                         item = line.split(";", -1);
-                                        yogaItemArrayList.add(new YogaItem(item[0], Integer.parseInt(item[1]), item[2], Integer.parseInt(item[3]), Integer.parseInt(item[4]), Integer.parseInt(item[5]), Integer.parseInt(item[6]), item[7]));
+                                        yogaItemArrayList.add(new YogaItem(item[0], Integer.parseInt(item[1]), item[2], Integer.parseInt(item[3]), Integer.parseInt(item[4]), Integer.parseInt(item[5]), Integer.parseInt(item[6]), Integer.parseInt(item[7]), item[8]));
                                         //MyApplication.getDBAdapter().addData(item[0], Integer.parseInt(item[1]), Integer.parseInt(item[2]), Integer.parseInt(item[3]), Integer.parseInt(item[4]), Integer.parseInt(item[5]));
                                     }
                                     MyApplication.getDBAdapter().addBulkData(yogaItemArrayList);
@@ -328,7 +339,15 @@ public class BackupActivity extends AppCompatActivity implements LoaderManager.L
                                     for (i = 0; i < studioCount; i++)
                                     {
                                         line = bufferedReader.readLine();
-                                        MyApplication.getDBAdapter().addStudio(line.split(";")[0], Integer.parseInt(line.split(";")[1]));
+                                        MyApplication.getDBAdapter().addStudio(line.split(";")[0], Integer.parseInt(line.split(";")[1]), line.split(";")[2]);
+                                    }
+
+                                    line = bufferedReader.readLine();
+                                    placeCount = Integer.parseInt(line);
+                                    for (i = 0; i < placeCount; i++)
+                                    {
+                                        line = bufferedReader.readLine();
+                                        MyApplication.getDBAdapter().addPlace(line.split(";")[0], line.split(";")[1]);
                                     }
 
                                     bufferedReader.close();

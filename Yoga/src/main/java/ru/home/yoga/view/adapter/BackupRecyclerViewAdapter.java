@@ -1,4 +1,4 @@
-package ru.home.yoga;
+package ru.home.yoga.view.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +11,10 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.List;
+
+import ru.home.yoga.MyApplication;
+import ru.home.yoga.R;
+import ru.home.yoga.view.RecyclerViewClickListener;
 
 
 public class BackupRecyclerViewAdapter extends RecyclerView.Adapter<BackupRecyclerViewAdapter.ViewHolder>

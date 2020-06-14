@@ -13,7 +13,7 @@
         android:name="ru.home.yoga.MyApplication">
 
         <activity
-            android:name="ru.home.yoga.MainActivity"
+            android:name=".view.activity.MainActivity"
             android:label="@string/app_label_name"
             android:theme="@style/AppTheme.Transparent"
             android:screenOrientation="portrait">
@@ -26,22 +26,22 @@
         </activity>
 
         <activity
-            android:name="ru.home.yoga.AddActivity"
+            android:name=".view.activity.AddActivity"
             android:label="@string/app_label_edit"
             android:screenOrientation="portrait"/> <!-- This is for TextInputLayout -->
 
         <activity
-            android:name="ru.home.yoga.BackupActivity"
+            android:name=".view.activity.BackupActivity"
             android:label="@string/app_label_backup"
             android:screenOrientation="portrait"/>
 
         <activity
-            android:name="ru.home.yoga.DatePickerActivity"
+            android:name=".view.activity.DatePickerActivity"
             android:label="@string/app_label_date"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name="ru.home.yoga.SummaryActivity"
+            android:name=".view.activity.SummaryActivity"
             android:label="@string/app_label_summary"
             android:screenOrientation="portrait"/>
 

@@ -1,4 +1,4 @@
-package ru.home.yoga;
+package ru.home.yoga.view.activity;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,7 +11,11 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
-import ru.home.yoga.entity.SummaryItem;
+import ru.home.yoga.MyApplication;
+import ru.home.yoga.R;
+import ru.home.yoga.model.SummaryItem;
+import ru.home.yoga.view.SimpleRecyclerViewDivider;
+import ru.home.yoga.view.adapter.SummaryRecyclerViewAdapter;
 
 public class TabPagerFragment extends Fragment
 {

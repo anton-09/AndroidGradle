@@ -1,4 +1,4 @@
-package ru.home.yoga;
+package ru.home.yoga.model.db;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -11,7 +11,8 @@ import org.joda.time.LocalDate;
 
 import java.util.ArrayList;
 
-import ru.home.yoga.entity.YogaItem;
+import ru.home.yoga.MyApplication;
+import ru.home.yoga.model.YogaItem;
 
 public class YogaDbAdapter
 {
@@ -28,22 +29,29 @@ public class YogaDbAdapter
     private static final String YOGA_TYPE = "type_id";
     private static final String YOGA_DURATION = "duration_id";
     private static final String YOGA_STUDIO = "studio_id";
-    private static final String YOGA_FIO = "fio";
+    private static final String YOGA_PLACE = "place_id";
+    private static final String YOGA_COMMENT = "comment";
     private static final String YOGA_PAYTYPE = "pay_type";
 
 
-    public static final String TABLE_TYPE = "type";
-    public static final String TYPE_ID = "_id";
-    public static final String TYPE_NAME = "typename";
+    private static final String TABLE_TYPE = "type";
+    private static final String TYPE_ID = "_id";
+    private static final String TYPE_NAME = "typename";
 
-    public static final String TABLE_DURATION = "duration";
-    public static final String DURATION_ID = "_id";
-    public static final String DURATION_DURATION = "value";
+    private static final String TABLE_DURATION = "duration";
+    private static final String DURATION_ID = "_id";
+    private static final String DURATION_DURATION = "value";
 
-    public static final String TABLE_STUDIO = "studio";
-    public static final String STUDIO_ID = "_id";
-    public static final String STUDIO_NAME = "name";
-    public static final String STUDIO_GROUP = "is_group";
+    private  static final String TABLE_STUDIO = "studio";
+    private  static final String STUDIO_ID = "_id";
+    private  static final String STUDIO_NAME = "name";
+    private  static final String STUDIO_GROUP = "is_group";
+    private  static final String STUDIO_ICON = "icon";
+
+    private  static final String TABLE_PLACE = "place";
+    private  static final String PLACE_ID = "_id";
+    private  static final String PLACE_NAME = "name";
+    private  static final String PLACE_ICON = "icon";
 
     private static final String CREATE_YOGA = "CREATE TABLE " + TABLE_YOGA + " ("
             + YOGA_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -54,22 +62,30 @@ public class YogaDbAdapter
             + YOGA_TYPE + " INTEGER, "
             + YOGA_DURATION + " INTEGER, "
             + YOGA_STUDIO + " INTEGER, "
-            + YOGA_FIO + " TEXT); ";
+            + YOGA_PLACE + " INTEGER, "
+            + YOGA_COMMENT + " TEXT); ";
 
-    public static final String CREATE_TYPE = "CREATE TABLE " + TABLE_TYPE + " ("
+    private  static final String CREATE_TYPE = "CREATE TABLE " + TABLE_TYPE + " ("
             + TYPE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + TYPE_NAME + " TEXT); ";
 
-    public static final String CREATE_DURATION = "CREATE TABLE " + TABLE_DURATION + " ("
+    private  static final String CREATE_DURATION = "CREATE TABLE " + TABLE_DURATION + " ("
             + DURATION_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + DURATION_DURATION + " DOUBLE); ";
 
-    public static final String CREATE_STUDIO = "CREATE TABLE " + TABLE_STUDIO + " ("
+    private  static final String CREATE_STUDIO = "CREATE TABLE " + TABLE_STUDIO + " ("
             + STUDIO_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + STUDIO_NAME + " TEXT, "
-            + STUDIO_GROUP + " INTEGER); ";
+            + STUDIO_GROUP + " INTEGER, "
+            + STUDIO_ICON + " TEXT); ";
+
+    private  static final String CREATE_PLACE = "CREATE TABLE " + TABLE_PLACE + " ("
+            + PLACE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + PLACE_NAME + " TEXT, "
+            + PLACE_ICON + " TEXT); ";
 
     private SQLiteDatabase mDb;
+
 
     public YogaDbAdapter()
     {
@@ -82,21 +98,21 @@ public class YogaDbAdapter
     }
 
 
-    public Cursor getBackupData()
+    Cursor getBackupData()
     {
         return getPagedData(LocalDate.now().toString(MyApplication.mDbDateFormat), 0, -1);
     }
 
-    public Cursor getPagedData(String prevDate, long prevId, int pageSize)
+    Cursor getPagedData(String prevDate, long prevId, int pageSize)
     {
         if (!mDb.isOpen())
         {
             open();
         }
         return mDb.query(
-                TABLE_YOGA + ", " + TABLE_TYPE + ", " + TABLE_DURATION + ", " + TABLE_STUDIO,
-                new String[]{TABLE_YOGA + "." + YOGA_ID, YOGA_DATE, YOGA_PRICE, YOGA_PAYTYPE, YOGA_PEOPLE, YOGA_TYPE, TYPE_NAME, YOGA_DURATION, DURATION_DURATION, YOGA_STUDIO, STUDIO_NAME, STUDIO_GROUP, YOGA_FIO},
-                TABLE_TYPE + "." + TYPE_ID + " = " + YOGA_TYPE + " AND " + TABLE_DURATION + "." + DURATION_ID + " = " + YOGA_DURATION + " AND " + TABLE_STUDIO + "." + STUDIO_ID + " = " + YOGA_STUDIO + " AND (" + YOGA_DATE + " < '" + prevDate + "'OR " + YOGA_DATE + " = '" + prevDate + "'AND " + TABLE_YOGA + "." + YOGA_ID + " > " + prevId + " )",
+                TABLE_YOGA + ", " + TABLE_TYPE + ", " + TABLE_DURATION + ", " + TABLE_STUDIO + ", " + TABLE_PLACE,
+                new String[]{TABLE_YOGA + "." + YOGA_ID, YOGA_DATE, YOGA_PRICE, YOGA_PAYTYPE, YOGA_PEOPLE, YOGA_TYPE, TYPE_NAME, YOGA_DURATION, DURATION_DURATION, YOGA_STUDIO, TABLE_STUDIO + "." + STUDIO_NAME, STUDIO_GROUP, TABLE_STUDIO + "." + STUDIO_ICON, YOGA_PLACE, TABLE_PLACE + "." + PLACE_NAME, TABLE_PLACE + "." + PLACE_ICON, YOGA_COMMENT},
+                TABLE_TYPE + "." + TYPE_ID + " = " + YOGA_TYPE + " AND " + TABLE_DURATION + "." + DURATION_ID + " = " + YOGA_DURATION + " AND " + TABLE_STUDIO + "." + STUDIO_ID + " = " + YOGA_STUDIO + " AND " + TABLE_PLACE + "." + PLACE_ID + " = " + YOGA_PLACE + " AND (" + YOGA_DATE + " < '" + prevDate + "'OR " + YOGA_DATE + " = '" + prevDate + "'AND " + TABLE_YOGA + "." + YOGA_ID + " > " + prevId + " )",
                 null,
                 null,
                 null,
@@ -104,16 +120,16 @@ public class YogaDbAdapter
         );
     }
 
-    public Cursor getPagedDataByStudioId(String prevDate, long prevId, int studioId, int pageSize)
+    Cursor getPagedDataByStudioId(String prevDate, long prevId, int studioId, int pageSize)
     {
         if (!mDb.isOpen())
         {
             open();
         }
         return mDb.query(
-                TABLE_YOGA + ", " + TABLE_TYPE + ", " + TABLE_DURATION + ", " + TABLE_STUDIO,
-                new String[]{TABLE_YOGA + "." + YOGA_ID, YOGA_DATE, YOGA_PRICE, YOGA_PAYTYPE, YOGA_PEOPLE, YOGA_TYPE, TYPE_NAME, YOGA_DURATION, DURATION_DURATION, YOGA_STUDIO, STUDIO_NAME, STUDIO_GROUP, YOGA_FIO},
-                TABLE_TYPE + "." + TYPE_ID + " = " + YOGA_TYPE + " AND " + TABLE_DURATION + "." + DURATION_ID + " = " + YOGA_DURATION + " AND " + TABLE_STUDIO + "." + STUDIO_ID + " = " + YOGA_STUDIO + " AND " + TABLE_YOGA + "." + YOGA_STUDIO + " = " + studioId + " AND (" + YOGA_DATE + " < '" + prevDate + "'OR " + YOGA_DATE + " = '" + prevDate + "'AND " + TABLE_YOGA + "." + YOGA_ID + " > " + prevId + " )",
+                TABLE_YOGA + ", " + TABLE_TYPE + ", " + TABLE_DURATION + ", " + TABLE_STUDIO + ", " + TABLE_PLACE,
+                new String[]{TABLE_YOGA + "." + YOGA_ID, YOGA_DATE, YOGA_PRICE, YOGA_PAYTYPE, YOGA_PEOPLE, YOGA_TYPE, TYPE_NAME, YOGA_DURATION, DURATION_DURATION, YOGA_STUDIO, TABLE_STUDIO + "." + STUDIO_NAME, STUDIO_GROUP, TABLE_STUDIO + "." + STUDIO_ICON, YOGA_PLACE, TABLE_PLACE + "." + PLACE_NAME, TABLE_PLACE + "." + PLACE_ICON, YOGA_COMMENT},
+                TABLE_TYPE + "." + TYPE_ID + " = " + YOGA_TYPE + " AND " + TABLE_DURATION + "." + DURATION_ID + " = " + YOGA_DURATION + " AND " + TABLE_STUDIO + "." + STUDIO_ID + " = " + YOGA_STUDIO + " AND " + TABLE_PLACE + "." + PLACE_ID + " = " + YOGA_PLACE + " AND " + TABLE_YOGA + "." + YOGA_STUDIO + " = " + studioId + " AND (" + YOGA_DATE + " < '" + prevDate + "'OR " + YOGA_DATE + " = '" + prevDate + "'AND " + TABLE_YOGA + "." + YOGA_ID + " > " + prevId + " )",
                 null,
                 null,
                 null,
@@ -128,9 +144,9 @@ public class YogaDbAdapter
             open();
         }
         return mDb.query(
-                TABLE_YOGA + ", " + TABLE_TYPE + ", " + TABLE_DURATION + ", " + TABLE_STUDIO,
-                new String[]{TABLE_YOGA + "." + YOGA_ID, YOGA_DATE, YOGA_PRICE, YOGA_PAYTYPE, YOGA_PEOPLE, YOGA_TYPE, TYPE_NAME, YOGA_DURATION, DURATION_DURATION, YOGA_STUDIO, STUDIO_NAME, STUDIO_GROUP, YOGA_FIO},
-                TABLE_TYPE + "." + TYPE_ID + " = " + YOGA_TYPE + " AND " + TABLE_DURATION + "." + DURATION_ID + " = " + YOGA_DURATION + " AND " + TABLE_STUDIO + "." + STUDIO_ID + " = " + YOGA_STUDIO + " AND " + TABLE_YOGA + "." + YOGA_ID + " = " + id,
+                TABLE_YOGA + ", " + TABLE_TYPE + ", " + TABLE_DURATION + ", " + TABLE_STUDIO + ", " + TABLE_PLACE,
+                new String[]{TABLE_YOGA + "." + YOGA_ID, YOGA_DATE, YOGA_PRICE, YOGA_PAYTYPE, YOGA_PEOPLE, YOGA_TYPE, TYPE_NAME, YOGA_DURATION, DURATION_DURATION, YOGA_STUDIO, TABLE_STUDIO + "." + STUDIO_NAME, STUDIO_GROUP, TABLE_STUDIO + "." + STUDIO_ICON, YOGA_PLACE, TABLE_PLACE + "." + PLACE_NAME, TABLE_PLACE + "." + PLACE_ICON, YOGA_COMMENT},
+                TABLE_TYPE + "." + TYPE_ID + " = " + YOGA_TYPE + " AND " + TABLE_DURATION + "." + DURATION_ID + " = " + YOGA_DURATION + " AND " + TABLE_STUDIO + "." + STUDIO_ID + " = " + YOGA_STUDIO + " AND " + TABLE_PLACE + "." + PLACE_ID + " = " + YOGA_PLACE + " AND " + TABLE_YOGA + "." + YOGA_ID + " = " + id,
                 null,
                 null,
                 null,
@@ -155,7 +171,7 @@ public class YogaDbAdapter
     }
 
 
-    public void addData(String date, int price, String payType, int people, int type, int duration, int studio, String fio)
+    public void addData(String date, int price, String payType, int people, int type, int duration, int studio, int place, String comment)
     {
         ContentValues contentValues = new ContentValues();
         contentValues.put(YOGA_DATE, date);
@@ -165,13 +181,14 @@ public class YogaDbAdapter
         contentValues.put(YOGA_TYPE, type);
         contentValues.put(YOGA_DURATION, duration);
         contentValues.put(YOGA_STUDIO, studio);
-        contentValues.put(YOGA_FIO, fio);
+        contentValues.put(YOGA_PLACE, place);
+        contentValues.put(YOGA_COMMENT, comment);
         mDb.insert(TABLE_YOGA, null, contentValues);
     }
 
     public void addBulkData(ArrayList<YogaItem> items)
     {
-        String sql = "INSERT INTO " + TABLE_YOGA + " (" + YOGA_DATE + ", " + YOGA_PRICE + ", " + YOGA_PAYTYPE + ", " + YOGA_PEOPLE + ", " + YOGA_TYPE + ", " + YOGA_DURATION + ", " + YOGA_STUDIO + ", " + YOGA_FIO + ") VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO " + TABLE_YOGA + " (" + YOGA_DATE + ", " + YOGA_PRICE + ", " + YOGA_PAYTYPE + ", " + YOGA_PEOPLE + ", " + YOGA_TYPE + ", " + YOGA_DURATION + ", " + YOGA_STUDIO + ", " + YOGA_PLACE + ", " + YOGA_COMMENT + ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         mDb.beginTransaction();
 
         SQLiteStatement stmt = mDb.compileStatement(sql);
@@ -181,10 +198,11 @@ public class YogaDbAdapter
             stmt.bindLong(2, items.get(i).getPrice());
             stmt.bindString(3, items.get(i).getPayType());
             stmt.bindLong(4, items.get(i).getPeople());
-            stmt.bindLong(5, items.get(i).getType().getId());
-            stmt.bindLong(6, items.get(i).getDuration().getId());
-            stmt.bindLong(7, items.get(i).getStudio().getId());
-            stmt.bindString(8, items.get(i).getFIO());
+            stmt.bindLong(5, items.get(i).getType().getEntityId());
+            stmt.bindLong(6, items.get(i).getDuration().getEntityId());
+            stmt.bindLong(7, items.get(i).getStudio().getEntityId());
+            stmt.bindLong(8, items.get(i).getPlace().getEntityId());
+            stmt.bindString(9, items.get(i).getComment());
             stmt.execute();
             stmt.clearBindings();
         }
@@ -194,7 +212,7 @@ public class YogaDbAdapter
     }
 
 
-    public void updateData(long id, String date, int price, String payType, int people, int type, int duration, int studio, String fio)
+    public void updateData(long id, String date, int price, String payType, int people, int type, int duration, int studio, int place, String comment)
     {
         ContentValues contentValues = new ContentValues();
         contentValues.put(YOGA_DATE, date);
@@ -204,7 +222,8 @@ public class YogaDbAdapter
         contentValues.put(YOGA_TYPE, type);
         contentValues.put(YOGA_DURATION, duration);
         contentValues.put(YOGA_STUDIO, studio);
-        contentValues.put(YOGA_FIO, fio);
+        contentValues.put(YOGA_PLACE, place);
+        contentValues.put(YOGA_COMMENT, comment);
         mDb.update(TABLE_YOGA, contentValues, YOGA_ID + " = " + id, null);
     }
 
@@ -220,6 +239,7 @@ public class YogaDbAdapter
         mDb.delete(TABLE_TYPE, null, null);
         mDb.delete(TABLE_DURATION, null, null);
         mDb.delete(TABLE_STUDIO, null, null);
+        mDb.delete(TABLE_PLACE, null, null);
         mDb.delete(TABLE_SEQUENCE, null, null);
     }
 
@@ -238,12 +258,21 @@ public class YogaDbAdapter
         mDb.insert(TABLE_DURATION, null, contentValues);
     }
 
-    public void addStudio(String studio, int group)
+    public void addStudio(String studio, int group, String icon)
     {
         ContentValues contentValues = new ContentValues();
         contentValues.put(STUDIO_NAME, studio);
         contentValues.put(STUDIO_GROUP, group);
+        contentValues.put(STUDIO_ICON, icon);
         mDb.insert(TABLE_STUDIO, null, contentValues);
+    }
+
+    public void addPlace(String place, String icon)
+    {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(PLACE_NAME, place);
+        contentValues.put(PLACE_ICON, icon);
+        mDb.insert(TABLE_PLACE, null, contentValues);
     }
 
     public Cursor getTypes()
@@ -270,11 +299,37 @@ public class YogaDbAdapter
         {
             open();
         }
-        return mDb.query(TABLE_STUDIO, new String[]{STUDIO_ID, STUDIO_NAME, STUDIO_GROUP}, null, null, null, null, null);
+        return mDb.query(TABLE_STUDIO, new String[]{STUDIO_ID, STUDIO_NAME, STUDIO_GROUP, STUDIO_ICON}, null, null, null, null, null);
+    }
+
+    public Cursor getStudiosChrono()
+    {
+        if (!mDb.isOpen())
+        {
+            open();
+        }
+        return mDb.query(
+                TABLE_STUDIO + " LEFT JOIN " + TABLE_YOGA + " ON " + TABLE_STUDIO + "." + STUDIO_ID + " = " + YOGA_STUDIO,
+                new String[]{TABLE_STUDIO + "." + STUDIO_ID, STUDIO_NAME, STUDIO_GROUP, STUDIO_ICON, "MAX(" + YOGA_DATE + ")"},
+                null,
+                null,
+                TABLE_STUDIO + "." + STUDIO_ID + "," + STUDIO_NAME + "," + STUDIO_GROUP + "," + STUDIO_ICON,
+                null,
+                YOGA_DATE + " DESC"
+        );
+    }
+
+    public Cursor getPlaces()
+    {
+        if (!mDb.isOpen())
+        {
+            open();
+        }
+        return mDb.query(TABLE_PLACE, new String[]{PLACE_ID, PLACE_NAME, PLACE_ICON}, null, null, null, null, null);
     }
 
 
-    private class DatabaseHelper extends SQLiteOpenHelper
+    private static class DatabaseHelper extends SQLiteOpenHelper
     {
         DatabaseHelper()
         {
@@ -288,6 +343,7 @@ public class YogaDbAdapter
             db.execSQL(CREATE_TYPE);
             db.execSQL(CREATE_DURATION);
             db.execSQL(CREATE_STUDIO);
+            db.execSQL(CREATE_PLACE);
         }
 
         @Override

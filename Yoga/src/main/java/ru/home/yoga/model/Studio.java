@@ -1,26 +1,19 @@
-package ru.home.yoga.entity;
+package ru.home.yoga.model;
 
 public class Studio extends EntityGeneric
 {
-    final Integer mId;
-    final String mName;
-    final Integer mGroup;
+    private final Integer mId;
+    private final String mName;
+    private final Integer mGroup;
 
-    public Studio(Integer id, String name, Integer group)
+    private final String mIcon;
+
+    public Studio(Integer id, String name, Integer group, String icon)
     {
         mId = id;
         mName = name;
         mGroup = group;
-    }
-
-    public Integer getId()
-    {
-        return mId;
-    }
-
-    public String getName()
-    {
-        return mName;
+        mIcon = icon;
     }
 
     @Override
@@ -38,5 +31,10 @@ public class Studio extends EntityGeneric
     public boolean isGroup()
     {
         return (mGroup == 1);
+    }
+
+    public String getIcon()
+    {
+        return mIcon;
     }
 }

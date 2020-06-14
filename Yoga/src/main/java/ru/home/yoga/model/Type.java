@@ -1,24 +1,14 @@
-package ru.home.yoga.entity;
+package ru.home.yoga.model;
 
 public class Type extends EntityGeneric
 {
-    final Integer mId;
-    final String mType;
+    private final Integer mId;
+    private final String mType;
 
     public Type(Integer id, String type)
     {
         mId = id;
         mType = type;
-    }
-
-    public Integer getId()
-    {
-        return mId;
-    }
-
-    public String getTypeName()
-    {
-        return mType;
     }
 
     @Override

@@ -7,8 +7,8 @@
 
     <string name="appbar_scrolling_view_behaviour">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
 
-    <string name="hint_price">Цена</string>
-    <string name="hint_fio">Имя (для персонального занятия)</string>
+    <string name="hint_price">Стоимость занятия</string>
+    <string name="hint_comment">Комментарий</string>
     <string name="hint_people">Количество человек</string>
     <string name="hint_date">Дата</string>
 
@@ -20,9 +20,10 @@
     <string name="text_view_date">Дата</string>
     <string name="text_view_price">Цена</string>
     <string name="text_view_people">Человек</string>
-    <string name="text_view_type">Тип</string>
+    <string name="text_view_type">Класс</string>
     <string name="text_view_duration">Время</string>
-    <string name="text_view_studio">Место</string>
+    <string name="text_view_studio">Студия</string>
+    <string name="text_view_place">Место</string>
 
     <string name="backup_write_error">Проблема с записью на SD-карту!</string>
     <string name="backup_no_sd">Внимание! SD-карта не доступна, бэкап не будет работать!</string>
@@ -32,7 +33,7 @@
     <string name="menu_backup">Бэкапы</string>
     <string name="menu_summary">Итоги</string>
 
-    <string name="price">%1$d рублей</string>
+    <string name="price">%1$d ₽</string>
 
     <string name="navigation_view_open">Открыть</string>
     <string name="navigation_view_close">Закрыть</string>

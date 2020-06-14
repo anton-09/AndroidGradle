@@ -1,10 +1,6 @@
-package ru.home.yoga;
+package ru.home.yoga.view.activity;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +12,9 @@ import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
 import org.joda.time.LocalDate;
+
+import ru.home.yoga.MyApplication;
+import ru.home.yoga.R;
 
 
 public class DatePickerActivity extends AppCompatActivity
